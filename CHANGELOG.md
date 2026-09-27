@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases should follow [Semantic Versioning](https://semver.org/).
 
+## [2.0.21] - 2026-09-27
+
+### Fixed
+
+- Resolve nested `prop` paths consistently for default, date/time, numeric, link, tag, enum and image table columns, including local sorting.
+
 ## [2.0.20] - 2026-09-22
 
 ### Fixed
@@ -228,6 +234,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Scoped Table styles and added responsive IconSelector styling.
 - Improved dialogs, drawers, tables, forms, trees, selectors, car-number input, images, and uploads for dark mode, touch input, and narrow viewports.
 
+[2.0.21]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.20...v2.0.21
 [2.0.20]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.19...v2.0.20
 [2.0.19]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.18...v2.0.19
 [2.0.18]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.17...v2.0.18

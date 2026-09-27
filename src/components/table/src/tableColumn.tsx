@@ -262,7 +262,7 @@ export default defineComponent({
 
 		/** 渲染单元格数据 */
 		const renderCellData = ({ row }: { row: DefaultRow }) => {
-			const cellValue: unknown = tableUtil.handleRowAccordingToProp(row, props.prop ?? "");
+			const cellValue = tableUtil.handleRowAccordingToProp(row, props.prop ?? "");
 
 			let enumData: FaTableEnumColumnCtx[] | undefined;
 
@@ -361,9 +361,9 @@ export default defineComponent({
 				case "timeInfo":
 					break;
 			}
-			const rawValue: unknown = row[props.prop ?? ""];
-			const renderValue = rawValue
-				? formatterRender(row, column, dayjs(rawValue as Parameters<typeof dayjs>[0]).format(props.dateFormat ?? dateFormat), $index)
+			const cellValue = tableUtil.handleRowAccordingToProp(row, props.prop ?? "");
+			const renderValue = cellValue
+				? formatterRender(row, column, dayjs(cellValue as Parameters<typeof dayjs>[0]).format(props.dateFormat ?? dateFormat), $index)
 				: null;
 			return [
 				<Fragment>
@@ -383,9 +383,9 @@ export default defineComponent({
 
 		/** 数值列渲染 */
 		const numberRender = (row: DefaultRow, column: TableColumnCtx<DefaultRow>, $index: number) => {
-			const renderValue: unknown = row[props.prop ?? ""];
-			if (!renderValue || typeof renderValue !== "number") {
-				return [<Fragment>{formatterRender(row, column, renderValue, $index)}</Fragment>];
+			const cellValue = tableUtil.handleRowAccordingToProp(row, props.prop ?? "");
+			if (!cellValue || typeof cellValue !== "number") {
+				return [<Fragment>{formatterRender(row, column, cellValue, $index)}</Fragment>];
 			}
 			let useGrouping = false;
 			let maximumFractionDigits = 2;
@@ -428,7 +428,7 @@ export default defineComponent({
 					{formatterRender(
 						row,
 						column,
-						renderValue.toLocaleString("zh-CN", {
+						cellValue.toLocaleString("zh-CN", {
 							minimumFractionDigits: 2,
 							maximumFractionDigits,
 							useGrouping,
@@ -441,7 +441,8 @@ export default defineComponent({
 
 		/** 链接列渲染 */
 		const linkRender = (row: DefaultRow, column: TableColumnCtx<DefaultRow>, $index: number) => {
-			const renderValue = formatterRender(row, column, row[props.prop ?? ""], $index);
+			const cellValue = tableUtil.handleRowAccordingToProp(row, props.prop ?? "");
+			const renderValue = formatterRender(row, column, cellValue, $index);
 			return autoWidthRender([
 				<Fragment>
 					{copyRender(renderValue)}
@@ -498,7 +499,8 @@ export default defineComponent({
 			if (props.slot) {
 				return autoWidthRender(slots[props.slot]?.({ row, column: columnCtx.value, $index, ...getTableDefaultSlots(tableState) }) ?? []);
 			}
-			const renderValue = formatterRender(row, column, row[props.prop ?? ""], $index);
+			const cellValue = tableUtil.handleRowAccordingToProp(row, props.prop ?? "");
+			const renderValue = formatterRender(row, column, cellValue, $index);
 			return autoWidthRender([
 				<Fragment>
 					{copyRender(renderValue)}
@@ -559,25 +561,28 @@ export default defineComponent({
 							{{
 								header: ({ column, $index }: { column: TableColumnCtx<DefaultRow>; $index: number }) =>
 									headerRender({ column, $index }),
-								default: ({ row }: { row: DefaultRow; column: TableColumnCtx<DefaultRow>; $index: number }) =>
-									row[props.prop ?? ""] ? (
+								default: ({ row }: { row: DefaultRow; column: TableColumnCtx<DefaultRow>; $index: number }) => {
+									const cellValue = tableUtil.handleRowAccordingToProp(row, props.prop ?? "");
+									const renderValue = displayText(cellValue);
+									return renderValue ? (
 										props.hideImage ? (
 											<ElImage
 												class="fa-image"
 												lazy
 												src={artwork}
 												fit="cover"
-												previewSrcList={[displayText(row[props.prop ?? ""])]}
+												previewSrcList={[renderValue]}
 												closeOnPressEscape
 												hideOnClickModal
 												previewTeleported
 											/>
 										) : (
-											<FaImage lazy src={displayText(row[props.prop ?? ""])} fit="cover" original={props.originalImage} thumb />
+											<FaImage lazy src={renderValue} fit="cover" original={props.originalImage} thumb />
 										)
 									) : (
 										<ElImage class="fa-image" lazy src={notImage} fit="cover" />
-									),
+									);
+								},
 							}}
 						</ElTableColumn>
 					) : (

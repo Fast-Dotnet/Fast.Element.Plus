@@ -64,8 +64,8 @@ export const tableUtil = {
 					const order = condition.mode;
 					if (!property) continue;
 
-					const aValue: unknown = a[property];
-					const bValue: unknown = b[property];
+					const aValue = this.handleRowAccordingToProp(a, property);
+					const bValue = this.handleRowAccordingToProp(b, property);
 
 					if (typeof aValue === "string" && typeof bValue === "string") {
 						if (order === "ascending") {

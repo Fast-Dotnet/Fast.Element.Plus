@@ -87,3 +87,16 @@ test("FaTable installs its documented related components", () => {
 		["FaTable", "FaTableColumn", "FaTableColumnsSettingDialog", "FaTablePagination", "FaTableSearchForm", "FaTableSearchFormItem"]
 	);
 });
+
+test("table utility resolves nested prop paths used by built-in column renderers", () => {
+	const row = { profile: { details: { name: "Nested value" } } };
+
+	assert.equal(library.tableUtil.handleRowAccordingToProp(row, "profile.details.name"), "Nested value");
+	assert.equal(library.tableUtil.handleRowAccordingToProp(row, "profile.missing.name"), undefined);
+	assert.deepEqual(
+		[{ profile: { score: 20 } }, { profile: { score: 10 } }].sort(
+			library.tableUtil.arrayDynamicSort([{ enField: "profile.score", mode: "ascending" }])
+		),
+		[{ profile: { score: 10 } }, { profile: { score: 20 } }]
+	);
+});
