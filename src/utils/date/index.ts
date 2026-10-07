@@ -5,14 +5,14 @@ export type DateInput = Date | number | string;
  * 转换并克隆有效日期。
  *
  * @remarks 数字不进行秒/毫秒猜测；字符串遵循运行时 `Date` 解析规则，跨平台代码应传带显式时区的完整 ISO 8601。
- * @param value - Date、Unix 毫秒时间戳或运行时可解析字符串。
- * @returns 与输入不共享可变状态的新 Date。
+ * @param value - Date、Unix 毫秒时间戳或运行时可解析字符串
+ * @returns 与输入不共享可变状态的新 Date
  * @throws 输入无效时抛出 `TypeError`。
  */
 export function toDate(value: DateInput): Date {
 	const date = value instanceof Date ? new Date(value.getTime()) : new Date(value);
 	if (!Number.isFinite(date.getTime())) {
-		throw new TypeError("该值不是有效日期。");
+		throw new TypeError("The value is not a valid date.");
 	}
 	return date;
 }
@@ -20,8 +20,8 @@ export function toDate(value: DateInput): Date {
 /**
  * 返回输入日期所在本地时区日期的 `00:00:00.000`，不修改输入。
  *
- * @param value - 有效日期输入。
- * @returns 新建的本地日开始时间。
+ * @param value - 有效日期输入
+ * @returns 新建的本地日开始时间
  * @throws 输入无效时抛出 `TypeError`。
  */
 export function startOfDay(value: DateInput): Date {
@@ -30,7 +30,7 @@ export function startOfDay(value: DateInput): Date {
 	return toDate(date);
 }
 
-/** 日期选择器单日期快捷项。 */
+/** 日期选择器单日期快捷项 */
 export interface DateShortcut {
 	/** 面向中文日期选择器的显示文本；调用方可直接用于菜单标签。 */
 	text: string;
@@ -41,7 +41,7 @@ export interface DateShortcut {
 	value: () => Date;
 }
 
-/** 日期选择器范围快捷项。 */
+/** 日期选择器范围快捷项 */
 export interface DateRangeShortcut {
 	/** 面向中文日期范围选择器的显示文本；调用方可直接用于菜单标签。 */
 	text: string;
@@ -52,16 +52,16 @@ export interface DateRangeShortcut {
 	value: () => [start: Date, end: Date];
 }
 
-/** 历史快捷项允许移动的本地日历单位。 */
+/** 历史快捷项允许移动的本地日历单位 */
 type CalendarUnit = "day" | "month" | "year";
 
 /**
  * 移动本地日历字段。
  *
  * @remarks 直接使用 Date Setter，以保留历史快捷项在月底和闰年的溢出语义。
- * @param date - 会被原地修改的日期。
- * @param amount - 对目标字段增加的整数。
- * @param unit - 要移动的日历字段。
+ * @param date - 会被原地修改的日期
+ * @param amount - 对目标字段增加的整数
+ * @param unit - 要移动的日历字段
  */
 const shiftCalendarFieldInPlace = (date: Date, amount: number, unit: CalendarUnit): void => {
 	switch (unit) {
@@ -80,9 +80,9 @@ const shiftCalendarFieldInPlace = (date: Date, amount: number, unit: CalendarUni
 /**
  * 创建动态单日期快捷项。
  *
- * @param text - 日期选择器显示文本。
- * @param amount - 相对当前时间的移动量。
- * @param unit - 移动使用的日历单位。
+ * @param text - 日期选择器显示文本
+ * @param amount - 相对当前时间的移动量
+ * @param unit - 移动使用的日历单位
  * @returns 每次执行 `value` 都重新读取当前时间的快捷项。
  */
 const createDateShortcut = (text: string, amount: number, unit: CalendarUnit): DateShortcut => ({
@@ -98,9 +98,9 @@ const createDateShortcut = (text: string, amount: number, unit: CalendarUnit): D
 /**
  * 创建动态日期范围快捷项。
  *
- * @param text - 日期选择器显示文本。
- * @param amount - 范围边界相对当前时间的移动量。
- * @param unit - 移动使用的日历单位。
+ * @param text - 日期选择器显示文本
+ * @param amount - 范围边界相对当前时间的移动量
+ * @param unit - 移动使用的日历单位
  * @param towardFuture - `true` 移动结束边界，`false` 移动开始边界。
  * @returns 每次求值都覆盖完整本地日边界的范围快捷项。
  */
@@ -120,7 +120,7 @@ const createRangeShortcut = (text: string, amount: number, unit: CalendarUnit, t
  * 把日期转换为固定中文相对时间文本。
  *
  * @remarks 10 位以内数字按 Unix 秒处理，其余数字按毫秒处理；月份与年份按本地日历月差计算。
- * @param value - Date、时间戳、可解析字符串或空值。
+ * @param value - Date、时间戳、可解析字符串或空值
  * @returns 例如“3分钟前”“半年后”；非法或空输入返回空字符串。
  */
 export function formatChineseRelativeTime(value: Date | number | string | null | undefined): string {
@@ -224,7 +224,7 @@ export function createDateShortcuts(towardFuture = false): DateShortcut[] {
 /**
  * 返回今天的本地零点。
  *
- * @returns 新建的 `00:00:00.000` Date。
+ * @returns 新建的 `00:00:00.000` Date
  */
 export function getStartOfToday(): Date {
 	return startOfDay(new Date());

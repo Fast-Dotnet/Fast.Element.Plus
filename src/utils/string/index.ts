@@ -1,36 +1,11 @@
-/** Web、Node、WebView 与 uni-app 宿主可能按需提供的运行时全局能力。 */
-interface RuntimeGlobals {
-	readonly crypto?: Omit<Partial<Crypto>, "subtle"> & {
-		readonly subtle?: Partial<SubtleCrypto>;
-	};
-	readonly document?: Partial<Document>;
-	readonly isSecureContext?: boolean;
-	readonly navigator?: Partial<Navigator>;
-	readonly uni?: unknown;
-}
-
-/**
- * 以可选能力视图读取全局对象。
- *
- * @remarks TypeScript 的 DOM 声明假定浏览器全局始终存在，但本包也会在 Node、WebView
- * 和 uni-app 中运行。这里只放宽能力是否存在，不改变标准 API 的属性与方法类型。
- */
-const runtimeGlobals = globalThis as RuntimeGlobals;
-
 const defaultRandomAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 const maximumRandomStringLength = 1_000_000;
 const maximumRandomValuesPerBatch = 16_384;
 const uint32Range = 0x1_0000_0000;
 
-/** uni-app 文本复制所需的最小运行时能力。 */
-interface UniClipboard {
-	setClipboardData: (options: { data: string; fail: (error: unknown) => void; success: () => void }) => void;
-}
-
 /** 使用 Web Crypto 填充随机值，能力缺失时回退到 `Math.random()`。 */
 const fillRandomValues = (values: Uint8Array<ArrayBuffer> | Uint32Array<ArrayBuffer>): void => {
-	const crypto = runtimeGlobals.crypto;
-	if (typeof crypto?.getRandomValues === "function") {
+	if (typeof crypto !== "undefined" && typeof crypto?.getRandomValues === "function") {
 		crypto.getRandomValues(values);
 		return;
 	}
@@ -41,43 +16,29 @@ const fillRandomValues = (values: Uint8Array<ArrayBuffer> | Uint32Array<ArrayBuf
 /**
  * 把文本复制到系统剪贴板。
  *
- * @remarks uni-app 使用 `setClipboardData`；浏览器优先使用 Clipboard API，并在该 API 不可用时
+ * @remarks 浏览器优先使用 Clipboard API，并在该 API 不可用时
  * 回退到 `document.execCommand("copy")`。平台拒绝访问剪贴板时不会静默忽略错误。
- * @param value - 要复制的文本。
- * @returns 复制完成后兑现的 Promise。
+ * @param value - 要复制的文本
+ * @returns 复制完成后兑现的 Promise
  * @throws `Error` 当运行时没有可用的剪贴板能力或复制失败。
  */
 export async function copy(value: string): Promise<void> {
-	const uni = runtimeGlobals.uni;
-	if (uni !== undefined) {
-		if ((typeof uni !== "object" && typeof uni !== "function") || uni === null) {
-			throw new TypeError("全局 uni 对象未提供 `setClipboardData`。");
-		}
-		const clipboard = uni as Partial<UniClipboard>;
-		const setClipboardData = clipboard.setClipboardData?.bind(clipboard);
-		if (setClipboardData === undefined) throw new TypeError("全局 uni 对象未提供 `setClipboardData`。");
-		await new Promise<void>((resolve, reject) => {
-			setClipboardData({
-				data: value,
-				fail: (error: unknown) => {
-					reject(error instanceof Error ? error : new Error("文本复制到剪贴板失败。", { cause: error }));
-				},
-				success: resolve,
-			});
-		});
+	if (
+		typeof isSecureContext !== "undefined" &&
+		isSecureContext &&
+		typeof navigator !== "undefined" &&
+		typeof navigator.clipboard?.writeText === "function"
+	) {
+		await navigator.clipboard.writeText(value);
 		return;
 	}
 
-	const browserClipboard = runtimeGlobals.navigator?.clipboard;
-	if (runtimeGlobals.isSecureContext === true && typeof browserClipboard?.writeText === "function") {
-		await browserClipboard.writeText(value);
-		return;
+	if (typeof document === "undefined" || document === null) {
+		throw new Error("The current runtime does not support clipboard access.");
 	}
-
-	const document = runtimeGlobals.document;
 	// eslint-disable-next-line @typescript-eslint/no-deprecated -- 兼容不支持 Clipboard API 的旧 WebView。
-	if (typeof document?.createElement !== "function" || document.body == null || typeof document.execCommand !== "function") {
-		throw new Error("当前运行环境不支持访问剪贴板。");
+	if (typeof document.createElement !== "function" || document.body == null || typeof document.execCommand !== "function") {
+		throw new Error("The current runtime does not support clipboard access.");
 	}
 	const textarea = document.createElement("textarea");
 	textarea.value = value;
@@ -95,7 +56,7 @@ export async function copy(value: string): Promise<void> {
 	} finally {
 		textarea.remove();
 	}
-	if (!copied) throw new Error("文本复制到剪贴板失败。");
+	if (!copied) throw new Error("Failed to copy text to the clipboard.");
 }
 
 /**
@@ -104,17 +65,17 @@ export async function copy(value: string): Promise<void> {
  * @remarks 优先使用 Web Crypto；平台缺少安全随机能力时回退到 `Math.random()`。
  * @param length - 字符数量，必须是 0 至 1,000,000 的安全整数。
  * @param alphabet - 不得为空、包含重复字符或超过 2^32 个 Unicode 码点。
- * @returns 由 `alphabet` 中 Unicode 码点组成的随机文本。
+ * @returns 由 `alphabet` 中 Unicode 码点组成的随机文本
  * @throws `RangeError` 当长度或字母表非法。
  */
 export function randomString(length: number, alphabet: string = defaultRandomAlphabet): string {
 	if (!Number.isSafeInteger(length) || length < 0 || length > maximumRandomStringLength) {
-		throw new RangeError(`\`length\` 必须是 0 到 ${maximumRandomStringLength} 之间的安全整数。`);
+		throw new RangeError(`\`length\` must be a safe integer between 0 and ${maximumRandomStringLength}.`);
 	}
 	const characters = Array.from(alphabet);
-	if (characters.length === 0) throw new RangeError("`alphabet` 不能为空。");
-	if (new Set(characters).size !== characters.length) throw new RangeError("`alphabet` 不能包含重复字符。");
-	if (characters.length > 0x1_0000_0000) throw new RangeError("`alphabet` 不能包含超过 2^32 个字符。");
+	if (characters.length === 0) throw new RangeError("`alphabet` must not be empty.");
+	if (new Set(characters).size !== characters.length) throw new RangeError("`alphabet` must not contain duplicate characters.");
+	if (characters.length > 0x1_0000_0000) throw new RangeError("`alphabet` must not contain more than 2^32 characters.");
 	if (length === 0) return "";
 
 	// 丢弃不能平均映射到字母表的尾部区间，避免 `%` 造成前部字符概率偏高。

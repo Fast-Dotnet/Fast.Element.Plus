@@ -2,9 +2,9 @@
  * 安全写入结果对象的自有可枚举属性。
  *
  * @remarks 使用 `defineProperty` 避免 `__proto__` 触发 Setter，并统一创建可写、可配置的自有可枚举数据属性。
- * @param target - 要写入的结果对象。
- * @param key - 自有属性键。
- * @param value - 属性值。
+ * @param target - 要写入的结果对象
+ * @param key - 自有属性键
+ * @param value - 属性值
  */
 const defineEnumerableProperty = (target: object, key: PropertyKey, value: unknown): void => {
 	Object.defineProperty(target, key, { configurable: true, enumerable: true, value, writable: true });
@@ -24,7 +24,7 @@ const typedArrayTags = new Set([
 	"[object Uint32Array]",
 ]);
 
-/** 深度比较过程中用于识别循环引用的双向对象映射。 */
+/** 深度比较过程中用于识别循环引用的双向对象映射 */
 interface EqualityState {
 	readonly leftObjects: WeakMap<object, object>;
 	readonly rightObjects: WeakMap<object, object>;
@@ -102,7 +102,7 @@ const equalObjects = (left: object, right: object, state: EqualityState): boolea
 	const rightKeys = getEnumerableOwnKeys(right);
 	if (leftKeys.length !== rightKeys.length) return false;
 	for (const key of leftKeys) {
-		if (!Object.hasOwn(right, key)) return false;
+		if (!Object.prototype.hasOwnProperty.call(right, key)) return false;
 	}
 
 	return compareTrackedPair(left, right, state, () => {
@@ -188,8 +188,8 @@ function isEqualValue(left: unknown, right: unknown, state: EqualityState): bool
  *
  * @remarks 原始值使用 SameValueZero 语义；支持循环引用、数组、对象、ArrayBuffer、DataView、Date、Error、Map、RegExp、Set、Symbol 和 TypedArray。
  * 对象只比较自有可枚举字符串与 Symbol 属性，函数及其他不支持的宿主对象仅在引用相同时相等。
- * @param left - 第一待比较值。
- * @param right - 第二待比较值。
+ * @param left - 第一待比较值
+ * @param right - 第二待比较值
  * @returns 两个值深度等价时返回 `true`。
  */
 export function isEqual(left: unknown, right: unknown): boolean {
@@ -199,12 +199,15 @@ export function isEqual(left: unknown, right: unknown): boolean {
 /**
  * 从对象中选择指定自有可枚举属性。
  *
- * @remarks 字面量键数组保留精确返回类型；普通 `string[]` 等动态键数组返回 `Partial<Source>`。
- * @param source - 不会被修改的源对象。
+ * @remarks 固定键元组保留精确返回类型；动态数组中可能被选择或排除的键在返回类型中保持可选。
+ * @param source - 不会被修改的源对象
  * @param keys - 需要保留的键；不存在的键被忽略。
  * @returns 新对象，保持 `keys` 的遍历顺序。
  */
-export function pick<Source extends object, const Keys extends readonly (keyof Source)[]>(source: Source, keys: Keys): Pick<Source, Keys[number]>;
+export function pick<Source extends object, const Keys extends readonly (keyof Source)[]>(
+	source: Source,
+	keys: Keys
+): number extends Keys["length"] ? Partial<Pick<Source, Keys[number]>> : Pick<Source, Keys[number]>;
 export function pick<Source extends object>(source: Source, keys: readonly PropertyKey[]): Partial<Source>;
 export function pick<Source extends object>(source: Source, keys: readonly PropertyKey[]): Partial<Source> {
 	const result: Partial<Source> = {};
@@ -217,12 +220,15 @@ export function pick<Source extends object>(source: Source, keys: readonly Prope
 /**
  * 浅复制对象并删除指定属性。
  *
- * @remarks 字面量键数组保留精确返回类型；普通 `string[]` 等动态键数组返回 `Partial<Source>`。
- * @param source - 不会被修改的源对象。
- * @param keys - 需要排除的键。
- * @returns 包含其余自有可枚举字符串与 Symbol 属性的新对象。
+ * @remarks 固定键元组保留精确返回类型；动态数组中可能被选择或排除的键在返回类型中保持可选。
+ * @param source - 不会被修改的源对象
+ * @param keys - 需要排除的键
+ * @returns 包含其余自有可枚举字符串与 Symbol 属性的新对象
  */
-export function omit<Source extends object, const Keys extends readonly (keyof Source)[]>(source: Source, keys: Keys): Omit<Source, Keys[number]>;
+export function omit<Source extends object, const Keys extends readonly (keyof Source)[]>(
+	source: Source,
+	keys: Keys
+): number extends Keys["length"] ? Omit<Source, Keys[number]> & Partial<Pick<Source, Keys[number]>> : Omit<Source, Keys[number]>;
 export function omit<Source extends object>(source: Source, keys: readonly PropertyKey[]): Partial<Source>;
 export function omit<Source extends object>(source: Source, keys: readonly PropertyKey[]): Partial<Source> {
 	const result = { ...source };
