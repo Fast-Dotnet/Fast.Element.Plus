@@ -1,10 +1,10 @@
-/** 选择器支持的单项值类型。 */
+/** 选择器支持的单项值类型 */
 export type ElSelectorValue = string | number | boolean | object;
 
 /** 选择器的单值、多值或空模型。 */
 export type ElSelectorModelValue = ElSelectorValue | ElSelectorValue[] | null | undefined;
 
-/** 选择器标准化后的选项数据。 */
+/** 选择器标准化后的选项数据 */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- 选择项原始数据由业务接口定义。
 export interface ElSelectorOutput<T = ElSelectorValue, Data = any> {
 	/**

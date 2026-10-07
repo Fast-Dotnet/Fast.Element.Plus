@@ -35,16 +35,16 @@ export { faTableEmits, faTableProps, tableColumnProps, tableProps };
 export type { FaTableSlots };
 export type { FaTableColumnSlots, FaTableColumnSlotsResult } from "./src/tableColumn";
 
-/** FaTable 暴露的组件实例类型。 */
+/** FaTable 暴露的组件实例类型 */
 export type FaTableInstance = InstanceType<typeof Table>;
 
-/** FaTable 的完整 Props 类型。 */
+/** FaTable 的完整 Props 类型 */
 export type FaTableProps = ExtractPropTypes<typeof faTableProps>;
 
-/** FaTable 的 Emits 类型。 */
+/** FaTable 的 Emits 类型 */
 export type FaTableEmits = typeof faTableEmits;
 
-/** FaTableColumn 暴露的组件实例类型。 */
+/** FaTableColumn 暴露的组件实例类型 */
 export type FaTableColumnInstance = InstanceType<typeof TableColumn>;
 
 export * from "./utils/table";

@@ -6,5 +6,5 @@ import type { TSXWithInstall } from "../../utils";
 export const FaIconSelector: TSXWithInstall<typeof IconSelector> = withInstall(IconSelector);
 export default FaIconSelector;
 
-/** FaIconSelector 暴露的组件实例类型。 */
+/** FaIconSelector 暴露的组件实例类型 */
 export type FaIconSelectorInstance = InstanceType<typeof IconSelector>;

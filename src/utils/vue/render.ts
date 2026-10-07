@@ -1,7 +1,7 @@
 import { getCurrentInstance } from "vue";
 import type { VNode } from "vue";
 
-/** `useRender` 需要写入的 Vue 3 内部组件实例字段。 */
+/** `useRender` 需要写入的 Vue 3 内部组件实例字段 */
 interface MutableVueComponentInstance {
 	render?: () => VNode;
 }

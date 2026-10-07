@@ -10,11 +10,11 @@ export default FaDialog;
 export { faDialogProps, faDialogEmits };
 export type { FaDialogSlots } from "./src/dialog";
 
-/** FaDialog 暴露的组件实例类型。 */
+/** FaDialog 暴露的组件实例类型 */
 export type FaDialogInstance = InstanceType<typeof Dialog>;
 
-/** FaDialog 的完整 Props 类型。 */
+/** FaDialog 的完整 Props 类型 */
 export type FaDialogProps = ExtractPropTypes<typeof faDialogProps>;
 
-/** FaDialog 的 Emits 类型。 */
+/** FaDialog 的 Emits 类型 */
 export type FaDialogEmits = typeof faDialogEmits;

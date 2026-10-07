@@ -8,5 +8,5 @@ export default FaContextMenu;
 
 export type * from "./src/contextMenu.type";
 
-/** FaContextMenu 暴露的组件实例类型。 */
+/** FaContextMenu 暴露的组件实例类型 */
 export type FaContextMenuInstance = InstanceType<typeof ContextMenu>;

@@ -10,7 +10,7 @@ export type TypedSlots<Slots extends RawSlots> = {
 	[Name in keyof Slots]: VueSlot<Slots[Name]>;
 };
 
-/** Vue 3 `slots` 选项接受的运行时声明与官方静态类型标记。 */
+/** Vue 3 `slots` 选项接受的运行时声明与官方静态类型标记 */
 export type TypedSlotsDeclaration<Slots extends RawSlots> = SlotsType<Partial<TypedSlots<Slots>>>;
 
 /**

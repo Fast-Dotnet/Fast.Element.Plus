@@ -32,10 +32,10 @@ export const getTableDefaultSlots = (state: FaTableState): FaTableDefaultSlotsRe
 	};
 };
 
-/** FaTable 默认时间搜索支持的快捷日期范围。 */
+/** FaTable 默认时间搜索支持的快捷日期范围 */
 export type FaTableDataRange = "Past1D" | "Past3D" | "Past1W" | "Past1M" | "Past3M" | "Past6M" | "Past1Y" | "Past3Y";
 
-/** FaTable 枚举列的选项配置。 */
+/** FaTable 枚举列的选项配置 */
 export interface FaTableEnumColumnCtx {
 	/**
 	 * 选项框显示的文字
@@ -72,7 +72,7 @@ export interface FaTableEnumColumnCtx {
 /** FaTable 枚举列接受的字典名称、选项集合或选项工厂。 */
 export type FaTableEnumColumnType = string | FaTableEnumColumnCtx[] | ((context?: { row: DefaultRow }) => FaTableEnumColumnCtx[]);
 
-/** FaTable 搜索项支持的内置组件名或自定义组件名。 */
+/** FaTable 搜索项支持的内置组件名或自定义组件名 */
 export type FaTableSearchColumnEl =
 	| ""
 	| "el-input"
@@ -89,7 +89,7 @@ export type FaTableSearchColumnEl =
 	| "slot"
 	| (string & Record<never, never>);
 
-/** FaTable 单列搜索项的组件、布局和默认值配置。 */
+/** FaTable 单列搜索项的组件、布局和默认值配置 */
 export type FaTableSearchColumnCtx = Partial<Record<FaLayoutGridBreakpoint, FaLayoutGridItemResponsive>> & {
 	/**
 	 * 当前项搜索框的类型
@@ -131,7 +131,7 @@ export type FaTableSearchColumnCtx = Partial<Record<FaLayoutGridBreakpoint, FaLa
 };
 
 /**
- * FaTable 内置业务列类型。
+ * FaTable 内置业务列类型
  * @property default     默认
  * @property selection	 选择列
  * @property expand      可展开按钮列

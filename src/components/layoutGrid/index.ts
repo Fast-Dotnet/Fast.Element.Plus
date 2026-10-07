@@ -16,8 +16,8 @@ export type * from "./src/layoutGrid.type";
 export type { FaLayoutGridSlots } from "./src/layoutGrid";
 export type { FaLayoutGridItemSlots } from "./src/layoutGridItem";
 
-/** FaLayoutGrid 暴露的组件实例类型。 */
+/** FaLayoutGrid 暴露的组件实例类型 */
 export type FaLayoutGridInstance = InstanceType<typeof LayoutGrid>;
 
-/** FaLayoutGridItem 暴露的组件实例类型。 */
+/** FaLayoutGridItem 暴露的组件实例类型 */
 export type FaLayoutGridItemInstance = InstanceType<typeof LayoutGridItem>;

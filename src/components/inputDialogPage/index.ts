@@ -10,11 +10,11 @@ export default FaInputDialogPage;
 export { faInputDialogPageProps, faInputDialogPageEmits };
 export type { FaInputDialogPageSlots } from "./src/inputDialogPage";
 
-/** FaInputDialogPage 暴露的组件实例类型。 */
+/** FaInputDialogPage 暴露的组件实例类型 */
 export type FaInputDialogPageInstance = InstanceType<typeof InputDialogPage>;
 
-/** FaInputDialogPage 的完整 Props 类型。 */
+/** FaInputDialogPage 的完整 Props 类型 */
 export type FaInputDialogPageProps = ExtractPropTypes<typeof faInputDialogPageProps>;
 
-/** FaInputDialogPage 的 Emits 类型。 */
+/** FaInputDialogPage 的 Emits 类型 */
 export type FaInputDialogPageEmits = typeof faInputDialogPageEmits;

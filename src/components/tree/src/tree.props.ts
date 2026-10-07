@@ -14,13 +14,13 @@ export interface TreeNode {
 
 /** 树组件的数据集合。 */
 export type TreeData = TreeNodeData[];
-/** 树节点的唯一键类型。 */
+/** 树节点的唯一键类型 */
 export type TreeKey = string | number;
 
 /** 树节点的懒加载方法。 */
 export type LoadFunction = (rootNode: TreeNode, loadedCallback: (data: TreeData) => void, stopLoading: () => void) => void;
 
-/** 树节点字段映射配置。 */
+/** 树节点字段映射配置 */
 export interface TreeOptionProps {
 	children?: string;
 	label?: string | ((data: TreeNodeData, node: TreeNode) => string);

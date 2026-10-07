@@ -10,11 +10,11 @@ export default FaUpload;
 export { faUploadProps, faUploadEmits };
 export type { FaUploadSlots } from "./src/upload";
 
-/** FaUpload 暴露的组件实例类型。 */
+/** FaUpload 暴露的组件实例类型 */
 export type FaUploadInstance = InstanceType<typeof Upload>;
 
-/** FaUpload 的完整 Props 类型。 */
+/** FaUpload 的完整 Props 类型 */
 export type FaUploadProps = ExtractPropTypes<typeof faUploadProps>;
 
-/** FaUpload 的 Emits 类型。 */
+/** FaUpload 的 Emits 类型 */
 export type FaUploadEmits = typeof faUploadEmits;

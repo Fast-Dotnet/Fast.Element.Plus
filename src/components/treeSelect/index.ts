@@ -10,11 +10,11 @@ export default FaTreeSelect;
 export { faTreeSelectProps, faTreeSelectEmits };
 export type { FaTreeSelectSlots } from "./src/treeSelect";
 
-/** FaTreeSelect 暴露的组件实例类型。 */
+/** FaTreeSelect 暴露的组件实例类型 */
 export type FaTreeSelectInstance = InstanceType<typeof TreeSelect>;
 
-/** FaTreeSelect 的完整 Props 类型。 */
+/** FaTreeSelect 的完整 Props 类型 */
 export type FaTreeSelectProps = ExtractPropTypes<typeof faTreeSelectProps>;
 
-/** FaTreeSelect 的 Emits 类型。 */
+/** FaTreeSelect 的 Emits 类型 */
 export type FaTreeSelectEmits = typeof faTreeSelectEmits;

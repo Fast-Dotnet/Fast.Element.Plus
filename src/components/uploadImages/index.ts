@@ -11,11 +11,11 @@ export default FaUploadImages;
 export { faUploadImagesEmits, faUploadImagesProps } from "./src/uploadImages";
 export type { FaUploadImagesSlots } from "./src/uploadImages";
 
-/** FaUploadImages 暴露的组件实例类型。 */
+/** FaUploadImages 暴露的组件实例类型 */
 export type FaUploadImagesInstance = InstanceType<typeof UploadImages>;
 
-/** FaUploadImages 的完整 Props 类型。 */
+/** FaUploadImages 的完整 Props 类型 */
 export type FaUploadImagesProps = ExtractPropTypes<typeof faUploadImagesProps>;
 
-/** FaUploadImages 的 Emits 类型。 */
+/** FaUploadImages 的 Emits 类型 */
 export type FaUploadImagesEmits = typeof faUploadImagesEmits;

@@ -11,11 +11,11 @@ export default FaAvatar;
 export { faAvatarEmits, faAvatarProps } from "./src/avatar";
 export type { FaAvatarSlots } from "./src/avatar";
 
-/** FaAvatar 暴露的组件实例类型。 */
+/** FaAvatar 暴露的组件实例类型 */
 export type FaAvatarInstance = InstanceType<typeof Avatar>;
 
-/** FaAvatar 的完整 Props 类型。 */
+/** FaAvatar 的完整 Props 类型 */
 export type FaAvatarProps = ExtractPropTypes<typeof faAvatarProps>;
 
-/** FaAvatar 的 Emits 类型。 */
+/** FaAvatar 的 Emits 类型 */
 export type FaAvatarEmits = typeof faAvatarEmits;

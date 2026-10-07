@@ -1,4 +1,4 @@
-/** FaTable 统一分页返回结果。 */
+/** FaTable 统一分页返回结果 */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- 默认分页行字段由业务接口定义。
 export interface PagedResult<Output = Record<string, any>> {
 	/**
@@ -116,7 +116,7 @@ export interface PagedSortInput {
 	mode?: string;
 }
 
-/** FaTable 分页、搜索和排序请求参数。 */
+/** FaTable 分页、搜索和排序请求参数 */
 export interface PagedInput {
 	/**
 	 * 当前页面索引值，默认为1

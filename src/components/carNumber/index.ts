@@ -8,5 +8,5 @@ export default FaCarNumber;
 
 export * from "./src/common";
 
-/** FaCarNumber 暴露的组件实例类型。 */
+/** FaCarNumber 暴露的组件实例类型 */
 export type FaCarNumberInstance = InstanceType<typeof CarNumber>;

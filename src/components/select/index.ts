@@ -18,14 +18,14 @@ export { faSelectProps };
 export type { FaSelectSlots } from "./src/select";
 export type * from "./src/select.type";
 
-/** FaSelect 暴露的组件实例类型。 */
+/** FaSelect 暴露的组件实例类型 */
 export type FaSelectInstance = InstanceType<typeof Select>;
 
-/** FaSelect 的完整 Props 类型。 */
+/** FaSelect 的完整 Props 类型 */
 export type FaSelectProps = ExtractPropTypes<typeof faSelectProps>;
 
-/** FaSelect 的 Emits 类型。 */
+/** FaSelect 的 Emits 类型 */
 export type FaSelectEmits = typeof faSelectEmits;
 
-/** FaSelectOption 暴露的组件实例类型。 */
+/** FaSelectOption 暴露的组件实例类型 */
 export type FaSelectOptionInstance = InstanceType<typeof SelectOption>;

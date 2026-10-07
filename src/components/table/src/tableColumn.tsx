@@ -23,7 +23,7 @@ import type {
 
 export { tableColumnProps } from "../../../internal/props";
 
-/** FaTableColumn 插槽返回的行列上下文。 */
+/** FaTableColumn 插槽返回的行列上下文 */
 export interface FaTableColumnSlotsResult {
 	/** slots为表格内容的时候才会返回 */
 	row?: DefaultRow;

@@ -17,16 +17,16 @@ export { faFormEmits, faFormProps, faFormItemProps };
 export type { FaFormSlots } from "./src/form";
 export type { FaFormItemSlots } from "./src/formItem";
 
-/** FaForm 暴露的组件实例类型。 */
+/** FaForm 暴露的组件实例类型 */
 export type FaFormInstance = InstanceType<typeof Form>;
 
-/** FaForm 的完整 Props 类型。 */
+/** FaForm 的完整 Props 类型 */
 export type FaFormProps = ExtractPropTypes<typeof faFormProps>;
 
-/** FaFormItem 暴露的组件实例类型。 */
+/** FaFormItem 暴露的组件实例类型 */
 export type FaFormItemInstance = InstanceType<typeof FormItem>;
 
-/** FaFormItem 的完整 Props 类型。 */
+/** FaFormItem 的完整 Props 类型 */
 export type FaFormItemProps = ExtractPropTypes<typeof faFormItemProps>;
 
 export * from "./utils/form";

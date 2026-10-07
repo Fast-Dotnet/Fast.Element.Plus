@@ -10,8 +10,8 @@ export default FaIcon;
 
 export { faIconProps } from "./src/icon";
 
-/** FaIcon 暴露的组件实例类型。 */
+/** FaIcon 暴露的组件实例类型 */
 export type FaIconInstance = InstanceType<typeof Icon>;
 
-/** FaIcon 的完整 Props 类型。 */
+/** FaIcon 的完整 Props 类型 */
 export type FaIconProps = ExtractPropTypes<typeof faIconProps>;

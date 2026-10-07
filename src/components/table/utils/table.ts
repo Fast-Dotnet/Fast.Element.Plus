@@ -7,18 +7,18 @@ import type { FaTableColumnCtx, FaTableEnumColumnCtx, FaTableEnumColumnType } fr
  */
 export const tableUtil = {
 	/**
-	 * 处理无数据情况
-	 * @param {String} callValue 需要处理的值
+	 * 将非空数组连接为逗号分隔的文本，空数组返回 null；其他值原样返回。
+	 * @param callValue - 需要处理的值
 	 */
 	formatValue(callValue: unknown): unknown {
-		// 如果当前值为数组,使用 / 拼接（根据需求自定义）
 		if (Array.isArray(callValue)) return callValue.length ? callValue.join(` , `) : null;
 		return callValue;
 	},
 	/**
-	 * 处理 prop 为多级嵌套的情况(列如: prop:user.name)
-	 * @param {Object} row 当前行数据
-	 * @param {String} prop 当前 prop
+	 * 按点分隔的属性路径读取行数据，例如 user.name。
+	 * @param row - 当前行数据
+	 * @param prop - 当前 prop
+	 * @returns 目标属性值；中间节点不是对象或属性不存在时返回 undefined。
 	 */
 	handleRowAccordingToProp(row: DefaultRow, prop: string): unknown {
 		let value: unknown = row;
@@ -29,8 +29,8 @@ export const tableUtil = {
 		return value;
 	},
 	/**
-	 * 处理 prop，当 prop 为多级嵌套时 ==> 返回最后一级 prop
-	 * @param {String} prop 当前 prop
+	 * 返回点分隔属性路径的最后一级名称。
+	 * @param prop - 当前 prop
 	 */
 	handleProp(prop: string): string {
 		const propArr = prop.split(".");
@@ -38,11 +38,12 @@ export const tableUtil = {
 		return propArr.at(-1) ?? prop;
 	},
 	/**
-	 * 根据枚举列表查询当需要的数据（如果指定了 label 和 value 的 key值，会自动识别格式化）
-	 * @param {String} callValue 当前单元格值
-	 * @param {Array} enumData 字典列表
-	 * @param {Array} fieldNames 指定 label && value 的 key 值
-	 * @param {String} type 过滤类型（目前只有 tag）
+	 * 按值匹配枚举项，并读取指定的标签字段或 Tag 类型。
+	 * @param callValue - 当前单元格值
+	 * @param enumData - 字典列表
+	 * @param fieldNames - 标签与值的字段名
+	 * @param type - 过滤类型（目前只有 tag）
+	 * @returns 匹配项的标签；未匹配时返回 null。查询 Tag 类型时默认返回 info。
 	 */
 	filterEnum(callValue: unknown, enumData: FaTableEnumColumnCtx[], fieldNames?: { label: string; value: string }, type?: "tag"): unknown {
 		const value = fieldNames?.value ?? "value";
@@ -54,7 +55,7 @@ export const tableUtil = {
 		return filterData ? filterData[label] : null;
 	},
 	/**
-	 * 数组动态排序
+	 * 创建按排序条件依次比较行数据的函数，支持点分隔的属性路径。
 	 */
 	arrayDynamicSort(sortList: PagedSortInput[]): (a: DefaultRow, b: DefaultRow) => number {
 		return (a, b) => {
@@ -95,7 +96,7 @@ export const tableUtil = {
 		};
 	},
 	/**
-	 * 设置枚举
+	 * 将静态枚举或同步枚举函数的返回值存入映射。
 	 */
 	setEnumMap(columnEnum: FaTableEnumColumnType, prop: string, enumMap: Map<string, FaTableEnumColumnCtx[]>): void {
 		if (!columnEnum) return;
@@ -106,7 +107,8 @@ export const tableUtil = {
 		}
 	},
 	/**
-	 * 扁平化 columns
+	 * 收集叶子列，并补齐列的 show 默认值与枚举映射。
+	 * @remarks 会修改传入列的 show 属性；嵌套子列不继承本次枚举映射参数。
 	 */
 	flatColumns(columns: FaTableColumnCtx[], enumMap?: Map<string, FaTableEnumColumnCtx[]>): FaTableColumnCtx[] {
 		const flatArr: FaTableColumnCtx[] = [];

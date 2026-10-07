@@ -11,11 +11,11 @@ export default FaDrawer;
 export { faDrawerEmits, faDrawerProps } from "./src/drawer";
 export type { FaDrawerSlots } from "./src/drawer";
 
-/** FaDrawer 暴露的组件实例类型。 */
+/** FaDrawer 暴露的组件实例类型 */
 export type FaDrawerInstance = InstanceType<typeof Drawer>;
 
-/** FaDrawer 的完整 Props 类型。 */
+/** FaDrawer 的完整 Props 类型 */
 export type FaDrawerProps = ExtractPropTypes<typeof faDrawerProps>;
 
-/** FaDrawer 的 Emits 类型。 */
+/** FaDrawer 的 Emits 类型 */
 export type FaDrawerEmits = typeof faDrawerEmits;

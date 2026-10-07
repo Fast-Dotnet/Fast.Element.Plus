@@ -11,11 +11,11 @@ export { faTreeProps, faTreeEmits };
 export type { FaTreeSlots } from "./src/tree";
 export type * from "./src/tree.type";
 
-/** FaTree 暴露的组件实例类型。 */
+/** FaTree 暴露的组件实例类型 */
 export type FaTreeInstance = InstanceType<typeof Tree>;
 
-/** FaTree 的完整 Props 类型。 */
+/** FaTree 的完整 Props 类型 */
 export type FaTreeProps = ExtractPropTypes<typeof faTreeProps>;
 
-/** FaTree 的 Emits 类型。 */
+/** FaTree 的 Emits 类型 */
 export type FaTreeEmits = typeof faTreeEmits;

@@ -60,11 +60,14 @@ export const uploadUtil = {
 		});
 	},
 	/**
-	 * 文件上传
-	 * @param url 地址
-	 * @param file 文件
-	 * @param fileName 文件名称
-	 * @param params 参数
+	 * 使用 multipart/form-data 上传文件。
+	 * @param url - 地址
+	 * @param file - 文件
+	 * @param fileName - 文件名称
+	 * @param params - 附加表单字段
+	 * @param request - 请求头、方法与凭据选项
+	 * @returns 响应正文文本
+	 * @remarks 地址为空、网络失败或 HTTP 状态失败时，返回的 Promise 被拒绝。
 	 */
 	async uploadFile(url: string, file: File, fileName: string, params?: UploadData, request?: UploadRequestConfig): Promise<string> {
 		if (!url) {
@@ -96,11 +99,13 @@ export const uploadUtil = {
 		}
 	},
 	/**
-	 * 文件上传
-	 * @param url 地址
-	 * @param file 文件
-	 * @param fileName 文件名称
-	 * @param params 参数
+	 * 通过指定接口上传文件。
+	 * @param api - 接收表单数据并返回上传结果的接口
+	 * @param file - 文件
+	 * @param fileName - 文件名称
+	 * @param params - 附加表单字段
+	 * @returns 接口返回的上传结果
+	 * @remarks 接口未提供或调用失败时，返回的 Promise 被拒绝。
 	 */
 	async uploadFileByApi(
 		api: ((formData: FormData) => Promise<string>) | null | undefined,

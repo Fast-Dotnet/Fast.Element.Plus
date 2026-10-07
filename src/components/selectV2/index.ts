@@ -11,11 +11,11 @@ export default FaSelectV2;
 export { SelectV2Props, faSelectV2Props };
 export type { FaSelectV2Slots } from "./src/selectV2";
 
-/** FaSelectV2 暴露的组件实例类型。 */
+/** FaSelectV2 暴露的组件实例类型 */
 export type FaSelectV2Instance = InstanceType<typeof SelectV2>;
 
-/** FaSelectV2 的完整 Props 类型。 */
+/** FaSelectV2 的完整 Props 类型 */
 export type FaSelectV2Props = ExtractPropTypes<typeof faSelectV2Props>;
 
-/** FaSelectV2 的 Emits 类型。 */
+/** FaSelectV2 的 Emits 类型 */
 export type FaSelectV2Emits = typeof faSelectV2Emits;

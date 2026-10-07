@@ -10,11 +10,11 @@ export default FaButton;
 export { faButtonProps, faButtonEmits };
 export type { FaButtonSlots } from "./src/button";
 
-/** FaButton 暴露的组件实例类型。 */
+/** FaButton 暴露的组件实例类型 */
 export type FaButtonInstance = InstanceType<typeof Button>;
 
-/** FaButton 的完整 Props 类型。 */
+/** FaButton 的完整 Props 类型 */
 export type FaButtonProps = ExtractPropTypes<typeof faButtonProps>;
 
-/** FaButton 的 Emits 类型。 */
+/** FaButton 的 Emits 类型 */
 export type FaButtonEmits = typeof faButtonEmits;

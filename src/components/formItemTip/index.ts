@@ -10,8 +10,8 @@ export default FaFormItemTip;
 export { faFormItemTipProps };
 export type { FaFormItemTipSlots } from "./src/formItemTip";
 
-/** FaFormItemTip 暴露的组件实例类型。 */
+/** FaFormItemTip 暴露的组件实例类型 */
 export type FaFormItemTipInstance = InstanceType<typeof FormItemTip>;
 
-/** FaFormItemTip 的完整 Props 类型。 */
+/** FaFormItemTip 的完整 Props 类型 */
 export type FaFormItemTipProps = ExtractPropTypes<typeof faFormItemTipProps>;

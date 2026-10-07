@@ -10,8 +10,8 @@ export default FaImage;
 export { faImageEmits, faImageProps };
 export type { FaImageSlots } from "./src/image";
 
-/** FaImage 暴露的组件实例类型。 */
+/** FaImage 暴露的组件实例类型 */
 export type FaImageInstance = InstanceType<typeof Image>;
 
-/** FaImage 的完整 Props 类型。 */
+/** FaImage 的完整 Props 类型 */
 export type FaImageProps = ExtractPropTypes<typeof faImageProps>;

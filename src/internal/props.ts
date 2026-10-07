@@ -9,7 +9,7 @@ import type { DefaultRow } from "../components/table/src/table.state";
 
 type Layout = "fixed" | "auto";
 
-/** FaTable 树形数据的字段配置。 */
+/** FaTable 树形数据的字段配置 */
 export interface TreeProps {
 	hasChildren?: string;
 	children?: string;

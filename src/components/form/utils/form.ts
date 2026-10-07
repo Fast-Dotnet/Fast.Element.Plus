@@ -10,7 +10,7 @@ type ValidationCallback = (error?: Error) => void;
 export const formUtil = {
 	/**
 	 * ElForm 表单验证
-	 * @param elFormRef ElForm 组件ref
+	 * @param elFormRef - ElForm 组件ref
 	 */
 	validate(elFormRef: Readonly<Ref<FormInstance | null | undefined>>): FormValidationResult {
 		return new Promise<boolean>((resolve, reject) => {
@@ -23,7 +23,7 @@ export const formUtil = {
 				if (isValid) {
 					resolve(isValid);
 				} else {
-					// eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+					// eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors -- 保持 Element Plus 校验失败时返回字段错误对象的合同
 					reject(invalidFields);
 				}
 			});
@@ -31,7 +31,7 @@ export const formUtil = {
 	},
 	/**
 	 * ElForm 表单验证，带滚动
-	 * @param elFormRef ElForm 组件ref
+	 * @param elFormRef - ElForm 组件ref
 	 */
 	validateScrollToField(elFormRef: Readonly<Ref<FormInstance | null | undefined>>): FormValidationResult {
 		return new Promise<boolean>((resolve, reject) => {
@@ -45,7 +45,7 @@ export const formUtil = {
 					resolve(isValid);
 				} else {
 					form.scrollToField(Object.keys(invalidFields ?? {}));
-					// eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+					// eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors -- 保持 Element Plus 校验失败时返回字段错误对象的合同
 					reject(invalidFields);
 				}
 			});

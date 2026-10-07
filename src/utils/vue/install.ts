@@ -1,6 +1,6 @@
 import type { App } from "vue";
 
-/** Vue 组件对象、函数组件或指令对象可接受的最小结构类型。 */
+/** Vue 组件对象、函数组件或指令对象可接受的最小结构类型 */
 export type VueInstallValue = object | ((...arguments_: never[]) => unknown);
 
 /** 为 Vue 组件或指令附加供 Vue 3 `app.use()` 调用的安装能力。 */

@@ -1,7 +1,7 @@
-/** 树组件支持的节点值类型。 */
+/** 树组件支持的节点值类型 */
 export type ElTreeValue = string | number | boolean | object | null;
 
-/** 树组件标准化后的节点数据。 */
+/** 树组件标准化后的节点数据 */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- 树节点原始数据由业务接口定义。
 export interface ElTreeOutput<T = ElTreeValue, Data = any> {
 	/**
