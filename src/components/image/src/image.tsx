@@ -98,6 +98,7 @@ export default defineComponent({
 			}),
 			previewList: computed(() => (props.preview && props.src ? [props.base64 ? `data:image/png;base64,${props.src}` : props.src] : [])),
 		});
+
 		watch(
 			() => props.src,
 			() => {

@@ -128,10 +128,6 @@ export default defineComponent({
 			const result: { disabled?: boolean; placeholder?: string } = {};
 			if (row.type) {
 				switch (row.type) {
-					case "expand":
-						result.disabled = true;
-						result.placeholder = "暂不支持宽度配置";
-						break;
 					case "image":
 						result.disabled = true;
 						result.placeholder = "图片列无需配置";
@@ -147,8 +143,6 @@ export default defineComponent({
 						result.placeholder = "当前列无需配置";
 						break;
 					case "default":
-					case "index":
-					case "selection":
 					case "d2":
 					case "d4":
 					case "d6":

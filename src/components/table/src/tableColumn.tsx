@@ -348,9 +348,6 @@ export default defineComponent({
 					dateFormat = "YYYY-MM-DD HH:mm:ss";
 					break;
 				case "default":
-				case "index":
-				case "selection":
-				case "expand":
 				case "image":
 				case "d2":
 				case "d4":
@@ -412,9 +409,6 @@ export default defineComponent({
 					useGrouping = true;
 					break;
 				case "default":
-				case "index":
-				case "selection":
-				case "expand":
 				case "image":
 				case "date":
 				case "time":
@@ -589,7 +583,7 @@ export default defineComponent({
 						// 其他正常的列
 						<ElTableColumn
 							{...elTableColumnProps.value}
-							type={props.type === "selection" || props.type === "index" || props.type === "expand" ? props.type : "default"}
+							type="default"
 							className={getClassName()}
 							minWidth={getWidth("auto")}
 							sortable={props.sortable ? "custom" : false}

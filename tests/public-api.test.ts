@@ -25,8 +25,11 @@ import FastElementPlus, {
 	type FaSelectV2Props,
 	FaTable,
 	FaTableColumn,
+	type FaTableColumnType,
+	type FaTableDefaultSlotsResult,
 	type FaTableInstance,
 	type FaTableProps,
+	type FaTableSlots,
 	FaTree,
 	type FaTreeEmits,
 	type FaTreeInstance,
@@ -74,6 +77,16 @@ export type InitParamChecks = [
 	AssertTrue<IsEqual<NonNullable<FaTableProps["initParam"]>, InitParam>>,
 	AssertTrue<IsEqual<NonNullable<FaTreeProps["initParam"]>, InitParam>>,
 	AssertTrue<IsEqual<NonNullable<FaTreeSelectProps["initParam"]>, InitParam>>,
+];
+
+/** 内置工具列由表格 Props 和展开插槽控制，不再作为业务列类型。 */
+export type TableUtilityColumnChecks = [
+	AssertTrue<IsEqual<NonNullable<FaTableProps["selectionColumn"]>, boolean>>,
+	AssertTrue<IsEqual<NonNullable<FaTableProps["indexColumn"]>, boolean>>,
+	AssertTrue<IsEqual<FaTableSlots["expand"]["row"], DefaultRow>>,
+	AssertTrue<IsEqual<FaTableSlots["expand"]["$index"], number>>,
+	AssertTrue<FaTableSlots["expand"] extends FaTableDefaultSlotsResult ? true : false>,
+	AssertTrue<IsEqual<Extract<FaTableColumnType, "selection" | "index" | "expand">, never>>,
 ];
 
 /** 已标准化的公共命名应直接生效，不保留旧拼写别名。 */

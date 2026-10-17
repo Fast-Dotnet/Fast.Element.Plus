@@ -133,9 +133,6 @@ export type FaTableSearchColumnCtx = Partial<Record<FaLayoutGridBreakpoint, FaLa
 /**
  * FaTable 内置业务列类型
  * @property default     默认
- * @property selection	 选择列
- * @property expand      可展开按钮列
- * @property expand      可展开按钮列
  * @property image       图片列
  * @property date        日期显示（格式 "YYYY-MM-DD"）
  * @property time        时间显示（格式 "HH:mm:ss"）
@@ -148,8 +145,7 @@ export type FaTableSearchColumnCtx = Partial<Record<FaLayoutGridBreakpoint, FaLa
  * @property gd6         数值列，保留 6 位小数，带千分位
  * @property timeInfo  时间信息列
  */
-export type FaTableColumnType =
-	"default" | "selection" | "index" | "expand" | "image" | "date" | "time" | "dateTime" | "d2" | "d4" | "d6" | "gd2" | "gd4" | "gd6" | "timeInfo";
+export type FaTableColumnType = "default" | "image" | "date" | "time" | "dateTime" | "d2" | "d4" | "d6" | "gd2" | "gd4" | "gd6" | "timeInfo";
 
 /** FaTable 日期、时间列支持的格式化模板。 */
 export type FaTableColumnDateFormat =

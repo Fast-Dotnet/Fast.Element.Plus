@@ -19,7 +19,7 @@ const collectFiles = async (directory) => {
 
 test("package metadata exposes the ESM, global types, style, and CDN entries", () => {
 	assert.equal(packageJson.type, "module");
-	assert.equal(packageJson.version, "2.0.22");
+	assert.equal(packageJson.version, "2.0.23");
 	assert.equal(packageJson.main, "./dist/index.mjs");
 	assert.equal(packageJson.module, "./dist/index.mjs");
 	assert.equal(packageJson.types, "./dist/index.d.ts");
@@ -43,11 +43,11 @@ test("package metadata exposes the ESM, global types, style, and CDN entries", (
 	assert.deepEqual(packageJson.peerDependencies, {
 		"@element-plus/icons-vue": "^2.3.2",
 		"@fast-element-plus/icons-vue": "^2.0.0",
-		"element-plus": "^2.14.5",
+		"element-plus": "^2.14.7",
 		vue: "^3.5.11",
 	});
 	assert.equal(packageJson.devDependencies?.["@element-plus/icons-vue"], "^2.3.2");
-	assert.equal(packageJson.devDependencies?.["@fast-element-plus/icons-vue"], "^2.0.1");
+	assert.equal(packageJson.devDependencies?.["@fast-element-plus/icons-vue"], "^2.0.3");
 	assert.equal(packageJson.dependencies?.["@fast-china/utils"], undefined);
 	assert.equal(packageJson.devDependencies?.["@fast-china/utils"], undefined);
 	for (const dependencyName of ["csstype", "lodash", "lodash-es", "lodash-unified", "@types/lodash", "@types/lodash-es"]) {

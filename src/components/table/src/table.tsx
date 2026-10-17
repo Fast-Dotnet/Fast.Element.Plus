@@ -154,6 +154,13 @@ export const faTableProps = {
 		type: definePropType<FaTableDataRange>(String),
 		default: "Past3D",
 	},
+	/** 选择列 */
+	selectionColumn: Boolean,
+	/** 序号列 */
+	indexColumn: {
+		type: Boolean,
+		default: true,
+	},
 	/** 分页 */
 	pagination: {
 		type: Boolean,
@@ -309,6 +316,12 @@ export type FaTableSlots = Record<string, unknown> & {
 	toolButton: FaTableDefaultSlotsResult;
 	/** 表格头部右侧高级操作按钮插槽，ElDropdownMenuItem 标签 */
 	toolButtonAdv: FaTableDefaultSlotsResult;
+	/** 表格展开列插槽 */
+	expand: FaTableDefaultSlotsResult & {
+		row: DefaultRow;
+		column: TableColumnCtx<DefaultRow>;
+		$index: number;
+	};
 	/** 表格操作列插槽 */
 	operation: FaTableDefaultSlotsResult & {
 		row: DefaultRow;
@@ -914,77 +927,85 @@ export default defineComponent({
 							),
 							default: () => (
 								<Fragment>
-									<ElTableColumn
-										className="fa-table__index-column"
-										type="index"
-										fixed="left"
-										width={
-											state.tablePagination.pageIndex * state.tablePagination.pageSize >= 100
-												? state.tablePagination.pageIndex * state.tablePagination.pageSize >= 1000
-													? 50
-													: 40
-												: 30
-										}
-										align="center"
-										index={indexMethod}
-										showOverflowTooltip={false}
-										resizable={false}
-										columnKey="__table-index"
-									/>
-									<ElTableColumn
-										className="fa-table__selection-column"
-										type="selection"
-										fixed="left"
-										width={35}
-										align="center"
-										reserveSelection
-										showOverflowTooltip={false}
-										resizable={false}
-										columnKey="__table-selection"
-										selectable={props.rowSelectable}
-									/>
+									{slots.expand && (
+										<ElTableColumn
+											className="fa-table__expand-column"
+											type="expand"
+											fixed="left"
+											width={35}
+											align="center"
+											showOverflowTooltip={false}
+											resizable={false}
+											columnKey="__table-expand"
+										>
+											{{
+												default: ({
+													row,
+													column,
+													$index,
+												}: {
+													row: DefaultRow;
+													column: TableColumnCtx<DefaultRow>;
+													$index: number;
+												}) =>
+													slots.expand?.({
+														row,
+														column,
+														$index,
+														search: tableSearch,
+														...getTableDefaultSlots(state),
+													}),
+											}}
+										</ElTableColumn>
+									)}
+									{props.selectionColumn && (
+										<ElTableColumn
+											className="fa-table__selection-column"
+											type="selection"
+											fixed="left"
+											width={35}
+											align="center"
+											reserveSelection
+											showOverflowTooltip={false}
+											resizable={false}
+											columnKey="__table-selection"
+											selectable={props.rowSelectable}
+										/>
+									)}
+									{props.indexColumn && (
+										<ElTableColumn
+											className="fa-table__index-column"
+											type="index"
+											fixed="left"
+											width={
+												state.tablePagination.pageIndex * state.tablePagination.pageSize >= 100
+													? state.tablePagination.pageIndex * state.tablePagination.pageSize >= 1000
+														? 50
+														: 40
+													: 30
+											}
+											align="center"
+											index={indexMethod}
+											showOverflowTooltip={false}
+											resizable={false}
+											columnKey="__table-index"
+										/>
+									)}
 									{state.tableColumns.length === 0
 										? slots.default?.()
 										: state.tableColumns.map(
 												(col) =>
 													col.show &&
-													(col.type === "expand" ? (
-														<ElTableColumn {...col} width={35} fixed={col.fixed ?? "left"} resizable={false}>
-															{{
-																default: ({
-																	row,
-																	column,
-																	$index,
-																}: {
-																	row: DefaultRow;
-																	column: FaTableColumnCtx;
-																	$index: number;
-																}) => (
-																	<Fragment>
-																		{col.render?.({ row, column, $index, ...getTableDefaultSlots(state) })}
-																		{col.slot &&
-																			slots[col.slot]?.({
-																				row,
-																				column,
-																				$index,
-																				...getTableDefaultSlots(state),
-																			})}
-																	</Fragment>
-																),
-															}}
-														</ElTableColumn>
-													) : (
-														col.prop && (
-															<FaTableColumn
-																vSlots={pick(slots, tableColumnSlotNames.value)}
-																{...omit(col, tableColumnOmitNames)}
-																hideImage={props.hideImage}
-																resizable={true}
-																onImagePreview={handleImagePreview}
-																onCustomCellClick={handleCustomCellClick}
-															/>
-														)
-													))
+													col.prop && (
+														<FaTableColumn
+															vSlots={pick(slots, tableColumnSlotNames.value)}
+															{...omit(col, tableColumnOmitNames)}
+															hideImage={props.hideImage}
+															resizable={true}
+															onImagePreview={handleImagePreview}
+															onCustomCellClick={handleCustomCellClick}
+														/>
+													)
 											)}
 									{slots.operation && (
 										<ElTableColumn

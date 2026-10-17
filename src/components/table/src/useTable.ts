@@ -78,8 +78,9 @@ export const useTable = (
 			...state.orgColumns.flatMap((column) => (column.spanProp ? [{ prop: column.prop ?? "", spanProp: column.spanProp }] : [])),
 			...(props.props.span
 				? [
-						{ prop: "__table-index", spanProp: props.props.span },
+						{ prop: "__table-expand", spanProp: props.props.span },
 						{ prop: "__table-selection", spanProp: props.props.span },
+						{ prop: "__table-index", spanProp: props.props.span },
 						{ prop: "__table-operation", spanProp: props.props.span },
 					]
 				: []),

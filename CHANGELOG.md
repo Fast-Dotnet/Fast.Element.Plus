@@ -4,6 +4,19 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases should follow [Semantic Versioning](https://semver.org/).
 
+## [2.0.23] - 2026-10-17
+
+### Added
+
+- Add a dedicated `FaTable` `expand` slot with row, column, row index and table context; supplying the slot creates a fixed-left expansion column.
+- Add `selectionColumn` (default `false`) and `indexColumn` (default `true`) to control the built-in selection and index columns independently.
+
+### Changed
+
+- Render enabled utility columns in expansion, selection and index order before business columns; include expansion columns in grouped-row merging and shared column styles.
+- Remove `selection`, `index` and `expand` from `FaTableColumnType`. Move expansion content to `FaTable`'s `expand` slot and use the table props for selection and index columns. Existing tables must explicitly enable `selection-column` to retain checkboxes.
+- Require Element Plus `^2.14.7` and update the development Fast icon dependency to `^2.0.3`.
+
 ## [2.0.22] - 2026-10-07
 
 ### Fixed
@@ -246,6 +259,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Scoped Table styles and added responsive IconSelector styling.
 - Improved dialogs, drawers, tables, forms, trees, selectors, car-number input, images, and uploads for dark mode, touch input, and narrow viewports.
 
+[2.0.23]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.22...v2.0.23
 [2.0.22]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.21...v2.0.22
 [2.0.21]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.20...v2.0.21
 [2.0.20]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.19...v2.0.20
