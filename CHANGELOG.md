@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases should follow [Semantic Versioning](https://semver.org/).
 
+## [2.0.24] - 2026-10-18
+
+### Fixed
+
+- Size `FaTable` expansion content to its main container with `100cqw` and border-box sizing, independently of the total column width.
+- Apply 16px padding to expansion content, reduced to 12px for the `small` component size.
+
 ## [2.0.23] - 2026-10-17
 
 ### Added
@@ -259,6 +266,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Scoped Table styles and added responsive IconSelector styling.
 - Improved dialogs, drawers, tables, forms, trees, selectors, car-number input, images, and uploads for dark mode, touch input, and narrow viewports.
 
+[2.0.24]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.23...v2.0.24
 [2.0.23]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.22...v2.0.23
 [2.0.22]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.21...v2.0.22
 [2.0.21]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.20...v2.0.21

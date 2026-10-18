@@ -761,7 +761,12 @@ export default defineComponent({
 				{slots.topHeader && (
 					<div class="el-card fa-table__header">{slots.topHeader({ search: tableSearch, ...getTableDefaultSlots(state) })}</div>
 				)}
-				<div class="el-card fa-table__main">
+				<div
+					class="el-card fa-table__main"
+					style={{
+						containerType: slots.expand ? "inline-size" : undefined,
+					}}
+				>
 					{props.headerCard && (
 						<div class="fa-table__main-header">
 							<div class="fa-table__main-header-left">{slots.header?.({ search: tableSearch, ...getTableDefaultSlots(state) })}</div>
@@ -947,14 +952,24 @@ export default defineComponent({
 													row: DefaultRow;
 													column: TableColumnCtx<DefaultRow>;
 													$index: number;
-												}) =>
-													slots.expand?.({
-														row,
-														column,
-														$index,
-														search: tableSearch,
-														...getTableDefaultSlots(state),
-													}),
+												}) => (
+													<div
+														class="fa-table__expand-wrapper"
+														style={{
+															boxSizing: "border-box",
+															width: "100cqw",
+															padding: globalSize.value === "small" ? "12px" : "16px",
+														}}
+													>
+														{slots.expand?.({
+															row,
+															column,
+															$index,
+															search: tableSearch,
+															...getTableDefaultSlots(state),
+														})}
+													</div>
+												),
 											}}
 										</ElTableColumn>
 									)}
