@@ -12,11 +12,11 @@
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
-	height: 100%;
 	min-width: 0;
+	height: 100%;
 	padding: 10px 10px 0;
-	background-color: var(--el-bg-color-overlay);
 	color: var(--el-text-color-regular);
+	background-color: var(--el-bg-color-overlay);
 
 	// 折叠样式
 	&.fa-tree__fold {
@@ -40,8 +40,8 @@
 		margin: 0;
 		font-size: var(--fa-tree-title-font-size);
 		font-weight: bold;
-		color: var(--el-text-color-primary);
 		letter-spacing: 0.5px;
+		color: var(--el-text-color-primary);
 	}
 
 	> .el-icon {
@@ -64,33 +64,31 @@
 	font-size: var(--fa-tree-font-size);
 
 	.el-tree-node__content {
-		border-radius: var(--el-border-radius-base);
 		height: var(--fa-tree-node-height);
 		padding: 0 3px;
+		border-radius: var(--el-border-radius-base);
 	}
 
 	.el-tree-node__expand-icon {
 		padding: 3px;
 	}
 
-	.el-tree-node {
-		&.is-current > .el-tree-node__content {
-			background-color: var(--el-color-primary);
-			color: var(--el-color-white);
+	.el-tree-node.is-current > .el-tree-node__content {
+		color: var(--el-color-white);
+		background-color: var(--el-color-primary);
 
-			> .is-leaf {
-				color: transparent;
-			}
+		> .is-leaf {
+			color: transparent;
 		}
 	}
 }
 
 .fa-tree__node-label {
-	width: 100%;
 	display: flex;
 	flex-flow: row;
 	justify-content: space-between;
 	overflow: hidden;
+	width: 100%;
 
 	span {
 		overflow: hidden;
@@ -104,8 +102,8 @@
 
 	> div {
 		display: flex;
-		align-items: center;
 		flex: 1;
+		align-items: center;
 		overflow: hidden;
 
 		.el-avatar {

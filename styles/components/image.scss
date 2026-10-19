@@ -1,11 +1,11 @@
 .fa-image {
+	overflow: hidden;
 	border-radius: var(--el-border-radius-base);
 	background-color: var(--el-fill-color-lighter);
-	overflow: hidden;
 
 	> .el-image__inner {
-		transition: transform var(--el-transition-duration);
 		cursor: pointer;
+		transition: transform var(--el-transition-duration);
 
 		&:hover {
 			transform: scale(1.2);
@@ -19,17 +19,15 @@
 	align-items: center;
 	width: 100%;
 	height: 100%;
-	background: var(--el-fill-color-light);
-	color: var(--el-text-color-secondary);
 	font-size: 30px;
+	color: var(--el-text-color-secondary);
+	background: var(--el-fill-color-light);
 }
 
 @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
 	.fa-image {
-		> .el-image__inner {
-			&:hover {
-				transform: none;
-			}
+		> .el-image__inner:hover {
+			transform: none;
 		}
 	}
 }

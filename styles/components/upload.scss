@@ -1,9 +1,9 @@
 .fa-upload {
+	position: relative;
 	box-sizing: border-box;
 	display: inline-block;
 	min-width: 0;
 	max-width: 100%;
-	position: relative;
 	color: var(--el-text-color-regular);
 
 	.el-upload {
@@ -25,12 +25,12 @@
 	}
 
 	.el-upload-dragger {
-		max-width: 100%;
 		box-sizing: border-box;
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		flex-direction: column;
+		max-width: 100%;
 		padding: 20px;
 		border-radius: calc(var(--el-border-radius-base) * 1.5);
 		background-color: var(--el-fill-color-lighter);
@@ -46,20 +46,20 @@
 
 	.el-icon--upload {
 		margin-bottom: 8px;
-		color: var(--el-color-primary);
 		font-size: 44px;
+		color: var(--el-color-primary);
 	}
 
 	.el-upload__text {
 		max-width: 100%;
-		color: var(--el-text-color-regular);
 		text-align: center;
+		color: var(--el-text-color-regular);
 	}
 
 	.el-upload__tip {
-		color: var(--el-text-color-secondary);
 		line-height: 1.5;
 		text-align: center;
+		color: var(--el-text-color-secondary);
 	}
 
 	.el-upload-list__item {

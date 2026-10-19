@@ -1,11 +1,11 @@
 @use "../common/breakpoints.scss" as bp;
 
 .fa-upload-images {
+	position: relative;
 	box-sizing: border-box;
 	display: inline-block;
 	min-width: 0;
 	max-width: 100%;
-	position: relative;
 	color: var(--el-text-color-regular);
 
 	.el-upload-list--picture-card {
@@ -18,27 +18,25 @@
 		background-color: var(--el-fill-color-lighter);
 	}
 
-	.el-upload--picture-card {
-		&.is-drag {
-			display: inline-flex;
-		}
+	.el-upload--picture-card.is-drag {
+		display: inline-flex;
 	}
 
 	.el-upload-dragger {
 		box-sizing: border-box;
-		width: 100%;
-		height: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		width: 100%;
+		height: 100%;
 		padding: 0;
 		border: 0;
 		border-radius: inherit;
 		background-color: transparent;
 
 		> .el-icon {
-			color: var(--el-text-color-secondary);
 			font-size: 28px;
+			color: var(--el-text-color-secondary);
 		}
 	}
 

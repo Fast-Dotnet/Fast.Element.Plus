@@ -28,9 +28,9 @@
 		box-shadow var(--el-transition-duration) ease;
 
 	&:hover {
-		transform: translateY(-4px) scale(1.02);
-		box-shadow: var(--el-box-shadow);
 		border-radius: var(--el-border-radius-base);
+		box-shadow: var(--el-box-shadow);
+		transform: translateY(-4px) scale(1.02);
 	}
 }
 
@@ -50,10 +50,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.fa__hover__twinkle {
-		&:hover > :first-child {
-			animation: none;
-		}
+	.fa__hover__twinkle:hover > :first-child {
+		animation: none;
 	}
 
 	.fa__hover__suspension {

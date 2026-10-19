@@ -11,12 +11,12 @@
 	--fa-table-keyword-font-size: var(--el-font-size-base);
 
 	box-sizing: border-box;
-	width: 100%;
-	height: 100%;
-	min-width: 0;
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
+	width: 100%;
+	min-width: 0;
+	height: 100%;
 	color: var(--el-text-color-regular);
 	transition:
 		width var(--el-transition-duration),
@@ -33,12 +33,12 @@
 
 .fa-table__search {
 	box-sizing: border-box;
-	flex-shrink: 0;
-	max-height: 100%;
 	display: flex;
+	flex-shrink: 0;
 	align-items: center;
-	padding: 10px 12px;
+	max-height: 100%;
 	margin-bottom: 10px;
+	padding: 10px 12px;
 	transition:
 		height var(--el-transition-duration) ease-in-out,
 		max-height var(--el-transition-duration) ease-in-out,
@@ -49,11 +49,11 @@
 	&.fa-table__search-hidden {
 		height: 0;
 		max-height: 0;
-		opacity: 0;
-		padding: 0;
 		margin: 0;
+		padding: 0;
 		border-width: 0;
 		border-color: transparent;
+		opacity: 0;
 	}
 
 	> .el-form {
@@ -62,8 +62,8 @@
 	}
 
 	.el-form-item {
-		margin-bottom: 0;
 		min-width: 0;
+		margin-bottom: 0;
 	}
 
 	.el-form-item__label {
@@ -94,26 +94,26 @@
 
 .fa-table__header {
 	box-sizing: border-box;
-	flex-shrink: 0;
 	display: flex;
+	flex-shrink: 0;
 	align-items: center;
-	padding: 10px 12px;
 	margin-bottom: 10px;
+	padding: 10px 12px;
 }
 
 .fa-table__main {
+	display: flex;
 	flex: 1;
+	flex-direction: column;
+	overflow: hidden;
 	min-width: 0;
 	min-height: 0;
-	display: flex;
-	flex-direction: column;
 	padding: 10px 12px;
-	overflow: hidden;
 }
 
 .fa-table__main-header {
-	flex-shrink: 0;
 	display: flex;
+	flex-shrink: 0;
 	align-items: center;
 	justify-content: space-between;
 	gap: 12px;
@@ -123,9 +123,9 @@
 .fa-table__main-header-left,
 .fa-table__main-header-right {
 	display: inline-flex;
+	flex-wrap: wrap;
 	align-items: center;
 	min-width: 0;
-	flex-wrap: wrap;
 }
 
 .fa-table__main-header-left {
@@ -158,25 +158,25 @@
 }
 
 .fa-table__main-header-right__div-search {
+	position: relative;
 	width: min-content;
 	min-width: var(--fa-table-keyword-min-width);
 	// +22为搜索图标的宽度 +22padding宽度
 	max-width: var(--fa-table-keyword-max-width);
-	position: relative;
 }
 
 .fa-table__main-header-right__div-search__hidden {
-	height: 0;
 	overflow: hidden;
-	white-space: nowrap;
+	height: 0;
 	// 与原 el-input 的搜索图标和内边距保持一致，用于测量输入内容宽度。
 	padding: var(--fa-table-keyword-measure-padding);
 	font-size: var(--fa-table-keyword-font-size);
+	white-space: nowrap;
 }
 
 .fa-table__main-footer {
-	flex-shrink: 0;
 	display: flex;
+	flex-shrink: 0;
 	align-items: center;
 	justify-content: space-between;
 	gap: 12px;
@@ -332,22 +332,22 @@
 }
 
 :where(.fa-table__cell.fa-table__operation-column) .el-dropdown-link {
-	cursor: pointer;
-	color: var(--el-color-primary);
 	display: flex;
 	align-items: baseline;
+	color: var(--el-color-primary);
+	cursor: pointer;
 }
 
 .fa-table__data-delete-column {
 	&::after {
-		content: "数据已删除";
 		position: absolute;
 		inset: 0;
-		background-color: var(--el-overlay-color);
-		color: var(--el-color-danger);
 		display: flex;
+		content: "数据已删除";
 		justify-content: center;
 		align-items: center;
+		color: var(--el-color-danger);
+		background-color: var(--el-overlay-color);
 		cursor: not-allowed;
 	}
 }
@@ -359,14 +359,14 @@
 		}
 
 		&::before {
-			background-color: var(--el-checkbox-checked-icon-color);
-			content: "";
-			display: block;
-			height: 2px;
-			left: 0;
 			position: absolute;
+			left: 0;
 			right: 0;
 			top: 5px;
+			display: block;
+			content: "";
+			height: 2px;
+			background-color: var(--el-checkbox-checked-icon-color);
 			transform: scale(0.5);
 		}
 	}
@@ -398,8 +398,8 @@
 		padding: 5px 10px;
 
 		.fa-table__search-operation {
-			margin-top: 4px;
 			gap: 5px;
+			margin-top: 4px;
 		}
 	}
 
@@ -445,8 +445,8 @@
 	}
 
 	.el-date-range-picker__header > div {
-		font-size: var(--fa-table-date-picker-header-font-size);
 		margin: 0;
+		font-size: var(--fa-table-date-picker-header-font-size);
 	}
 
 	.el-date-table th {
@@ -484,8 +484,8 @@
 
 @include bp.tablet {
 	.fa-table__main-header {
-		align-items: flex-start;
 		flex-wrap: wrap;
+		align-items: flex-start;
 	}
 
 	.fa-table__main-header-right {
@@ -494,8 +494,8 @@
 	}
 
 	.fa-table__main-footer {
-		align-items: flex-start;
 		flex-wrap: wrap;
+		align-items: flex-start;
 	}
 }
 
@@ -512,8 +512,8 @@
 	.fa-table__search,
 	.fa-table-small > .fa-table__search {
 		align-items: stretch;
-		padding: 10px 8px;
 		margin-bottom: 8px;
+		padding: 10px 8px;
 	}
 
 	.fa-table__search {
@@ -541,9 +541,9 @@
 	}
 
 	.fa-table__header {
-		padding: 8px;
-		margin-bottom: 8px;
 		overflow-x: auto;
+		margin-bottom: 8px;
+		padding: 8px;
 	}
 
 	.fa-table-small > .fa-table__header {
@@ -555,8 +555,8 @@
 	}
 
 	.fa-table__main-header {
-		align-items: stretch;
 		flex-direction: column;
+		align-items: stretch;
 		gap: 8px;
 		margin-bottom: 8px;
 	}
@@ -583,16 +583,16 @@
 	}
 
 	.fa-table__main-footer {
-		align-items: stretch;
 		flex-direction: column;
+		align-items: stretch;
 		gap: 8px;
 		margin-top: 8px;
 
 		.fa-table-pagination {
 			box-sizing: border-box;
-			width: 100%;
 			justify-content: flex-start;
 			overflow-x: auto;
+			width: 100%;
 			padding-bottom: 2px;
 		}
 
@@ -603,9 +603,9 @@
 	}
 
 	.fa-table__main-header-right__data-search__popper {
+		overflow-y: auto;
 		max-width: calc(100vw - 24px);
 		max-height: calc(100dvh - 24px);
-		overflow-y: auto;
 
 		.el-date-range-picker {
 			width: calc(100vw - 24px);

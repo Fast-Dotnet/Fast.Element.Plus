@@ -11,54 +11,54 @@
 	--el-fill-color-blank: var(--el-bg-color-overlay);
 
 	box-sizing: border-box;
-	padding: 0 8px;
-	margin-bottom: 0;
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
 	width: min(var(--el-dialog-width, 90%), calc(100vw - 32px));
 	max-height: var(--height);
+	margin-bottom: 0;
+	padding: 0 8px;
+	font-size: var(--el-font-size-base);
+	color: var(--el-text-color-regular);
 	border: 1px solid var(--el-border-color-lighter);
 	border-radius: calc(var(--el-border-radius-base) * 2);
 	background-color: var(--el-bg-color-overlay);
 	box-shadow: var(--el-box-shadow);
-	color: var(--el-text-color-regular);
-	font-size: var(--el-font-size-base);
-	overflow: hidden;
 	transition:
 		width var(--el-transition-duration),
 		height var(--el-transition-duration);
 
 	> .el-dialog__header {
-		flex-shrink: 0;
-		height: var(--fa-dialog-header-height);
-		border-bottom: 1px solid var(--el-border-color-lighter);
-		padding: 0;
 		display: flex;
+		flex-shrink: 0;
 		align-items: center;
+		height: var(--fa-dialog-header-height);
+		padding: 0;
+		border-bottom: 1px solid var(--el-border-color-lighter);
 	}
 
 	> .el-dialog__body {
-		overflow: hidden;
-		padding: 8px;
-		flex: 1;
-		min-height: 0;
 		display: flex;
+		flex: 1;
 		flex-direction: row;
+		overflow: hidden;
+		min-height: 0;
+		padding: 8px;
 
 		> .el-scrollbar {
-			height: inherit;
 			flex: 1;
+			height: inherit;
 		}
 	}
 
 	> .el-dialog__footer {
-		flex-shrink: 0;
-		height: var(--fa-dialog-footer-height);
-		padding: 0;
 		display: flex;
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: flex-end;
 		gap: 8px;
+		height: var(--fa-dialog-footer-height);
+		padding: 0;
 		border-top: 1px solid var(--el-border-color-lighter);
 
 		> .el-button + .el-button {
@@ -73,9 +73,9 @@
 		// Element Plus 可能通过行内变量指定宽度，全屏时必须覆盖。
 		--el-dialog-width: 100% !important;
 
+		max-width: 100%;
 		height: var(--height);
 		max-height: var(--height);
-		max-width: 100%;
 		border: 0;
 		border-radius: 0;
 	}
@@ -83,21 +83,21 @@
 
 .fa-dialog__header-title {
 	flex: 1;
+	overflow: hidden;
 	min-width: 0;
 	padding-inline: 4px;
-	overflow: hidden;
-	color: var(--el-text-color-primary);
 	font-weight: var(--el-font-weight-primary);
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	color: var(--el-text-color-primary);
 }
 
 .fa-dialog__header-icon {
-	width: var(--fa-dialog-header-icon-width);
-	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	width: var(--fa-dialog-header-icon-width);
+	height: 100%;
 	border-radius: var(--el-border-radius-base);
 	cursor: pointer;
 	transition: background-color var(--el-transition-duration-fast);
@@ -136,39 +136,35 @@
 }
 
 @include bp.tablet {
-	.fa-dialog {
-		&:not(.fa-dialog__fullscreen) {
-			width: min(var(--el-dialog-width, 90%), calc(100vw - 48px));
-			max-height: calc(100dvh - 48px);
-		}
+	.fa-dialog:not(.fa-dialog__fullscreen) {
+		width: min(var(--el-dialog-width, 90%), calc(100vw - 48px));
+		max-height: calc(100dvh - 48px);
 	}
 }
 
 @include bp.mobile {
-	.fa-dialog {
-		&:not(.fa-dialog__fullscreen) {
-			--height: calc(100dvh - 24px);
-			--fa-dialog-header-height: 44px;
-			--fa-dialog-footer-height: auto;
-			--fa-dialog-header-icon-width: 44px;
+	.fa-dialog:not(.fa-dialog__fullscreen) {
+		--height: calc(100dvh - 24px);
+		--fa-dialog-header-height: 44px;
+		--fa-dialog-footer-height: auto;
+		--fa-dialog-header-icon-width: 44px;
 
-			max-height: var(--height);
-			// 覆盖 Element Plus 根据 top 属性生成的行内上边距。
-			margin-top: max(12px, env(safe-area-inset-top)) !important;
-			padding: 0 6px;
+		max-height: var(--height);
+		// 覆盖 Element Plus 根据 top 属性生成的行内上边距。
+		margin-top: max(12px, env(safe-area-inset-top)) !important;
+		padding: 0 6px;
 
-			> .el-dialog__body {
-				padding: 8px 4px;
-			}
+		> .el-dialog__body {
+			padding: 8px 4px;
+		}
 
-			> .el-dialog__footer {
-				min-height: 52px;
-				padding: 8px 4px max(8px, env(safe-area-inset-bottom));
+		> .el-dialog__footer {
+			min-height: 52px;
+			padding: 8px 4px max(8px, env(safe-area-inset-bottom));
 
-				> .el-button {
-					flex: 1 1 0;
-					min-width: 0;
-				}
+			> .el-button {
+				flex: 1 1 0;
+				min-width: 0;
 			}
 		}
 	}

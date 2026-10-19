@@ -28,9 +28,9 @@
 
 .fa-form-detail {
 	.el-form-item__label {
-		color: var(--el-color-info);
 		height: var(--fa-form-detail-label-height, 18px);
 		line-height: var(--fa-form-detail-label-height, 18px);
+		color: var(--el-color-info);
 	}
 
 	.el-form-item__content {

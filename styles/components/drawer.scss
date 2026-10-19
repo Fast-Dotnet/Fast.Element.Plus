@@ -11,29 +11,29 @@
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
+	font-size: var(--el-font-size-base);
+	color: var(--el-text-color-regular);
 	background-color: var(--el-bg-color-overlay);
 	box-shadow: var(--el-box-shadow);
-	color: var(--el-text-color-regular);
-	font-size: var(--el-font-size-base);
 	transition:
 		transform var(--el-transition-duration),
 		width var(--el-transition-duration),
 		height var(--el-transition-duration);
 
 	> .el-drawer__header {
-		flex-shrink: 0;
-		height: var(--fa-drawer-header-height);
-		border-bottom: 1px solid var(--el-border-color-lighter);
-		padding: 0 0 0 10px;
-		margin: 0;
 		display: flex;
+		flex-shrink: 0;
 		align-items: center;
+		height: var(--fa-drawer-header-height);
+		margin: 0;
+		padding: 0 0 0 10px;
+		border-bottom: 1px solid var(--el-border-color-lighter);
 	}
 
 	> .el-drawer__body {
 		position: relative;
-		min-height: 0;
 		overflow: hidden;
+		min-height: 0;
 		padding: 8px;
 
 		> .el-scrollbar {
@@ -42,13 +42,13 @@
 	}
 
 	> .el-drawer__footer {
-		flex-shrink: 0;
-		height: var(--fa-drawer-footer-height);
-		padding: 0;
 		display: flex;
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: flex-end;
 		gap: 8px;
+		height: var(--fa-drawer-footer-height);
+		padding: 0;
 		border-top: 1px solid var(--el-border-color-lighter);
 
 		> .el-button + .el-button {
@@ -63,9 +63,9 @@
 
 	&.ttb > .el-drawer__body > .fa-drawer__draggable,
 	&.btt > .el-drawer__body > .fa-drawer__draggable {
+		left: 0;
 		width: 100%;
 		height: 8px;
-		left: 0;
 		cursor: n-resize;
 
 		&::after {
@@ -99,21 +99,21 @@
 
 .fa-drawer__header-title {
 	flex: 1;
-	min-width: 0;
 	overflow: hidden;
-	color: var(--el-text-color-primary);
+	min-width: 0;
 	font-size: inherit;
 	font-weight: var(--el-font-weight-primary);
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	color: var(--el-text-color-primary);
 }
 
 .fa-drawer__header-icon {
-	width: var(--fa-drawer-header-icon-width);
-	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	width: var(--fa-drawer-header-icon-width);
+	height: 100%;
 	border-radius: var(--el-border-radius-base);
 	cursor: pointer;
 	transition: background-color var(--el-transition-duration-fast);
@@ -135,21 +135,21 @@
 }
 
 .fa-drawer__draggable {
-	// 命中区域完全位于 body 内，避免被 overflow: hidden 裁掉。
-	height: 100%;
-	width: 8px;
-	cursor: w-resize;
 	position: absolute;
 	left: 0;
 	top: 0;
-	touch-action: none;
 	z-index: 2;
+	width: 8px;
+	// 命中区域完全位于 body 内，避免被 overflow: hidden 裁掉。
+	height: 100%;
+	cursor: w-resize;
+	touch-action: none;
 
 	&::after {
-		content: "";
 		position: absolute;
 		top: 50%;
 		left: 50%;
+		content: "";
 		width: 2px;
 		height: 48px;
 		border-radius: var(--el-border-radius-round);

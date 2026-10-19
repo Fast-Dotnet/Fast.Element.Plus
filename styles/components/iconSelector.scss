@@ -15,13 +15,13 @@
 }
 
 .el-popper.fa-icon-selector-popover {
+	overflow: hidden;
 	// ElPopover 的 width="auto" 会生成行内宽度，需由弹层响应式样式覆盖。
 	width: min(560px, calc(100vw - 32px)) !important;
 	max-width: calc(100vw - 32px);
 	padding: 0;
 	background-color: var(--el-bg-color-overlay);
 	box-shadow: var(--el-box-shadow);
-	overflow: hidden;
 }
 
 .fa-icon-selector-popover__box-header {
@@ -46,16 +46,16 @@
 
 	button {
 		padding: 5px 8px;
+		color: var(--el-text-color-regular);
 		border: 0;
 		border-radius: var(--el-border-radius-small);
 		background: transparent;
-		color: var(--el-text-color-regular);
 		cursor: pointer;
 
 		&:hover,
 		&.is-active {
-			background-color: var(--el-color-primary-light-9);
 			color: var(--el-color-primary);
+			background-color: var(--el-color-primary-light-9);
 		}
 
 		&:focus-visible {
@@ -88,10 +88,10 @@
 	min-width: 38px;
 	height: 38px;
 	padding: 0;
+	color: var(--el-text-color-regular);
 	border: 1px solid var(--el-border-color-lighter);
 	border-radius: var(--el-border-radius-base);
 	background-color: var(--el-bg-color);
-	color: var(--el-text-color-regular);
 	cursor: pointer;
 	transition:
 		border-color var(--el-transition-duration-fast),
@@ -99,9 +99,9 @@
 		background-color var(--el-transition-duration-fast);
 
 	&:hover {
+		color: var(--el-color-primary);
 		border-color: var(--el-color-primary-light-5);
 		background-color: var(--el-color-primary-light-9);
-		color: var(--el-color-primary);
 	}
 
 	&:focus-visible {
@@ -134,8 +134,8 @@
 	}
 
 	.fa-icon-selector-popover__box-header {
-		align-items: stretch;
 		flex-direction: column;
+		align-items: stretch;
 		gap: 6px;
 		padding: 10px;
 	}

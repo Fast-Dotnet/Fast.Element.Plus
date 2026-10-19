@@ -13,10 +13,10 @@
 		}
 
 		> :nth-child(2) {
-			line-height: normal;
 			margin-left: auto;
-			color: var(--el-text-color-secondary);
+			line-height: normal;
 			font-size: var(--el-font-size-extra-small);
+			color: var(--el-text-color-secondary);
 		}
 	}
 }

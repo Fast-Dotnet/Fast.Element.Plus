@@ -1,11 +1,11 @@
 @use "../common/breakpoints.scss" as bp;
 
 .el-popper.fa-car-number__popover {
-	// ElPopover 的行内 width="auto" 由响应式宽度覆盖。
-	margin-top: -12px;
 	box-sizing: border-box;
+	// ElPopover 的行内 width="auto" 由响应式宽度覆盖。
 	width: min(calc(360px + var(--el-popover-padding) * 2 + 2px), calc(100vw - 32px)) !important;
 	max-width: calc(100vw - 32px);
+	margin-top: -12px;
 	background-color: var(--el-bg-color-overlay);
 	box-shadow: var(--el-box-shadow);
 }

@@ -5,12 +5,12 @@
 	--fa-context-menu-font-size: var(--el-font-size-small);
 
 	position: fixed;
+	overflow: hidden;
 	padding: 0;
 	border: 1px solid var(--el-border-color-lighter);
 	border-radius: var(--el-border-radius-base);
 	background-color: var(--el-bg-color-overlay);
 	box-shadow: var(--el-box-shadow);
-	overflow: hidden;
 
 	> .el-dropdown-menu {
 		background-color: transparent;
@@ -25,8 +25,8 @@
 		}
 
 		&:not(.is-disabled):hover {
-			background-color: var(--el-dropdown-menuItem-hover-fill);
 			color: var(--el-dropdown-menuItem-hover-color);
+			background-color: var(--el-dropdown-menuItem-hover-fill);
 
 			> .fa-icon {
 				color: var(--el-dropdown-menuItem-hover-color);
