@@ -4,6 +4,18 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases should follow [Semantic Versioning](https://semver.org/).
 
+## [2.0.26] - 2026-10-20
+
+### Changed
+
+- Default `ElInputNumber` text alignment to `left` when the package root is imported, while preserving explicit per-instance `align` values and the existing `controls: false` default.
+- Reorder SCSS declarations and simplify redundant nesting without changing selector scope or component styling.
+
+### Documentation and Tooling
+
+- Use HTTPS for the official website and documentation links in package metadata and repository documents.
+- Synchronize the bilingual Element Plus defaults documentation and runtime contract with the new input-number alignment default.
+
 ## [2.0.25] - 2026-10-19
 
 ### Fixed
@@ -288,6 +300,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Scoped Table styles and added responsive IconSelector styling.
 - Improved dialogs, drawers, tables, forms, trees, selectors, car-number input, images, and uploads for dark mode, touch input, and narrow viewports.
 
+[2.0.26]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.25...v2.0.26
 [2.0.25]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.24...v2.0.25
 [2.0.24]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.23...v2.0.24
 [2.0.23]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.22...v2.0.23

@@ -30,6 +30,8 @@ ElInput.setPropsDefaults({
 ElInputNumber.setPropsDefaults({
 	/** 默认不显示控制按钮。 */
 	controls: false,
+	/** 默认左对齐。 */
+	align: "left",
 });
 
 ElSelect.setPropsDefaults({
