@@ -1,9 +1,13 @@
 @use "../common/breakpoints.scss" as bp;
 
 .fa-drawer {
-	--el-fill-color-blank: var(--el-bg-color-overlay);
 	--fa-drawer-header-height: 40px;
 	--fa-drawer-footer-height: 45px;
+	--fa-drawer-header-icon-width: 30px;
+	--fa-drawer-header-icon-size: var(--el-font-size-large);
+
+	--el-fill-color-blank: var(--el-bg-color-overlay);
+
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
@@ -15,7 +19,8 @@
 		transform var(--el-transition-duration),
 		width var(--el-transition-duration),
 		height var(--el-transition-duration);
-	.el-drawer__header {
+
+	> .el-drawer__header {
 		flex-shrink: 0;
 		height: var(--fa-drawer-header-height);
 		border-bottom: 1px solid var(--el-border-color-lighter);
@@ -23,76 +28,20 @@
 		margin: 0;
 		display: flex;
 		align-items: center;
-		.fa-drawer__header-title {
-			flex: 1;
-			min-width: 0;
-			overflow: hidden;
-			color: var(--el-text-color-primary);
-			font-size: inherit;
-			font-weight: var(--el-font-weight-primary);
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
-		.fa-drawer__header-icon {
-			width: 30px;
-			height: 100%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			border-radius: var(--el-border-radius-base);
-			cursor: pointer;
-			transition: background-color var(--el-transition-duration-fast);
-
-			&:hover {
-				background-color: var(--el-fill-color-light);
-			}
-
-			.el-icon {
-				width: 100%;
-				height: 100%;
-				font-size: var(--el-font-size-large);
-				color: var(--el-text-color-secondary);
-			}
-		}
 	}
-	.el-drawer__body {
+
+	> .el-drawer__body {
 		position: relative;
 		min-height: 0;
 		overflow: hidden;
 		padding: 8px;
-		.fa-drawer__draggable {
-			height: 100%;
-			width: 5px;
-			cursor: w-resize;
-			position: absolute;
-			left: -2.5px;
-			top: 0;
-			touch-action: none;
-			z-index: 2;
 
-			&::after {
-				content: "";
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				width: 2px;
-				height: 48px;
-				border-radius: var(--el-border-radius-round);
-				background-color: var(--el-border-color-light);
-				transform: translate(-50%, -50%);
-			}
-		}
 		> .el-scrollbar {
 			height: 100%;
-
-			> .el-scrollbar__wrap {
-				> .el-scrollbar__view {
-					height: 100%;
-				}
-			}
 		}
 	}
-	.el-drawer__footer {
+
+	> .el-drawer__footer {
 		flex-shrink: 0;
 		height: var(--fa-drawer-footer-height);
 		padding: 0;
@@ -102,23 +51,20 @@
 		gap: 8px;
 		border-top: 1px solid var(--el-border-color-lighter);
 
-		.el-button + .el-button {
+		> .el-button + .el-button {
 			margin-left: 0;
 		}
 	}
-	// 拖拽
-	&.fa-drawer__dragging {
-		// 解决拖拽宽度卡顿的问题
-		transition: none !important;
-	}
-	&.ltr .fa-drawer__draggable {
-		right: -2.5px;
+
+	&.ltr > .el-drawer__body > .fa-drawer__draggable {
+		right: 0;
 		left: auto;
 	}
-	&.ttb .fa-drawer__draggable,
-	&.btt .fa-drawer__draggable {
+
+	&.ttb > .el-drawer__body > .fa-drawer__draggable,
+	&.btt > .el-drawer__body > .fa-drawer__draggable {
 		width: 100%;
-		height: 5px;
+		height: 8px;
 		left: 0;
 		cursor: n-resize;
 
@@ -127,58 +73,116 @@
 			height: 2px;
 		}
 	}
-	&.ttb .fa-drawer__draggable {
+
+	&.ttb > .el-drawer__body > .fa-drawer__draggable {
 		top: auto;
-		bottom: -2.5px;
+		bottom: 0;
 	}
-	&.btt .fa-drawer__draggable {
-		top: -2.5px;
+
+	&.btt > .el-drawer__body > .fa-drawer__draggable {
+		top: 0;
 	}
+
+	// 拖拽
+	&.fa-drawer__dragging {
+		// 解决拖拽宽度卡顿的问题，无需覆盖 Element Plus 的行内尺寸。
+		transition: none;
+	}
+
 	// 全屏
 	&.fa-drawer__fullscreen {
+		// Element Plus 通过行内样式设置 size，全屏时必须覆盖。
 		width: 100% !important;
 		height: 100% !important;
+	}
+}
+
+.fa-drawer__header-title {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	color: var(--el-text-color-primary);
+	font-size: inherit;
+	font-weight: var(--el-font-weight-primary);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.fa-drawer__header-icon {
+	width: var(--fa-drawer-header-icon-width);
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--el-border-radius-base);
+	cursor: pointer;
+	transition: background-color var(--el-transition-duration-fast);
+
+	&:hover {
+		background-color: var(--el-fill-color-light);
+	}
+
+	> .el-icon {
+		width: 100%;
+		height: 100%;
+		font-size: var(--fa-drawer-header-icon-size);
+		color: var(--el-text-color-secondary);
+	}
+}
+
+.fa-drawer__scrollbar-view {
+	height: 100%;
+}
+
+.fa-drawer__draggable {
+	// 命中区域完全位于 body 内，避免被 overflow: hidden 裁掉。
+	height: 100%;
+	width: 8px;
+	cursor: w-resize;
+	position: absolute;
+	left: 0;
+	top: 0;
+	touch-action: none;
+	z-index: 2;
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 2px;
+		height: 48px;
+		border-radius: var(--el-border-radius-round);
+		background-color: var(--el-border-color-light);
+		transform: translate(-50%, -50%);
 	}
 }
 
 .fa-drawer-small {
 	--fa-drawer-header-height: 35px;
 	--fa-drawer-footer-height: 40px;
+	--fa-drawer-header-icon-width: 25px;
+	--fa-drawer-header-icon-size: var(--el-font-size-medium);
+
 	padding: 0 6px;
 	font-size: var(--el-font-size-extra-small);
-	.el-drawer__header {
-		.fa-drawer__header-icon {
-			width: 25px;
-			.el-icon {
-				font-size: var(--el-font-size-medium);
-			}
-		}
-	}
 }
 
 @include bp.mobile {
 	.fa-drawer {
 		--fa-drawer-header-height: 44px;
 		--fa-drawer-footer-height: auto;
+		--fa-drawer-header-icon-width: 44px;
 
-		.el-drawer__header {
+		> .el-drawer__header {
 			padding-left: 12px;
-
-			.fa-drawer__header-icon {
-				width: 44px;
-			}
 		}
 
-		.el-drawer__body {
+		> .el-drawer__body {
 			padding: 8px 12px;
-
-			.fa-drawer__draggable {
-				display: none;
-			}
 		}
 
-		.el-drawer__footer {
-			height: var(--fa-drawer-footer-height);
+		> .el-drawer__footer {
 			min-height: 52px;
 			padding: 8px 12px max(8px, env(safe-area-inset-bottom));
 
@@ -187,5 +191,15 @@
 				min-width: 0;
 			}
 		}
+	}
+
+	.fa-drawer__draggable {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.fa-drawer {
+		transition: none;
 	}
 }

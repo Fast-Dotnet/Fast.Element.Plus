@@ -1,51 +1,41 @@
 @use "../common/breakpoints.scss" as bp;
 
 .fa-select-dropdown__more-detail {
-	max-width: calc(100vw - 32px);
+	--fa-select-detail-height: 42px;
 
-	.el-scrollbar {
-		.el-select-dropdown__wrap {
-			.el-select-dropdown__list {
-				.fa-select-dropdown__selector__more-detail {
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-					height: 42px;
-					padding-block: 4px;
-					> :first-child {
-						line-height: normal;
-					}
-					> :nth-child(2) {
-						line-height: normal;
-						margin-left: auto;
-						color: var(--el-text-color-secondary);
-						font-size: var(--el-font-size-extra-small);
-					}
-				}
-			}
-		}
+	max-width: calc(100vw - 32px);
+}
+
+.fa-select-dropdown__selector__more-detail {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: var(--fa-select-detail-height, 42px);
+	padding-block: 4px;
+
+	> :first-child {
+		line-height: normal;
 	}
+
+	> :nth-child(2) {
+		line-height: normal;
+		margin-left: auto;
+		color: var(--el-text-color-secondary);
+		font-size: var(--el-font-size-extra-small);
+	}
+}
+
+.fa-select-dropdown__more-detail-small {
+	--fa-select-detail-height: 34px;
 }
 
 @media (max-width: bp.$fa-mobile-max), (hover: none), (pointer: coarse) {
 	.fa-select-dropdown__more-detail {
 		max-width: calc(100vw - 24px);
-
-		.el-scrollbar .el-select-dropdown__wrap .el-select-dropdown__list .fa-select-dropdown__selector__more-detail {
-			height: auto;
-			min-height: 44px;
-		}
 	}
-}
 
-.fa-select-dropdown__more-detail-small {
-	.el-scrollbar {
-		.el-select-dropdown__wrap {
-			.el-select-dropdown__list {
-				.fa-select-dropdown__selector__more-detail {
-					height: 34px;
-				}
-			}
-		}
+	.fa-select-dropdown__selector__more-detail {
+		height: auto;
+		min-height: 44px;
 	}
 }

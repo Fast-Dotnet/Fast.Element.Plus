@@ -1,74 +1,68 @@
 @use "../common/breakpoints.scss" as bp;
 
-.fa-car-number__popover {
+.el-popper.fa-car-number__popover {
+	// ElPopover 的行内 width="auto" 由响应式宽度覆盖。
 	margin-top: -12px;
 	box-sizing: border-box;
 	width: min(calc(360px + var(--el-popover-padding) * 2 + 2px), calc(100vw - 32px)) !important;
 	max-width: calc(100vw - 32px);
-	background-color: var(--el-bg-color-overlay) !important;
-	box-shadow: var(--el-box-shadow) !important;
-	.fa-car-number__popover__hide {
-		display: none !important;
-	}
+	background-color: var(--el-bg-color-overlay);
+	box-shadow: var(--el-box-shadow);
+}
 
-	.fa-car-number__popover__digit-letter {
-		display: grid;
-		grid-template-columns: repeat(10, minmax(0, 1fr));
-		gap: 4px;
-		.el-button {
-			width: 100%;
-			min-width: 0;
-			margin: 0;
-			padding-inline: 0;
-		}
-	}
-	.fa-car-number__popover__area {
-		display: grid;
-		grid-template-columns: repeat(10, minmax(0, 1fr));
-		gap: 4px;
-		.el-button {
-			width: 100%;
-			min-width: 0;
-			margin: 0;
-			padding-inline: 0;
-		}
-	}
-	.fa-car-number__popover__btn {
-		display: flex;
-		justify-content: flex-end;
-		gap: 8px;
-		margin-top: 2px;
+.fa-car-number__popover__digit-letter,
+.fa-car-number__popover__area {
+	display: grid;
+	grid-template-columns: repeat(10, minmax(0, 1fr));
+	gap: 4px;
 
-		.el-button + .el-button {
-			margin-left: 0;
-		}
+	> .el-button {
+		width: 100%;
+		min-width: 0;
+		margin: 0;
+		padding-inline: 0;
+	}
+}
+
+.fa-car-number__popover__hide {
+	display: none;
+}
+
+.fa-car-number__popover__btn {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 2px;
+
+	> .el-button + .el-button {
+		margin-left: 0;
 	}
 }
 
 @include bp.mobile {
-	.fa-car-number__popover {
+	.el-popper.fa-car-number__popover {
 		width: calc(100vw - 24px) !important;
 		max-width: calc(100vw - 24px);
 		margin-top: -8px;
-		padding: 10px !important;
+		padding: 10px;
+	}
 
-		.fa-car-number__popover__area,
-		.fa-car-number__popover__digit-letter {
-			grid-template-columns: repeat(8, minmax(0, 1fr));
-			gap: 5px;
+	.fa-car-number__popover__area,
+	.fa-car-number__popover__digit-letter {
+		grid-template-columns: repeat(8, minmax(0, 1fr));
+		gap: 5px;
 
-			.el-button {
-				min-height: 38px;
-			}
+		> .el-button {
+			min-height: 38px;
 		}
+	}
 
-		.fa-car-number__popover__btn {
-			margin-top: 8px;
+	.fa-car-number__popover__btn {
+		margin-top: 8px;
 
-			.el-button {
-				flex: 1 1 0;
-				min-width: 0;
-			}
+		> .el-button {
+			flex: 1 1 0;
+			min-width: 0;
 		}
 	}
 }

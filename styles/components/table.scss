@@ -1,6 +1,15 @@
 @use "../common/breakpoints.scss" as bp;
 
 .fa-table {
+	--fa-table-expand-padding: 12px 16px;
+	--fa-table-image-size: 30px;
+	--fa-table-tool-gap: 12px;
+	--fa-table-date-search-width: 190px;
+	--fa-table-keyword-min-width: 120px;
+	--fa-table-keyword-max-width: 344px;
+	--fa-table-keyword-measure-padding: 0 36px 0 33px;
+	--fa-table-keyword-font-size: var(--el-font-size-base);
+
 	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
@@ -15,510 +24,478 @@
 
 	> .el-card {
 		--el-fill-color-blank: var(--el-bg-color-overlay);
+
 		border-radius: calc(var(--el-border-radius-base) * 1.5);
 		background-color: var(--el-bg-color-overlay);
 		box-shadow: var(--el-box-shadow-light);
 	}
+}
 
-	.fa-table__search {
-		box-sizing: border-box;
-		flex-shrink: 0;
-		max-height: 100%;
-		display: flex;
-		align-items: center;
-		padding: 10px 12px;
-		margin-bottom: 10px;
-		transition:
-			height var(--el-transition-duration) ease-in-out,
-			max-height var(--el-transition-duration) ease-in-out,
-			opacity var(--el-transition-duration) ease-in-out,
-			padding var(--el-transition-duration) ease-in-out,
-			margin var(--el-transition-duration) ease-in-out;
-		&.fa-table__search-hidden {
-			height: 0;
-			max-height: 0;
-			opacity: 0;
-			padding: 0;
-			margin: 0;
-			border-width: 0;
-			border-color: transparent;
-		}
-		.el-form {
-			width: 100%;
-			min-width: 0;
-			.el-form-item {
-				margin-bottom: 0;
-				min-width: 0;
-			}
-			// 去除全局设置Form 表单的 label 的宽度
-			.el-form-item__label {
-				width: unset !important;
-				padding: 0 6px 0 0;
-			}
-			.el-range-editor.el-input__wrapper {
-				padding: 0 10px;
-			}
-			.fa-table__search-operation {
-				display: flex;
-				align-items: center;
-				justify-content: flex-end;
-				gap: 8px;
+.fa-table__search {
+	box-sizing: border-box;
+	flex-shrink: 0;
+	max-height: 100%;
+	display: flex;
+	align-items: center;
+	padding: 10px 12px;
+	margin-bottom: 10px;
+	transition:
+		height var(--el-transition-duration) ease-in-out,
+		max-height var(--el-transition-duration) ease-in-out,
+		opacity var(--el-transition-duration) ease-in-out,
+		padding var(--el-transition-duration) ease-in-out,
+		margin var(--el-transition-duration) ease-in-out;
 
-				.el-button + .el-button {
-					margin-left: 0;
-				}
-				.el-button.is-link {
-					.el-icon {
-						margin-left: 2px;
-					}
-				}
-			}
-		}
+	&.fa-table__search-hidden {
+		height: 0;
+		max-height: 0;
+		opacity: 0;
+		padding: 0;
+		margin: 0;
+		border-width: 0;
+		border-color: transparent;
 	}
-	.fa-table__header {
-		box-sizing: border-box;
-		flex-shrink: 0;
-		display: flex;
-		align-items: center;
-		padding: 10px 12px;
-		margin-bottom: 10px;
-	}
-	.fa-table__main {
-		flex: 1;
+
+	> .el-form {
+		width: 100%;
 		min-width: 0;
-		min-height: 0;
-		display: flex;
-		flex-direction: column;
-		padding: 10px 12px;
-		overflow: hidden;
-		.fa-table__main-header {
-			flex-shrink: 0;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			gap: 12px;
-			margin-bottom: 10px;
-			.fa-table__main-header-left {
-				display: inline-flex;
-				align-items: center;
-				min-width: 0;
-				flex-wrap: wrap;
-				gap: 8px;
-			}
-			.fa-table__main-header-right {
-				display: inline-flex;
-				align-items: center;
-				min-width: 0;
-				flex-wrap: wrap;
-				> *:not(:first-child) {
-					margin-left: 12px;
-				}
-				.fa-table__main-header-right__data-search {
-					width: 190px;
-					padding: 0 5px;
-					.el-range-input {
-						width: 45%;
-					}
-					.el-range-separator {
-						padding: 0;
-					}
-					.el-range__close-icon {
-						display: none;
-					}
-				}
-				.fa-table__main-header-right__data-search__popper {
-					.el-date-range-picker {
-						width: 610px;
-						.el-picker-panel__body-wrapper {
-							display: flex;
-							flex-direction: row;
-							.el-picker-panel__sidebar {
-								position: static;
-								overflow: visible;
-								width: 60px;
-								.el-picker-panel__shortcut {
-									width: 60px;
-									padding-left: 10px;
-								}
-							}
-							.el-picker-panel__body {
-								min-width: auto;
-								margin: 0;
-								.el-picker-panel__content {
-									.el-date-range-picker__header {
-										div {
-											font-size: 15px;
-											margin: 0;
-										}
-									}
-									.el-date-table {
-										th {
-											padding: 3px;
-										}
-										td {
-											.el-date-table-cell {
-												height: 26px;
-												padding: 0;
-											}
-										}
-									}
-								}
-								.el-date-range-picker__content {
-									padding: 6px;
-								}
-							}
-						}
-					}
-				}
-				.fa-table__main-header-right__div-search {
-					width: min-content;
-					min-width: 120px;
-					// +22为搜索图标的宽度 +22padding宽度
-					max-width: 344px;
-					position: relative;
-					.fa-table__main-header-right__div-search__hidden {
-						height: 0;
-						overflow: hidden;
-						white-space: nowrap;
-						// 原 el-input 样式，22为搜索图标的宽度，2为边框宽度
-						padding: 0 36px 0 33px;
-						font-size: var(--el-font-size-base);
-					}
-				}
-			}
-		}
 	}
-	.fa-table__main-footer {
-		flex-shrink: 0;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		gap: 12px;
-		margin-top: 10px;
-		.fa-table__main-footer__left {
-			flex: 1;
-			min-width: 0;
-		}
+
+	.el-form-item {
+		margin-bottom: 0;
+		min-width: 0;
+	}
+
+	.el-form-item__label {
+		// 搜索表单不沿用应用全局 label 的固定宽度。
+		width: unset !important;
+		padding: 0 6px 0 0;
+	}
+
+	.el-range-editor.el-input__wrapper {
+		padding: 0 10px;
 	}
 }
 
-.fa-table__export-excel-dialog {
-	.fa-table__export-excel-dialog__column-check {
-		.el-form-item__content {
-			display: block;
-			.el-checkbox-group {
-				display: flex;
-				flex-wrap: wrap;
-				.el-checkbox {
-					width: 10rem;
-					margin: 0;
-				}
-			}
-		}
+.fa-table__search-operation {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 8px;
+
+	> .el-button + .el-button {
+		margin-left: 0;
+	}
+
+	.el-button.is-link .el-icon {
+		margin-left: 2px;
 	}
 }
 
-.fa-table__column-setting-dialog {
-	.fa-table__column-setting-drag-handle {
-		color: var(--el-text-color-secondary);
-		cursor: grab;
-		touch-action: none;
-		user-select: none;
-
-		&:active {
-			cursor: grabbing;
-		}
-	}
+.fa-table__header {
+	box-sizing: border-box;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	padding: 10px 12px;
+	margin-bottom: 10px;
 }
 
-.fa-table > .fa-table__main > .el-table {
+.fa-table__main {
 	flex: 1;
 	min-width: 0;
 	min-height: 0;
-	.el-table__header {
-		th {
-			color: var(--el-text-color-primary) !important;
-			background: var(--el-fill-color-light) !important;
-			.el-table__placeholder {
-				display: inline;
-			}
-		}
-		.fa-table__image-column {
-			.cell {
-				padding-right: 0;
-			}
-		}
+	display: flex;
+	flex-direction: column;
+	padding: 10px 12px;
+	overflow: hidden;
+}
+
+.fa-table__main-header {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 10px;
+}
+
+.fa-table__main-header-left,
+.fa-table__main-header-right {
+	display: inline-flex;
+	align-items: center;
+	min-width: 0;
+	flex-wrap: wrap;
+}
+
+.fa-table__main-header-left {
+	gap: 8px;
+}
+
+.fa-table__main-header-right {
+	column-gap: var(--fa-table-tool-gap);
+
+	> .el-button + .el-button {
+		margin-left: 0;
 	}
+}
+
+.fa-table__main-header-right__data-search {
+	width: var(--fa-table-date-search-width);
+	padding: 0 5px;
+
+	.el-range-input {
+		width: 45%;
+	}
+
+	.el-range-separator {
+		padding: 0;
+	}
+
+	.el-range__close-icon {
+		display: none;
+	}
+}
+
+.fa-table__main-header-right__div-search {
+	width: min-content;
+	min-width: var(--fa-table-keyword-min-width);
+	// +22为搜索图标的宽度 +22padding宽度
+	max-width: var(--fa-table-keyword-max-width);
+	position: relative;
+}
+
+.fa-table__main-header-right__div-search__hidden {
+	height: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	// 与原 el-input 的搜索图标和内边距保持一致，用于测量输入内容宽度。
+	padding: var(--fa-table-keyword-measure-padding);
+	font-size: var(--fa-table-keyword-font-size);
+}
+
+.fa-table__main-footer {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-top: 10px;
+}
+
+.fa-table__main-footer__left {
+	flex: 1;
+	min-width: 0;
+}
+
+.fa-table__table {
+	--el-table-header-text-color: var(--el-text-color-primary);
+	--el-table-header-bg-color: var(--el-fill-color-light);
+
+	flex: 1;
+	min-width: 0;
+	min-height: 0;
+}
+
+.fa-table__header-cell {
+	.el-table__placeholder {
+		display: inline;
+	}
+
 	// 设置 el-table 中 header 文字不换行，并省略
-	.el-table__header .el-table__cell > .cell {
+	> .cell {
 		white-space: nowrap;
 	}
-	// 解决表格数据为空时样式不居中问题(仅在element-plus中)
-	.el-table__empty-block {
+
+	&.fa-table__image-column > .cell {
+		padding-right: 0;
+	}
+
+	// auto 布局中的固定表头位于 body，Element Plus 会让固定单元格继承行背景。
+	&.el-table__cell:is(.el-table-fixed-column--left, .el-table-fixed-column--right) {
+		background-color: var(--el-table-header-bg-color);
+	}
+}
+
+.fa-table__auto-width-column__cell-header {
+	display: inline-block;
+}
+
+.fa-table__auto-width-column__cell {
+	width: fit-content;
+	white-space: nowrap;
+}
+
+// 空状态和展开单元格没有 cell-class-name 回调，需要保留所属主表的结构边界。
+// 只将定位上下文降权，目标节点仍保留正常权重；避免影响展开内容中的原生子表格。
+:where(.fa-table__table > .el-table__inner-wrapper > .el-table__body-wrapper > .el-scrollbar > .el-scrollbar__wrap > .el-scrollbar__view) {
+	> .el-table__empty-block {
+		// 解决表格数据为空时样式不居中问题(仅在element-plus中)
 		position: absolute;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		.fa-table__empty {
-			line-height: 30px;
-			.el-icon {
-				width: 100px;
-				height: auto;
-				svg {
-					width: auto;
-					height: auto;
-				}
-			}
-		}
 	}
-	.el-table__header-wrapper {
-		.fa-table__auto-width-column__cell-header {
-			display: inline-block;
-		}
-	}
-	.el-table__body-wrapper {
-		.el-table__body {
-			.fa-table__primary-row {
-				--el-table-tr-bg-color: var(--el-color-primary-light-9);
-			}
-			.fa-table__success-row {
-				--el-table-tr-bg-color: var(--el-color-success-light-9);
-			}
-			.fa-table__warning-row {
-				--el-table-tr-bg-color: var(--el-color-warning-light-9);
-			}
-			.fa-table__danger-row {
-				--el-table-tr-bg-color: var(--el-color-danger-light-9);
-			}
-			.fa-table__error-row {
-				--el-table-tr-bg-color: var(--el-color-error-light-9);
-			}
-			.fa-table__info-row {
-				--el-table-tr-bg-color: var(--el-color-info-light-9);
-			}
-			.el-table__row {
-				.el-table__cell {
-					// vertical-align: middle;
-					&:not(.fa-table__operation-column) {
-						.el-button.is-link {
-							--el-button-text-color: var(--el-text-color-regular);
-							--el-button-hover-link-text-color: var(--el-color-primary);
-							&:hover {
-								text-decoration: underline;
-								text-decoration-color: var(--el-button-hover-link-text-color);
-							}
-						}
-					}
-				}
-				.fa-table__expand-column,
-				.fa-table__selection-column,
-				.fa-table__index-column,
-				.fa-table__image-column {
-					vertical-align: middle !important;
-					.cell {
-						padding: 0;
-					}
-				}
-				.fa-table__image-column {
-					vertical-align: middle !important;
-					.cell {
-						line-height: 0;
-						.fa-table__image-column__button {
-							[class*="el-icon"] + span {
-								margin-left: 0;
-							}
-						}
-					}
-				}
-				.fa-table__link-column__button {
-					> span {
-						font-weight: bold;
-					}
-				}
-				.fa-table__link-column__text {
-					display: inline;
-					font-weight: bold;
-				}
-				.fa-table__operation-column {
-					vertical-align: middle !important;
-					.cell {
-						.el-dropdown {
-							vertical-align: middle;
 
-							.el-dropdown-link {
-								cursor: pointer;
-								color: var(--el-color-primary);
-								display: flex;
-								align-items: baseline;
-							}
-						}
-					}
-				}
-				.fa-table__data-delete-column::after {
-					content: "数据已删除";
-					position: absolute;
-					top: 0;
-					left: 0;
-					right: 0;
-					bottom: 0;
-					background-color: var(--el-overlay-color);
-					color: var(--el-color-danger);
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					cursor: not-allowed;
-				}
-				.fa-table__line-height-normal-column {
-					padding: 2px 0;
-					.cell {
-						line-height: normal;
-					}
-				}
-				.fa-table__selection-column__indeterminate {
-					.cell {
-						.el-checkbox {
-							.el-checkbox__inner {
-								&::after {
-									content: none;
-								}
-								&::before {
-									background-color: var(--el-checkbox-checked-icon-color);
-									content: "";
-									display: block;
-									height: 2px;
-									left: 0;
-									position: absolute;
-									right: 0;
-									top: 5px;
-									transform: scale(0.5);
-								}
-							}
-						}
-					}
-				}
-				.fa-table__auto-width-column__cell {
-					width: fit-content;
-					white-space: nowrap;
-				}
-			}
-		}
-	}
-	.fa-image {
-		display: inline-table;
-		width: 30px;
-		height: 30px;
-		border-radius: 4px;
+	// 展开内容位于独立的 tr 中，与普通 .el-table__row 同级。
+	> .el-table__body > tbody > tr > .el-table__expanded-cell {
+		padding: 0;
 	}
 }
 
-.fa-table__main-header-right__data-search__popper {
-	max-width: calc(100vw - 32px);
+.fa-table__empty {
+	line-height: 30px;
 
-	.el-date-range-picker {
-		width: min(610px, calc(100vw - 32px));
+	> .el-icon {
+		width: 100px;
+		height: auto;
+
+		> svg {
+			width: auto;
+			height: auto;
+		}
+	}
+}
+
+.fa-table__expand-wrapper {
+	position: sticky;
+	left: 0;
+	box-sizing: border-box;
+	width: var(--fa-table-expand-width, 100cqw);
+	min-width: 0;
+	padding: var(--fa-table-expand-padding);
+}
+
+.fa-table__primary-row {
+	--el-table-tr-bg-color: var(--el-color-primary-light-9);
+}
+
+.fa-table__success-row {
+	--el-table-tr-bg-color: var(--el-color-success-light-9);
+}
+
+.fa-table__warning-row {
+	--el-table-tr-bg-color: var(--el-color-warning-light-9);
+}
+
+.fa-table__danger-row,
+.fa-table__error-row {
+	--el-table-tr-bg-color: var(--el-color-danger-light-9);
+}
+
+.fa-table__info-row {
+	--el-table-tr-bg-color: var(--el-color-info-light-9);
+}
+
+.fa-table__cell {
+	&:not(.fa-table__operation-column) .el-button.is-link {
+		--el-button-text-color: var(--el-text-color-regular);
+		--el-button-hover-link-text-color: var(--el-color-primary);
+
+		&:hover {
+			text-decoration: underline;
+			text-decoration-color: var(--el-button-hover-link-text-color);
+		}
+	}
+
+	&:is(.fa-table__expand-column, .fa-table__selection-column, .fa-table__index-column, .fa-table__image-column) > .cell {
+		padding: 0;
+	}
+
+	&.fa-table__image-column > .cell {
+		line-height: 0;
+	}
+
+	&.fa-table__line-height-normal-column {
+		padding: 2px 0;
+
+		> .cell {
+			line-height: normal;
+		}
+	}
+}
+
+.fa-table__image {
+	display: inline-table;
+	width: var(--fa-table-image-size);
+	height: var(--fa-table-image-size);
+	border-radius: 4px;
+}
+
+.fa-table__link-column__text {
+	display: inline;
+	font-weight: bold;
+}
+
+:where(.fa-table__cell.fa-table__operation-column > .cell) .el-dropdown {
+	vertical-align: middle;
+}
+
+:where(.fa-table__cell.fa-table__operation-column) .el-dropdown-link {
+	cursor: pointer;
+	color: var(--el-color-primary);
+	display: flex;
+	align-items: baseline;
+}
+
+.fa-table__data-delete-column {
+	&::after {
+		content: "数据已删除";
+		position: absolute;
+		inset: 0;
+		background-color: var(--el-overlay-color);
+		color: var(--el-color-danger);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: not-allowed;
+	}
+}
+
+.fa-table__selection-column__indeterminate {
+	.el-checkbox__inner {
+		&::after {
+			content: none;
+		}
+
+		&::before {
+			background-color: var(--el-checkbox-checked-icon-color);
+			content: "";
+			display: block;
+			height: 2px;
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: 5px;
+			transform: scale(0.5);
+		}
+	}
+}
+
+.fa-table__column-setting-drag-handle {
+	color: var(--el-text-color-secondary);
+	cursor: grab;
+	touch-action: none;
+	user-select: none;
+
+	&:active {
+		cursor: grabbing;
 	}
 }
 
 .fa-table-small {
-	.fa-table__search {
+	--fa-table-expand-padding: 8px 12px;
+	--fa-table-image-size: 22px;
+	--fa-table-tool-gap: 6px;
+	--fa-table-date-search-width: 160px;
+	--fa-table-keyword-min-width: 100px;
+	--fa-table-keyword-max-width: 274px;
+	--fa-table-keyword-measure-padding: 0 30px 0 27px;
+	--fa-table-keyword-font-size: 12px;
+
+	> .fa-table__search {
 		margin-bottom: 5px;
 		padding: 5px 10px;
-		.el-form {
-			.fa-table__search-operation {
-				margin-top: 4px;
-				.el-button + .el-button {
-					margin-left: 5px;
-				}
-			}
+
+		.fa-table__search-operation {
+			margin-top: 4px;
+			gap: 5px;
 		}
 	}
-	.fa-table__header {
+
+	> .fa-table__header {
 		margin-bottom: 5px;
 	}
-	.fa-table__main {
-		.fa-table__main-header {
-			.fa-table__main-header-right {
-				> *:not(:first-child) {
-					margin-left: 6px;
-				}
-			}
-			.fa-table__main-header-right__data-search {
-				width: 160px !important;
-			}
-			.fa-table__main-header-right__data-search__popper {
-				.el-date-range-picker {
-					width: 510px !important;
-					.el-picker-panel__body-wrapper {
-						.el-picker-panel__sidebar {
-							width: 50px !important;
-							.el-picker-panel__shortcut {
-								width: 50px !important;
-								padding-left: 6px !important;
-								font-size: 13px;
-								line-height: 26px;
-							}
-						}
-						.el-picker-panel__body {
-							.el-picker-panel__content {
-								.el-date-range-picker__header {
-									div {
-										font-size: 14px !important;
-									}
-								}
-								.el-date-table {
-									th {
-										padding: 0 !important;
-									}
-									td {
-										height: 28px;
-										padding: 2px 0;
-										.el-date-table-cell {
-											height: 24px !important;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			.fa-table__main-header-right__div-search {
-				min-width: 100px !important;
-				max-width: 274px !important;
-				.fa-table__main-header-right__div-search__hidden {
-					// 原 el-input 样式，20为搜索图标的宽度，2为边框宽度
-					padding: 0 30px 0 27px !important;
-					font-size: 12px !important;
-				}
-			}
-		}
-		.el-table {
-			.fa-image {
-				width: 22px;
-				height: 22px;
-				border-radius: 4px;
-			}
-		}
+}
+
+// 日期弹层默认 Teleport 到 body，尺寸类必须由组件显式传给弹层。
+.fa-table__main-header-right__data-search__popper {
+	--fa-table-date-picker-width: 610px;
+	--fa-table-date-picker-sidebar-width: 60px;
+	--fa-table-date-picker-shortcut-padding: 10px;
+	--fa-table-date-picker-th-padding: 3px;
+	--fa-table-date-picker-cell-height: 26px;
+	--fa-table-date-picker-header-font-size: 15px;
+
+	max-width: calc(100vw - 32px);
+
+	.el-date-range-picker {
+		width: min(var(--fa-table-date-picker-width), calc(100vw - 32px));
+	}
+
+	.el-picker-panel__body-wrapper {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.el-picker-panel__sidebar {
+		position: static;
+		overflow: visible;
+		width: var(--fa-table-date-picker-sidebar-width);
+	}
+
+	.el-picker-panel__shortcut {
+		width: var(--fa-table-date-picker-sidebar-width);
+		padding-left: var(--fa-table-date-picker-shortcut-padding);
+	}
+
+	.el-picker-panel__body {
+		min-width: auto;
+		margin: 0;
+	}
+
+	.el-date-range-picker__header > div {
+		font-size: var(--fa-table-date-picker-header-font-size);
+		margin: 0;
+	}
+
+	.el-date-table th {
+		padding: var(--fa-table-date-picker-th-padding);
+	}
+
+	.el-date-table-cell {
+		height: var(--fa-table-date-picker-cell-height);
+		padding: 0;
+	}
+
+	.el-date-range-picker__content {
+		padding: 6px;
+	}
+}
+
+.fa-table__main-header-right__data-search__popper-small {
+	--fa-table-date-picker-width: 510px;
+	--fa-table-date-picker-sidebar-width: 50px;
+	--fa-table-date-picker-shortcut-padding: 6px;
+	--fa-table-date-picker-th-padding: 0;
+	--fa-table-date-picker-cell-height: 24px;
+	--fa-table-date-picker-header-font-size: 14px;
+
+	.el-picker-panel__shortcut {
+		font-size: 13px;
+		line-height: 26px;
+	}
+
+	.el-date-table td {
+		height: 28px;
+		padding: 2px 0;
 	}
 }
 
 @include bp.tablet {
-	.fa-table {
-		.fa-table__main .fa-table__main-header {
-			align-items: flex-start;
-			flex-wrap: wrap;
+	.fa-table__main-header {
+		align-items: flex-start;
+		flex-wrap: wrap;
+	}
 
-			.fa-table__main-header-right {
-				flex: 1 1 420px;
-				justify-content: flex-end;
-			}
-		}
+	.fa-table__main-header-right {
+		flex: 1 1 420px;
+		justify-content: flex-end;
+	}
 
-		.fa-table__main-footer {
-			align-items: flex-start;
-			flex-wrap: wrap;
-		}
+	.fa-table__main-footer {
+		align-items: flex-start;
+		flex-wrap: wrap;
 	}
 }
 
@@ -530,97 +507,98 @@
 			border-radius: var(--el-border-radius-base);
 			box-shadow: none;
 		}
+	}
 
-		.fa-table__search {
-			align-items: stretch;
-			padding: 10px 8px;
-			margin-bottom: 8px;
+	.fa-table__search,
+	.fa-table-small > .fa-table__search {
+		align-items: stretch;
+		padding: 10px 8px;
+		margin-bottom: 8px;
+	}
 
-			.el-form {
-				.el-form-item {
-					display: block;
-				}
-
-				.el-form-item__label {
-					display: block;
-					width: 100% !important;
-					height: auto;
-					padding: 0 0 4px;
-					line-height: 1.5;
-					text-align: left;
-				}
-
-				.el-form-item__content,
-				.el-select,
-				.el-date-editor,
-				.el-input-number {
-					width: 100%;
-					min-width: 0;
-				}
-			}
+	.fa-table__search {
+		.el-form-item {
+			display: block;
 		}
 
-		.fa-table__header {
-			padding: 8px;
-			margin-bottom: 8px;
+		.el-form-item__label {
+			display: block;
+			// 覆盖桌面搜索表单的固定 label 宽度策略。
+			width: 100% !important;
+			height: auto;
+			padding: 0 0 4px;
+			line-height: 1.5;
+			text-align: left;
+		}
+
+		.el-form-item__content,
+		.el-select,
+		.el-date-editor,
+		.el-input-number {
+			width: 100%;
+			min-width: 0;
+		}
+	}
+
+	.fa-table__header {
+		padding: 8px;
+		margin-bottom: 8px;
+		overflow-x: auto;
+	}
+
+	.fa-table-small > .fa-table__header {
+		margin-bottom: 8px;
+	}
+
+	.fa-table__main {
+		padding: 8px;
+	}
+
+	.fa-table__main-header {
+		align-items: stretch;
+		flex-direction: column;
+		gap: 8px;
+		margin-bottom: 8px;
+	}
+
+	.fa-table__main-header-left,
+	.fa-table__main-header-right {
+		width: 100%;
+	}
+
+	.fa-table__main-header-right {
+		gap: 8px;
+	}
+
+	.fa-table__main-header-right__div-search {
+		flex: 1 1 150px;
+		width: auto;
+		max-width: none;
+	}
+
+	.fa-table__main-header-right__data-search {
+		flex: 1 1 190px;
+		width: auto;
+		min-width: 0;
+	}
+
+	.fa-table__main-footer {
+		align-items: stretch;
+		flex-direction: column;
+		gap: 8px;
+		margin-top: 8px;
+
+		.fa-table-pagination {
+			box-sizing: border-box;
+			width: 100%;
+			justify-content: flex-start;
 			overflow-x: auto;
+			padding-bottom: 2px;
 		}
 
-		.fa-table__main {
-			padding: 8px;
-			overflow: hidden;
-
-			.fa-table__main-header {
-				align-items: stretch;
-				flex-direction: column;
-				gap: 8px;
-				margin-bottom: 8px;
-
-				.fa-table__main-header-left,
-				.fa-table__main-header-right {
-					width: 100%;
-				}
-
-				.fa-table__main-header-right {
-					gap: 8px;
-
-					> *:not(:first-child) {
-						margin-left: 0;
-					}
-
-					.fa-table__main-header-right__div-search {
-						flex: 1 1 150px;
-						width: auto;
-						max-width: none;
-					}
-
-					.fa-table__main-header-right__data-search {
-						flex: 1 1 190px;
-						width: auto;
-						min-width: 0;
-					}
-				}
-			}
-		}
-
-		.fa-table__main-footer {
-			align-items: stretch;
-			flex-direction: column;
-			gap: 8px;
-			margin-top: 8px;
-
-			.fa-table-pagination {
-				box-sizing: border-box;
-				width: 100%;
-				justify-content: flex-start;
-				overflow-x: auto;
-				padding-bottom: 2px;
-			}
-
-			.el-pagination__jump,
-			.el-pagination__total {
-				display: none;
-			}
+		.el-pagination__jump,
+		.el-pagination__total {
+			display: none;
 		}
 	}
 
@@ -630,31 +608,38 @@
 		overflow-y: auto;
 
 		.el-date-range-picker {
-			width: calc(100vw - 24px) !important;
+			width: calc(100vw - 24px);
+		}
 
-			.el-picker-panel__body-wrapper {
-				display: block;
+		.el-picker-panel__body-wrapper {
+			display: block;
+		}
 
-				.el-picker-panel__sidebar {
-					display: none;
-				}
+		.el-picker-panel__sidebar {
+			display: none;
+		}
 
-				.el-picker-panel__body {
-					min-width: 0;
-					margin: 0;
-				}
+		.el-picker-panel__body {
+			min-width: 0;
+			margin: 0;
+		}
 
-				.el-date-range-picker__content {
-					box-sizing: border-box;
-					width: 100%;
-					padding: 8px;
-				}
+		.el-date-range-picker__content {
+			box-sizing: border-box;
+			width: 100%;
+			padding: 8px;
 
-				.el-date-range-picker__content.is-left {
-					border-right: 0;
-					border-bottom: 1px solid var(--el-border-color-lighter);
-				}
+			&.is-left {
+				border-right: 0;
+				border-bottom: 1px solid var(--el-border-color-lighter);
 			}
 		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.fa-table,
+	.fa-table__search {
+		transition: none;
 	}
 }

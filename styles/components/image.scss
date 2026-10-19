@@ -3,27 +3,41 @@
 	background-color: var(--el-fill-color-lighter);
 	overflow: hidden;
 
-	.el-image__inner {
+	> .el-image__inner {
 		transition: transform var(--el-transition-duration);
 		cursor: pointer;
+
 		&:hover {
 			transform: scale(1.2);
 		}
 	}
-	.fa-image__error-image {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 100%;
-		height: 100%;
-		background: var(--el-fill-color-light);
-		color: var(--el-text-color-secondary);
-		font-size: 30px;
-	}
+}
+
+.fa-image__error-image {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	background: var(--el-fill-color-light);
+	color: var(--el-text-color-secondary);
+	font-size: 30px;
 }
 
 @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
-	.fa-image .el-image__inner:hover {
-		transform: none;
+	.fa-image {
+		> .el-image__inner {
+			&:hover {
+				transform: none;
+			}
+		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.fa-image {
+		> .el-image__inner {
+			transition: none;
+		}
 	}
 }

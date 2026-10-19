@@ -3,24 +3,20 @@
 .fa-select-v2-dropdown__more-detail {
 	max-width: calc(100vw - 32px);
 
-	.el-select-dropdown {
-		.el-vl__wrapper {
-			.el-select-dropdown__list {
-				.el-select-dropdown__item {
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-					> :first-child {
-						line-height: normal;
-					}
-					> :nth-child(2) {
-						line-height: normal;
-						margin-left: auto;
-						color: var(--el-text-color-secondary);
-						font-size: var(--el-font-size-extra-small);
-					}
-				}
-			}
+	.el-select-dropdown__item {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		> :first-child {
+			line-height: normal;
+		}
+
+		> :nth-child(2) {
+			line-height: normal;
+			margin-left: auto;
+			color: var(--el-text-color-secondary);
+			font-size: var(--el-font-size-extra-small);
 		}
 	}
 }

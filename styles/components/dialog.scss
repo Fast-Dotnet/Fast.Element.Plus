@@ -2,10 +2,14 @@
 
 .fa-dialog {
 	--height: 90%;
-	--el-fill-color-blank: var(--el-bg-color-overlay);
-	--el-dialog-title-font-size: var(--el-font-size-base);
 	--fa-dialog-header-height: 40px;
 	--fa-dialog-footer-height: 45px;
+	--fa-dialog-header-icon-width: 30px;
+	--fa-dialog-header-icon-size: var(--el-font-size-large);
+
+	--el-dialog-title-font-size: var(--el-font-size-base);
+	--el-fill-color-blank: var(--el-bg-color-overlay);
+
 	box-sizing: border-box;
 	padding: 0 8px;
 	margin-bottom: 0;
@@ -23,63 +27,31 @@
 	transition:
 		width var(--el-transition-duration),
 		height var(--el-transition-duration);
-	.el-dialog__header {
+
+	> .el-dialog__header {
 		flex-shrink: 0;
 		height: var(--fa-dialog-header-height);
 		border-bottom: 1px solid var(--el-border-color-lighter);
 		padding: 0;
 		display: flex;
 		align-items: center;
-		.fa-dialog__header-title {
-			flex: 1;
-			min-width: 0;
-			padding-inline: 4px;
-			overflow: hidden;
-			color: var(--el-text-color-primary);
-			font-weight: var(--el-font-weight-primary);
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
-		.fa-dialog__header-icon {
-			width: 30px;
-			height: 100%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			border-radius: var(--el-border-radius-base);
-			cursor: pointer;
-			transition: background-color var(--el-transition-duration-fast);
-
-			&:hover {
-				background-color: var(--el-fill-color-light);
-			}
-
-			.el-icon {
-				width: 100%;
-				height: 100%;
-				font-size: var(--el-font-size-large);
-				color: var(--el-text-color-secondary);
-			}
-		}
 	}
-	.el-dialog__body {
+
+	> .el-dialog__body {
 		overflow: hidden;
 		padding: 8px;
 		flex: 1;
 		min-height: 0;
 		display: flex;
 		flex-direction: row;
+
 		> .el-scrollbar {
 			height: inherit;
 			flex: 1;
-			> .el-scrollbar__wrap {
-				> .el-scrollbar__view {
-					height: 100%;
-				}
-			}
 		}
 	}
-	.el-dialog__footer {
+
+	> .el-dialog__footer {
 		flex-shrink: 0;
 		height: var(--fa-dialog-footer-height);
 		padding: 0;
@@ -89,18 +61,18 @@
 		gap: 8px;
 		border-top: 1px solid var(--el-border-color-lighter);
 
-		.el-button + .el-button {
+		> .el-button + .el-button {
 			margin-left: 0;
 		}
 	}
-	// 撑满
-	&.fa-dialog__full-height {
-		height: var(--height);
-	}
+
 	// 全屏
 	&.fa-dialog__fullscreen {
-		--el-dialog-width: 100% !important;
 		--height: 100% !important;
+
+		// Element Plus 可能通过行内变量指定宽度，全屏时必须覆盖。
+		--el-dialog-width: 100% !important;
+
 		height: var(--height);
 		max-height: var(--height);
 		max-width: 100%;
@@ -109,62 +81,101 @@
 	}
 }
 
-.fa-dialog-small {
-	--el-dialog-title-font-size: var(--el-font-size-extra-small);
-	--fa-dialog-header-height: 35px;
-	--fa-dialog-footer-height: 40px;
-	padding: 0 6px;
-	font-size: var(--el-font-size-extra-small);
-	.el-dialog__header {
-		.fa-dialog__header-icon {
-			width: 25px;
-			.el-icon {
-				font-size: var(--el-font-size-medium);
-			}
-		}
+.fa-dialog__header-title {
+	flex: 1;
+	min-width: 0;
+	padding-inline: 4px;
+	overflow: hidden;
+	color: var(--el-text-color-primary);
+	font-weight: var(--el-font-weight-primary);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.fa-dialog__header-icon {
+	width: var(--fa-dialog-header-icon-width);
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--el-border-radius-base);
+	cursor: pointer;
+	transition: background-color var(--el-transition-duration-fast);
+
+	&:hover {
+		background-color: var(--el-fill-color-light);
+	}
+
+	> .el-icon {
+		width: 100%;
+		height: 100%;
+		font-size: var(--fa-dialog-header-icon-size);
+		color: var(--el-text-color-secondary);
 	}
 }
 
+.fa-dialog__scrollbar-view {
+	height: 100%;
+}
+
+// 撑满
+.fa-dialog__full-height {
+	height: var(--height);
+}
+
+.fa-dialog-small {
+	--fa-dialog-header-height: 35px;
+	--fa-dialog-footer-height: 40px;
+	--fa-dialog-header-icon-width: 25px;
+	--fa-dialog-header-icon-size: var(--el-font-size-medium);
+
+	--el-dialog-title-font-size: var(--el-font-size-extra-small);
+
+	padding: 0 6px;
+	font-size: var(--el-font-size-extra-small);
+}
+
 @include bp.tablet {
-	.fa-dialog:not(.fa-dialog__fullscreen) {
-		width: min(var(--el-dialog-width, 90%), calc(100vw - 48px));
-		max-height: calc(100dvh - 48px);
+	.fa-dialog {
+		&:not(.fa-dialog__fullscreen) {
+			width: min(var(--el-dialog-width, 90%), calc(100vw - 48px));
+			max-height: calc(100dvh - 48px);
+		}
 	}
 }
 
 @include bp.mobile {
-	.fa-dialog:not(.fa-dialog__fullscreen) {
-		--height: calc(100dvh - 24px);
-		--fa-dialog-header-height: 44px;
-		--fa-dialog-footer-height: auto;
-		max-height: var(--height);
-		margin-top: max(12px, env(safe-area-inset-top)) !important;
-		padding: 0 6px;
-		border-radius: calc(var(--el-border-radius-base) * 2);
+	.fa-dialog {
+		&:not(.fa-dialog__fullscreen) {
+			--height: calc(100dvh - 24px);
+			--fa-dialog-header-height: 44px;
+			--fa-dialog-footer-height: auto;
+			--fa-dialog-header-icon-width: 44px;
 
-		&.fa-dialog__full-height {
-			height: var(--height);
-		}
+			max-height: var(--height);
+			// 覆盖 Element Plus 根据 top 属性生成的行内上边距。
+			margin-top: max(12px, env(safe-area-inset-top)) !important;
+			padding: 0 6px;
 
-		.el-dialog__header {
-			.fa-dialog__header-icon {
-				width: 44px;
+			> .el-dialog__body {
+				padding: 8px 4px;
+			}
+
+			> .el-dialog__footer {
+				min-height: 52px;
+				padding: 8px 4px max(8px, env(safe-area-inset-bottom));
+
+				> .el-button {
+					flex: 1 1 0;
+					min-width: 0;
+				}
 			}
 		}
+	}
+}
 
-		.el-dialog__body {
-			padding: 8px 4px;
-		}
-
-		.el-dialog__footer {
-			height: var(--fa-dialog-footer-height);
-			min-height: 52px;
-			padding: 8px 4px max(8px, env(safe-area-inset-bottom));
-
-			> .el-button {
-				flex: 1 1 0;
-				min-width: 0;
-			}
-		}
+@media (prefers-reduced-motion: reduce) {
+	.fa-dialog {
+		transition: none;
 	}
 }

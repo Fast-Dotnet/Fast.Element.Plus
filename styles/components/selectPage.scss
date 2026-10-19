@@ -1,6 +1,8 @@
 @use "../common/breakpoints.scss" as bp;
 
 .fa-select-page-dropdown {
+	--fa-select-page-detail-font-size: var(--el-font-size-extra-small);
+
 	max-width: calc(100vw - 32px);
 
 	.el-select-dropdown__header {
@@ -8,42 +10,52 @@
 		display: flex;
 		flex-direction: column;
 		gap: 5px;
-		.fa-select-page-dropdown__default-selector {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			gap: 8px;
-			list-style: none;
-			padding: 0 8px 0 5px;
-			> :first-child {
-				min-width: 0;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
-			> :nth-child(2) {
-				flex-shrink: 0;
-				color: var(--el-text-color-secondary);
-				font-size: var(--el-font-size-extra-small);
-			}
-		}
-		.fa-select-page-dropdown__search-input {
-			width: 100%;
-		}
 	}
+
 	.el-select-dropdown__footer {
 		padding: 5px;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
 		gap: 5px;
-		.fa-select-page-dropdown__pagination {
-			max-width: 100%;
-			height: 24px;
-			padding-right: 5px;
-			overflow-x: auto;
-		}
 	}
+}
+
+.fa-select-page-dropdown__default-selector {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	list-style: none;
+	padding: 0 8px 0 5px;
+
+	> :first-child {
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	> :nth-child(2) {
+		flex-shrink: 0;
+		color: var(--el-text-color-secondary);
+		font-size: var(--fa-select-page-detail-font-size);
+	}
+}
+
+.fa-select-page-dropdown__search-input {
+	width: 100%;
+}
+
+.fa-select-page-dropdown__pagination {
+	max-width: 100%;
+	height: 24px;
+	padding-right: 5px;
+	overflow-x: auto;
+}
+
+.fa-select-page-dropdown-small {
+	--fa-select-page-detail-font-size: calc(var(--el-font-size-extra-small) - 1px);
 }
 
 @include bp.mobile {
@@ -54,20 +66,10 @@
 		.el-select-dropdown__footer {
 			padding: 6px;
 		}
-
-		.el-select-dropdown__footer .fa-select-page-dropdown__pagination {
-			width: 100%;
-			justify-content: flex-start;
-		}
 	}
-}
 
-.fa-select-page-dropdown-small {
-	.el-select-dropdown__header {
-		.fa-select-page-dropdown__default-selector {
-			> :nth-child(2) {
-				font-size: calc(var(--el-font-size-extra-small) - 1px);
-			}
-		}
+	.fa-select-page-dropdown__pagination {
+		width: 100%;
+		justify-content: flex-start;
 	}
 }

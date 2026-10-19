@@ -293,7 +293,7 @@ export default defineComponent({
 						</Fragment>
 					),
 					default: () => (
-						<ElScrollbar vLoading={state.loading} element-loading-text="加载中...">
+						<ElScrollbar viewClass="fa-dialog__scrollbar-view" vLoading={state.loading} element-loading-text="加载中...">
 							{!state.refreshing && slots.default?.(state)}
 						</ElScrollbar>
 					),

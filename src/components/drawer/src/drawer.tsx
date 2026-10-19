@@ -319,7 +319,7 @@ export default defineComponent({
 					default: () => (
 						<Fragment>
 							{props.draggable && <div class="fa-drawer__draggable" onPointerdown={handleDraggablePointerdown} />}
-							<ElScrollbar vLoading={state.loading} element-loading-text="加载中...">
+							<ElScrollbar viewClass="fa-drawer__scrollbar-view" vLoading={state.loading} element-loading-text="加载中...">
 								{!state.refreshing && slots.default?.(state)}
 							</ElScrollbar>
 						</Fragment>

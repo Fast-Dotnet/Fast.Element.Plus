@@ -561,7 +561,7 @@ export default defineComponent({
 									return renderValue ? (
 										props.hideImage ? (
 											<ElImage
-												class="fa-image"
+												class="fa-image fa-table__image"
 												lazy
 												src={artwork}
 												fit="cover"
@@ -571,10 +571,17 @@ export default defineComponent({
 												previewTeleported
 											/>
 										) : (
-											<FaImage lazy src={renderValue} fit="cover" original={props.originalImage} thumb />
+											<FaImage
+												class="fa-table__image"
+												lazy
+												src={renderValue}
+												fit="cover"
+												original={props.originalImage}
+												thumb
+											/>
 										)
 									) : (
-										<ElImage class="fa-image" lazy src={notImage} fit="cover" />
+										<ElImage class="fa-image fa-table__image" lazy src={notImage} fit="cover" />
 									);
 								},
 							}}

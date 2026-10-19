@@ -1,6 +1,10 @@
 @use "../common/breakpoints.scss" as bp;
 
 .fa-form {
+	--fa-form-detail-label-height: 18px;
+	--fa-form-detail-item-margin: 8px;
+	--fa-form-detail-content-line-height: 14px;
+
 	box-sizing: border-box;
 	min-width: 0;
 	// 滚动条
@@ -13,6 +17,33 @@
 
 	.el-form-item__label {
 		padding: 0 6px 0 0;
+	}
+}
+
+.fa-form-detail-small {
+	--fa-form-detail-label-height: 16px;
+	--fa-form-detail-item-margin: 6px;
+	--fa-form-detail-content-line-height: 12px;
+}
+
+.fa-form-detail {
+	.el-form-item__label {
+		color: var(--el-color-info);
+		height: var(--fa-form-detail-label-height, 18px);
+		line-height: var(--fa-form-detail-label-height, 18px);
+	}
+
+	.el-form-item__content {
+		line-height: var(--fa-form-detail-content-line-height, 14px);
+
+		// 表单组件自动宽度100%
+		> * {
+			width: auto;
+		}
+	}
+
+	.el-form-item {
+		margin-bottom: var(--fa-form-detail-item-margin, 8px);
 	}
 }
 
@@ -32,44 +63,9 @@
 		}
 	}
 
-	.fa-form-detail .el-form-item {
-		padding-block: 2px;
-	}
-}
-
-.fa-form-small {
-	.el-form-item__label {
-		padding: 0 6px 0 0;
-	}
-}
-
-.fa-form-detail {
-	.el-form-item__label {
-		color: var(--el-color-info);
-		height: 18px;
-		line-height: 18px;
-	}
-	.el-form-item__content {
-		line-height: 14px;
-		// 表单组件自动宽度100%
-		> * {
-			width: auto;
+	.fa-form-detail {
+		.el-form-item {
+			padding-block: 2px;
 		}
-	}
-	.el-form-item {
-		margin-bottom: 8px;
-	}
-}
-
-.fa-form-detail-small {
-	.el-form-item__label {
-		height: 16px;
-		line-height: 16px;
-	}
-	.el-form-item__content {
-		line-height: 12px;
-	}
-	.el-form-item {
-		margin-bottom: 6px;
 	}
 }

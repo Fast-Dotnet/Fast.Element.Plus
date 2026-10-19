@@ -15,10 +15,9 @@
 /** 鼠标置入放大动画 */
 .fa__hover__twinkle {
 	transform-origin: center;
-	&:hover {
-		:first-child {
-			animation: twinkle var(--el-transition-duration) linear;
-		}
+
+	&:hover > :first-child {
+		animation: twinkle var(--el-transition-duration) linear;
 	}
 }
 
@@ -27,6 +26,7 @@
 	transition:
 		transform var(--el-transition-duration) ease,
 		box-shadow var(--el-transition-duration) ease;
+
 	&:hover {
 		transform: translateY(-4px) scale(1.02);
 		box-shadow: var(--el-box-shadow);
@@ -36,19 +36,24 @@
 
 /** 鼠标点击禁止效果 */
 .fa__click__disabled {
+	// 禁用状态优先于调用方的普通 pointer-events 样式。
+	pointer-events: none !important;
+
 	&.fa__click__disabled__cursor {
 		position: relative !important;
 		pointer-events: auto !important;
 	}
-	pointer-events: none !important;
+
 	&:hover {
 		cursor: not-allowed !important;
 	}
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.fa__hover__twinkle:hover :first-child {
-		animation: none;
+	.fa__hover__twinkle {
+		&:hover > :first-child {
+			animation: none;
+		}
 	}
 
 	.fa__hover__suspension {

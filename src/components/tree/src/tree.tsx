@@ -317,6 +317,7 @@ export default defineComponent({
 				<ElScrollbar class="fa-tree__scrollbar">
 					<ElTree
 						{...elTreeProps.value}
+						class="fa-tree__inner"
 						{...elTreeEmits.value}
 						ref={treeRef}
 						data={state.treeData}
@@ -327,7 +328,7 @@ export default defineComponent({
 						{{
 							default: ({ node, data }: { node: TreeNode; data: ElTreeOutput }) => (
 								<span
-									class="el-tree-node__label"
+									class="el-tree-node__label fa-tree__node-label"
 									title={data["all"] ? data.label : node.label}
 									style={{ paddingLeft: fold.value ? "3px" : "" }}
 								>

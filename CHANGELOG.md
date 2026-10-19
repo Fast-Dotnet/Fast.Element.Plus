@@ -4,6 +4,28 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases should follow [Semantic Versioning](https://semver.org/).
 
+## [2.0.25] - 2026-10-19
+
+### Fixed
+
+- Keep `FaTable` expansion content horizontally sticky, remove the expanded cell's default padding, and move wrapper styles into the stylesheet with a configurable `--fa-table-expand-width` (default `100cqw`).
+- Scope table, dialog and drawer structural styles to their own elements; support table headers in both fixed and auto layouts without styling nested tables.
+- Apply table date-range popper styles after Teleport, including the compact size, and let mobile search controls override compact desktop widths.
+- Let responsive icon-selector popper widths override Element Plus's inline automatic width.
+- Restore compact detail-form spacing, limit twinkle animation to the direct child, and remove obsolete internal table styles and duplicate form rules.
+- Keep drawer resize handles inside the clipped body and increase their desktop hit area to 8px; suppress custom loading animation and component size transitions when reduced motion is requested.
+
+### Changed
+
+- Organize component styles around existing `fa-*` namespaces with shallow nesting for related elements and states, merge repeated selectors within the same scope, consolidate size variants into local CSS variables, and use internal table/tree hooks instead of repeated Element Plus DOM chains.
+- Use ordinary component scopes for internal overrides and states; reserve context specificity reduction for long structural boundaries and overridable table defaults. Retain standalone Teleport namespaces and remove unused Sass imports and the unused desktop mixin.
+- Target dialog/drawer scrollbar views and every built-in table-image branch through dedicated classes, replacing three contextual `:where()` selectors without increasing specificity.
+- Use parent selectors for same-element states and pseudo-elements while keeping standalone component element names explicit. Standardize runtime size classes on hyphenated suffixes, including `fa-form-detail-small`, and remove legacy underscore classes and compatibility selectors.
+
+### Documentation and Tooling
+
+- Document the shared SCSS organization, naming, spacing, specificity and validation conventions in `AGENTS.md`; normalize spacing between style rules without changing compiled CSS.
+
 ## [2.0.24] - 2026-10-18
 
 ### Fixed
@@ -266,6 +288,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Scoped Table styles and added responsive IconSelector styling.
 - Improved dialogs, drawers, tables, forms, trees, selectors, car-number input, images, and uploads for dark mode, touch input, and narrow viewports.
 
+[2.0.25]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.24...v2.0.25
 [2.0.24]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.23...v2.0.24
 [2.0.23]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.22...v2.0.23
 [2.0.22]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.21...v2.0.22

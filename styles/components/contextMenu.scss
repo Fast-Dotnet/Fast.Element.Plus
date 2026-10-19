@@ -1,6 +1,9 @@
 @use "../common/breakpoints.scss" as bp;
 
 .fa-context-menu {
+	--fa-context-menu-icon-margin: 5px;
+	--fa-context-menu-font-size: var(--el-font-size-small);
+
 	position: fixed;
 	padding: 0;
 	border: 1px solid var(--el-border-color-lighter);
@@ -8,41 +11,39 @@
 	background-color: var(--el-bg-color-overlay);
 	box-shadow: var(--el-box-shadow);
 	overflow: hidden;
-	.el-dropdown-menu {
+
+	> .el-dropdown-menu {
 		background-color: transparent;
-
-		.el-dropdown-menu__item {
-			min-height: var(--el-component-size);
-			font-size: var(--el-font-size-small);
-			.fa-icon {
-				margin-right: 5px;
-			}
-		}
-		.el-dropdown-menu__item:not(.is-disabled) {
-			&:hover {
-				background-color: var(--el-dropdown-menuItem-hover-fill);
-				color: var(--el-dropdown-menuItem-hover-color);
-				.fa-icon {
-					color: var(--el-dropdown-menuItem-hover-color);
-				}
-			}
-		}
 	}
-}
 
-@include bp.touch {
-	.fa-context-menu .el-dropdown-menu .el-dropdown-menu__item {
-		min-height: 44px;
+	.el-dropdown-menu__item {
+		min-height: var(--el-component-size);
+		font-size: var(--fa-context-menu-font-size);
+
+		> .fa-icon {
+			margin-right: var(--fa-context-menu-icon-margin);
+		}
+
+		&:not(.is-disabled):hover {
+			background-color: var(--el-dropdown-menuItem-hover-fill);
+			color: var(--el-dropdown-menuItem-hover-color);
+
+			> .fa-icon {
+				color: var(--el-dropdown-menuItem-hover-color);
+			}
+		}
 	}
 }
 
 .fa-context-menu-small {
-	.el-dropdown-menu {
+	--fa-context-menu-icon-margin: 3px;
+	--fa-context-menu-font-size: var(--el-font-size-extra-small);
+}
+
+@include bp.touch {
+	.fa-context-menu {
 		.el-dropdown-menu__item {
-			font-size: var(--el-font-size-extra-small);
-			.fa-icon {
-				margin-right: 3px;
-			}
+			min-height: 44px;
 		}
 	}
 }

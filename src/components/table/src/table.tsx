@@ -559,23 +559,19 @@ export default defineComponent({
 			rowIndex: number;
 			columnIndex: number;
 		}) => {
-			let localCellClassName = "";
+			let localCellClassName = "fa-table__cell";
 			// 判断是否为选择列
 			if (column.type === "selection") {
 				// 判断是否在部分选中的集合中
 				const rowKey = getRowKey(row);
 				if (state.indeterminateSelectedListIds.some((s) => s === rowKey)) {
-					localCellClassName = "fa-table__selection-column__indeterminate";
+					localCellClassName += " fa-table__selection-column__indeterminate";
 				}
 			}
 			const columnInfo = state.tableColumns.find((f) => f.prop === column.property);
 			if (columnInfo?.dataDeleteField) {
 				if (row[columnInfo.dataDeleteField] === true) {
-					if (localCellClassName) {
-						localCellClassName += " fa-table__data-delete-column";
-					} else {
-						localCellClassName = "fa-table__data-delete-column";
-					}
+					localCellClassName += " fa-table__data-delete-column";
 				}
 			}
 			if (props.cellClassName) {
@@ -584,11 +580,7 @@ export default defineComponent({
 				if (!cellClassName) {
 					return localCellClassName;
 				}
-				if (localCellClassName) {
-					return `${localCellClassName} ${cellClassName}`;
-				} else {
-					return cellClassName;
-				}
+				return `${localCellClassName} ${cellClassName}`;
 			} else {
 				return localCellClassName;
 			}
@@ -608,13 +600,13 @@ export default defineComponent({
 			// TODO：不晓得这里有无问题，EL 更新了还未测试
 			column.order = column.multiOrder === "ascending" || column.multiOrder === "descending" ? column.multiOrder : null;
 			if (props.headerCellClassName) {
-				if (typeof props.headerCellClassName === "function") {
-					return props.headerCellClassName({ row, column, rowIndex, columnIndex });
-				} else {
-					return props.headerCellClassName;
-				}
+				const headerCellClassName =
+					typeof props.headerCellClassName === "function"
+						? props.headerCellClassName({ row, column, rowIndex, columnIndex })
+						: props.headerCellClassName;
+				return headerCellClassName ? `fa-table__header-cell ${headerCellClassName}` : "fa-table__header-cell";
 			}
-			return "";
+			return "fa-table__header-cell";
 		};
 
 		const handleSpanMethod = ({
@@ -801,7 +793,7 @@ export default defineComponent({
 													onChange: tableSearch,
 												}}
 												class="fa-table__main-header-right__data-search"
-												popperClass="fa-table__main-header-right__data-search__popper"
+												popperClass={`fa-table__main-header-right__data-search__popper fa-table__main-header-right__data-search__popper-${globalSize.value}`}
 												disabled={state.loading}
 												type="daterange"
 												vModel={state.searchParam.searchTimeList}
@@ -871,6 +863,7 @@ export default defineComponent({
 					)}
 					<ElTable
 						{...elTableProps.value}
+						class="fa-table__table"
 						ref={tableRef}
 						vLoading={state.loading}
 						element-loading-text={state.loadingText}
@@ -953,14 +946,7 @@ export default defineComponent({
 													column: TableColumnCtx<DefaultRow>;
 													$index: number;
 												}) => (
-													<div
-														class="fa-table__expand-wrapper"
-														style={{
-															boxSizing: "border-box",
-															width: "100cqw",
-															padding: globalSize.value === "small" ? "12px" : "16px",
-														}}
-													>
+													<div class="fa-table__expand-wrapper">
 														{slots.expand?.({
 															row,
 															column,

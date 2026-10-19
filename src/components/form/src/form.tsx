@@ -83,7 +83,7 @@ export default defineComponent({
 				{...elFormProps.value}
 				{...elFormEmits.value}
 				ref={formRef}
-				class={["fa-form", `fa-form-${globalSize.value}`, { [`fa-form-detail fa-form-detail_${globalSize.value}`]: props.detailForm }]}
+				class={["fa-form", `fa-form-${globalSize.value}`, { [`fa-form-detail fa-form-detail-${globalSize.value}`]: props.detailForm }]}
 			>
 				{{
 					default: () =>
