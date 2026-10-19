@@ -15,7 +15,7 @@ pnpm check
 ```
 
 Use `pnpm dev` when a long-running tsdown watch build is useful during implementation.
-Review component usage and examples in the [documentation](http://docs.fastdotnet.cn/zh-CN/frontend/element-plus/).
+Review component usage and examples in the [documentation](https://docs.fastdotnet.cn/zh-CN/frontend/element-plus/).
 
 ## Design rules
 

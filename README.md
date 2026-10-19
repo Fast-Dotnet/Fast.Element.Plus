@@ -14,7 +14,7 @@
 
 A Vue 3 and Element Plus business-component SDK with components, directives, hooks and types.
 
-**[Documentation](http://docs.fastdotnet.cn/en-US/frontend/element-plus/) · [Official website](http://fastdotnet.com)**
+**[Documentation](https://docs.fastdotnet.cn/en-US/frontend/element-plus/) · [Official website](https://fastdotnet.com)**
 
 This SDK is not a drop-in replacement for Element Plus; business defaults, event semantics and data flows follow Fast conventions.
 
@@ -28,7 +28,7 @@ This SDK is not a drop-in replacement for Element Plus; business defaults, event
 
 Vue, Element Plus, Element Plus Icons, and Fast.Element.Plus.Icons are required peer dependencies. Both icon packages remain external to the build. Package managers install declared runtime dependencies automatically, and the ESM build keeps those imports external instead of copying them into `dist/node_modules`; the CDN IIFE bundles them for direct browser use. Component-only utilities are included in the Fast.Element.Plus build.
 
-The current manually audited Element Plus baseline is `2.14.x`. When the Element Plus minor version changes, for example from `2.14.x` to `2.15.x` or later, native Props, Emits, Slots, exposed methods, defaults, and internal style structures must be audited again. See [Element Plus compatibility and upgrade audit](http://docs.fastdotnet.cn/en-US/frontend/element-plus/ELEMENT_PLUS_COMPATIBILITY).
+The current manually audited Element Plus baseline is `2.14.x`. When the Element Plus minor version changes, for example from `2.14.x` to `2.15.x` or later, native Props, Emits, Slots, exposed methods, defaults, and internal style structures must be audited again. See [Element Plus compatibility and upgrade audit](https://docs.fastdotnet.cn/en-US/frontend/element-plus/ELEMENT_PLUS_COMPATIBILITY).
 
 ## Install
 
@@ -156,12 +156,12 @@ Open-ended business rows, paging extensions, selector/tree payloads, request par
 
 ## Documentation
 
-- [Component documentation and interactive examples (Chinese)](http://docs.fastdotnet.cn/en-US/frontend/element-plus/components/overview)
-- [Installation guide (Chinese)](http://docs.fastdotnet.cn/en-US/frontend/element-plus/guide/installation)
-- [Documentation build and deployment (Chinese)](http://docs.fastdotnet.cn/en-US/frontend/element-plus/guide/deployment)
-- [API reference](http://docs.fastdotnet.cn/en-US/frontend/element-plus/api/)
-- [Runtime contract](http://docs.fastdotnet.cn/en-US/frontend/element-plus/RUNTIME_CONTRACT)
-- [Element Plus compatibility and upgrade audit](http://docs.fastdotnet.cn/en-US/frontend/element-plus/ELEMENT_PLUS_COMPATIBILITY)
+- [Component documentation and interactive examples (Chinese)](https://docs.fastdotnet.cn/en-US/frontend/element-plus/components/overview)
+- [Installation guide (Chinese)](https://docs.fastdotnet.cn/en-US/frontend/element-plus/guide/installation)
+- [Documentation build and deployment (Chinese)](https://docs.fastdotnet.cn/en-US/frontend/element-plus/guide/deployment)
+- [API reference](https://docs.fastdotnet.cn/en-US/frontend/element-plus/api/)
+- [Runtime contract](https://docs.fastdotnet.cn/en-US/frontend/element-plus/RUNTIME_CONTRACT)
+- [Element Plus compatibility and upgrade audit](https://docs.fastdotnet.cn/en-US/frontend/element-plus/ELEMENT_PLUS_COMPATIBILITY)
 - [Development and release guide (Chinese)](./docs/DEVELOPMENT_RELEASE.zh-CN.md)
 - [Contributing](./CONTRIBUTING.md)
 - [Security policy](./SECURITY.md)

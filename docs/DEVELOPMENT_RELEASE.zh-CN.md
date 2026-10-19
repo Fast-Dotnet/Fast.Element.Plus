@@ -31,7 +31,7 @@ pnpm install --frozen-lockfile
 | `pnpm test:package` | 验证公开入口、声明、Source Map、CSS、归档和 Publint |
 | `pnpm check`        | 运行统一质量门禁                                    |
 
-组件用法与示例见[使用文档](http://docs.fastdotnet.cn/zh-CN/frontend/element-plus/)。文档维护者另行验证站点构建与示例；SDK 常规构建和测试不要求访问文档工程。
+组件用法与示例见[使用文档](https://docs.fastdotnet.cn/zh-CN/frontend/element-plus/)。文档维护者另行验证站点构建与示例；SDK 常规构建和测试不要求访问文档工程。
 
 ## 修改公共 API
 
@@ -65,7 +65,7 @@ pnpm install --frozen-lockfile
 - `src/utils/` 只保留组件真实使用的内部工具，不从根入口导出，也不依赖 Fast.Utils。
 - Runtime Dependency 必须证明无法由平台能力或现有依赖替代。
 - 依赖升级后使用当前 pnpm 11 更新 Lockfile，并通过 Frozen Lockfile 安装与 Peer 检查。
-- Element Plus 次版本号发生变化时，必须完整执行 [Element Plus 兼容性与升级核对](http://docs.fastdotnet.cn/zh-CN/frontend/element-plus/ELEMENT_PLUS_COMPATIBILITY)，完成后才能更新文档审计基线。
+- Element Plus 次版本号发生变化时，必须完整执行 [Element Plus 兼容性与升级核对](https://docs.fastdotnet.cn/zh-CN/frontend/element-plus/ELEMENT_PLUS_COMPATIBILITY)，完成后才能更新文档审计基线。
 - 不混用 npm、Yarn 或不同 pnpm 主版本改写 Lockfile。
 - ESLint 配置完整同步 Fast.ESLint.Config 的 Vue、TypeScript、JavaScript、Import、RegExp、JSON、Markdown、排序和 Prettier 规则，直接安装官方插件，不依赖 `@fast-china/eslint-config`。
 
