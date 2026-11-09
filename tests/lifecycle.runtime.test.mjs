@@ -124,3 +124,33 @@ test("real Vue table setup cancels pending render and rejects late result state 
 	assert.equal(calls, 1);
 	assert.deepEqual(instance.tableData, []);
 });
+
+test("FaTree forwards scalar initParam and merges search state into object queries", async () => {
+	const cases = [
+		["department-1", "department-1"],
+		[0, 0],
+		["", ""],
+		[
+			{ hospitalId: 1, searchValue: "old" },
+			{ hospitalId: 1, searchValue: undefined },
+		],
+		[null, { searchValue: undefined }],
+		[undefined, { searchValue: undefined }],
+	];
+	for (const [initParam, expected] of cases) {
+		const requests = [];
+		const { instance, unmount } = mountSetup(api.FaTree, {
+			initParam,
+			requestApi(params) {
+				requests.push(params);
+				return Promise.resolve([]);
+			},
+		});
+		try {
+			await instance.refresh();
+			assert.deepEqual(requests, [expected, expected]);
+		} finally {
+			unmount();
+		}
+	}
+});

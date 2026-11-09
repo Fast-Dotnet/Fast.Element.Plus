@@ -78,7 +78,7 @@ export const faTreeProps = {
 	requestApi: {
 		type: definePropType<(params?: string | number | PagedInput) => Promise<ElTreeOutput[]>>(Function),
 	},
-	/** 初始化参数 */
+	/** 初始化参数。字符串和数字原样传入请求，对象参数会合并当前搜索值。 */
 	initParam: definePropType<string | number | PagedInput | null>([String, Number, Object]),
 };
 
@@ -163,10 +163,8 @@ export default defineComponent({
 			// 判断是否需要自动请求
 			if (props.requestApi) {
 				state.loading = true;
-				const params = {
-					...(typeof props.initParam === "object" && props.initParam !== null ? props.initParam : {}),
-					searchValue: state.searchValue,
-				};
+				const initParam = props.initParam ?? {};
+				const params = typeof initParam === "object" ? { ...initParam, searchValue: state.searchValue } : initParam;
 				try {
 					const responseData = await props.requestApi(params);
 					treeData = responseData.map((item) => ({ ...item }));

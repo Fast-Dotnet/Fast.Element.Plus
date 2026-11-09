@@ -4,6 +4,16 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases should follow [Semantic Versioning](https://semver.org/).
 
+## [2.0.27] - 2026-11-10
+
+### Fixed
+
+- Pass string and numeric `FaTree` `initParam` values directly to `requestApi` on initial load and refresh. Object queries still merge the current `searchValue`.
+
+### Documentation and Tooling
+
+- Allow Promise-returning callbacks in TSX and SFC object properties and clarify the rules for JSX attributes.
+
 ## [2.0.26] - 2026-10-20
 
 ### Changed
@@ -300,6 +310,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Scoped Table styles and added responsive IconSelector styling.
 - Improved dialogs, drawers, tables, forms, trees, selectors, car-number input, images, and uploads for dark mode, touch input, and narrow viewports.
 
+[2.0.27]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.26...v2.0.27
 [2.0.26]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.25...v2.0.26
 [2.0.25]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.24...v2.0.25
 [2.0.24]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.23...v2.0.24
