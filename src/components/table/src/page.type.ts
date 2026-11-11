@@ -147,6 +147,10 @@ export interface PagedInput {
 	 * @defaultValue true
 	 */
 	enablePaged?: boolean;
+	/**
+	 * 是否可以使用默认排序
+	 */
+	readonly isOrderBy?: boolean;
 	/** 业务接口附加的查询字段。 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- 分页查询允许携带业务接口定义的扩展字段。
 	[key: string]: any;
