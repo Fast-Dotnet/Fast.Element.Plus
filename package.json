@@ -1,6 +1,6 @@
 {
 	"name": "fast-element-plus",
-	"version": "2.0.27",
+	"version": "2.0.28",
 	"description": "Typed Vue 3 components, directives, and hooks built on Element Plus.",
 	"type": "module",
 	"keywords": [
@@ -48,7 +48,7 @@
 			"import": "./dist/global.mjs",
 			"default": "./dist/global.mjs"
 		},
-		"./style.css": "./dist/index.css"
+		"./index.css": "./dist/index.css"
 	},
 	"sideEffects": [
 		"./dist/index.css"
@@ -79,7 +79,7 @@
 	"peerDependencies": {
 		"@element-plus/icons-vue": "^2.3.2",
 		"@fast-element-plus/icons-vue": "^2.0.0",
-		"element-plus": "^2.14.7",
+		"element-plus": "^2.14.8",
 		"vue": "^3.5.11"
 	},
 	"dependencies": {
@@ -95,7 +95,7 @@
 		"@types/node": "^24.13.4",
 		"@types/sortablejs": "^1.15.9",
 		"@vue/shared": "3.5.11",
-		"element-plus": "^2.14.7",
+		"element-plus": "^2.14.8",
 		"eslint": "^10.10.0",
 		"eslint-config-flat-gitignore": "^2.4.0",
 		"eslint-config-prettier": "^10.1.8",

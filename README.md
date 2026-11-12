@@ -22,7 +22,7 @@ This SDK is not a drop-in replacement for Element Plus; business defaults, event
 
 - ES2022 modern browsers or WebViews.
 - Vue `^3.5.11`.
-- Element Plus `^2.14.5`.
+- Element Plus `^2.14.8`.
 - Element Plus Icons `^2.3.2`.
 - Fast.Element.Plus.Icons `^2.0.0`.
 
@@ -51,13 +51,13 @@ The jsDelivr entry uses `dist/index.global.min.js`. Load Vue, Element Plus, Elem
 	<head>
 		<meta charset="UTF-8" />
 		<title>Fast Element Plus</title>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus@2.14.5/dist/index.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus@2.14.8/dist/index.css" />
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fast-element-plus/dist/index.css" />
 	</head>
 	<body>
 		<div id="app"></div>
 		<script src="https://cdn.jsdelivr.net/npm/vue@3.5.11/dist/vue.global.prod.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/element-plus@2.14.5/dist/index.full.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/element-plus@2.14.8/dist/index.full.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@element-plus/icons-vue@2.3.2/dist/index.iife.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@fast-element-plus/icons-vue/dist/index.global.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/fast-element-plus/dist/index.global.min.js"></script>
@@ -80,7 +80,7 @@ Register the complete component library:
 import { createApp } from "vue";
 import "element-plus/dist/index.css";
 import FastElementPlus from "fast-element-plus";
-import "fast-element-plus/style.css";
+import "fast-element-plus/index.css";
 import App from "./App.vue";
 
 createApp(App).use(FastElementPlus).mount("#app");
@@ -93,7 +93,7 @@ Fast.Element.Plus uses Element Plus CSS Variables and supports its official `htm
 ```ts
 import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
-import "fast-element-plus/style.css";
+import "fast-element-plus/index.css";
 
 document.documentElement.classList.toggle("dark", isDark);
 ```
@@ -150,7 +150,7 @@ When using internal loading for asynchronous work, finish through the click `don
 | Constants  | `FaMimeType`, `RegExps`                                                                                                                                                                                                                                                                                                                                                                  |
 | Utilities  | `Decimal`, `install`, `version`                                                                                                                                                                                                                                                                                                                                                          |
 
-The package root is the only JavaScript API entry. `fast-element-plus/global` provides Vue global declarations, and `fast-element-plus/style.css` provides the component styles. Files under `dist/` are implementation details.
+The package root is the only JavaScript API entry. `fast-element-plus/global` provides Vue global declarations, and `fast-element-plus/index.css` provides the component styles. When upgrading from 2.0.27, replace imports of `fast-element-plus/style.css`. Files under `dist/` are implementation details.
 
 Open-ended business rows, paging extensions, selector/tree payloads, request parameters, and dynamic configuration use `any` where the SDK cannot know the application schema; exported generics can constrain known models. Untrusted runtime inputs, errors, and values that require validation remain `unknown`. `DefaultRow` is the public default FaTable row type for business tables whose fields are not declared in advance.
 

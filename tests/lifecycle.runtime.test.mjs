@@ -14,7 +14,7 @@ const bundle = await Rolldown.rolldown({
 			},
 			load(id) {
 				if (id !== virtualId) return;
-				return `export * from ${JSON.stringify(fileURLToPath(new URL("../dist/index.mjs", import.meta.url)))}; export { createRenderer, defineComponent, getCurrentInstance, onBeforeMount, h, nextTick } from "vue";`;
+				return `export * from ${JSON.stringify(fileURLToPath(new URL("../dist/index.mjs", import.meta.url)))}; export { createRenderer, defineComponent, getCurrentInstance, onBeforeMount, h, nextTick, ref } from "vue"; export { ElImage } from "element-plus";`;
 			},
 		},
 	],
@@ -152,5 +152,58 @@ test("FaTree forwards scalar initParam and merges search state into object queri
 		} finally {
 			unmount();
 		}
+	}
+});
+
+test("FaImage forwards preview sources, the placeholder scope and the show event", async (t) => {
+	const placeholderScopes = [];
+	let sources;
+	let image;
+	let shown = 0;
+	// The viewer itself depends on browser transitions and focus management.
+	t.mock.method(api.ElImage, "setup", (props, { slots, expose, emit }) => {
+		const visible = api.ref(false);
+		expose({
+			showPreview() {
+				sources = [...props.previewSrcList];
+				visible.value = true;
+				emit("show");
+			},
+		});
+		return () =>
+			api.h(
+				"div",
+				visible.value ? slots["viewer-placeholder"]?.({ activeIndex: props.initialIndex, src: props.previewSrcList[props.initialIndex] }) : []
+			);
+	});
+	const app = renderer.createApp({
+		render: () =>
+			api.h(
+				api.FaImage,
+				{
+					ref: (instance) => (image = instance),
+					src: "/thumbnail.png",
+					previewSrcList: ["/original.png", "/second.png"],
+					initialIndex: 1,
+					previewTeleported: false,
+					onShow: () => shown++,
+				},
+				{
+					viewerPlaceholder: ({ activeIndex, src }) => {
+						placeholderScopes.push({ activeIndex, src });
+						return api.h("span", "Loading preview");
+					},
+				}
+			),
+	});
+	app.mount({ children: [] });
+	try {
+		image.showPreview();
+		await api.nextTick();
+		assert.equal(shown, 1);
+		assert.deepEqual(sources, ["/original.png", "/second.png"]);
+		assert.deepEqual(placeholderScopes, [{ activeIndex: 1, src: "/second.png" }]);
+	} finally {
+		app.unmount();
 	}
 });

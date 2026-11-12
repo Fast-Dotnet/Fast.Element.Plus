@@ -730,16 +730,19 @@ export default defineComponent({
 			handleTableColumnAutoWidth();
 		});
 
-		const elTableProps = useProps(props, tableProps, ["data", "spanMethod", "headerCellClassName", "cellClassName"]);
+		const elTableProps = useProps(props, tableProps, ["style", "data", "spanMethod", "headerCellClassName", "cellClassName"]);
 
 		useRender(() => (
 			<div
 				ref={elementRef}
 				class={["fa-table", `fa-table-${globalSize.value}`, `fa-table__${props.tableKey}`, { fa__click__disabled: state.loading }]}
-				style={{
-					"--fa-table-width": state.tableWidth ? `${state.tableWidth}px` : "",
-					"--fa-table-height": state.tableHeight ? `${state.tableHeight}px` : "",
-				}}
+				style={[
+					{
+						"--fa-table-width": state.tableWidth ? `${state.tableWidth}px` : "",
+						"--fa-table-height": state.tableHeight ? `${state.tableHeight}px` : "",
+					},
+					props.style,
+				]}
 			>
 				<FaTableSearchForm
 					vSlots={pick(slots, searchFormSlotNames.value)}
@@ -908,7 +911,7 @@ export default defineComponent({
 						onScroll={(data: { scrollLeft: number; scrollTop: number }) => emit("scroll", data)}
 					>
 						{{
-							append: () => slots.append?.(),
+							...(slots.append && { append: slots.append }),
 							empty: () => (
 								<div class="fa-table__empty">
 									{slots.empty ? (
@@ -918,7 +921,7 @@ export default defineComponent({
 											<ElIcon>
 												<NotData />
 											</ElIcon>
-											<div>暂无数据</div>
+											<div>{props.emptyText ?? "暂无数据"}</div>
 										</Fragment>
 									)}
 								</div>

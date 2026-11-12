@@ -13,6 +13,8 @@ export default defineComponent({
 		},
 		/** 显示值，优先级比 data 高 */
 		label: String,
+		/** 是否为创建的选项 */
+		created: Boolean,
 		/** 禁用值，优先级比 data 高 */
 		disabled: {
 			type: Boolean,
@@ -62,6 +64,7 @@ export default defineComponent({
 						class={{ "fa-select-dropdown__selector__more-detail": props.moreDetail && slots.default }}
 						value={state.value}
 						label={state.label}
+						created={props.created}
 						disabled={state.disabled}
 					>
 						{slots.default?.(props.data)}

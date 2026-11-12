@@ -2,7 +2,7 @@ import { computed, defineComponent, onMounted, reactive, shallowRef, toRef, useM
 import { ElSelectV2, useGlobalSize } from "element-plus";
 import { SelectV2Props } from "../../../internal/props";
 import { addCssUnit, definePropType, isEqual, makeSlots, useEmits, useExpose, useProps, useRender, withDefineType } from "../../../utils";
-import type { ScrollbarDirection } from "element-plus";
+import type { ScrollbarDirection, SelectV2Instance } from "element-plus";
 import type { ElSelectorModelValue, ElSelectorOutput, ElSelectorValue } from "../../select/src/select.type";
 import type { PagedInput, PagedResult } from "../../table";
 
@@ -121,11 +121,11 @@ export interface FaSelectV2Slots extends Record<string, unknown> {
 	/** 无选项时的列表 */
 	empty: never;
 	/** select 组件自定义标签内容 */
-	tag: never;
+	tag: { data: SelectV2Instance["states"]["cachedOptions"]; deleteTag: SelectV2Instance["deleteTag"]; selectDisabled: boolean };
 	/** Select 组件自定义加载内容 */
 	loading: never;
 	/** select 组件自定义标签内容 */
-	label: { label: string; value: string | number | boolean | object };
+	label: { label: string; value: string | number | boolean | object; index?: number };
 }
 
 export default defineComponent({
@@ -439,12 +439,9 @@ export default defineComponent({
 					...(slots.footer && { footer: () => slots.footer?.() ?? [] }),
 					...(slots.prefix && { prefix: () => slots.prefix?.() ?? [] }),
 					...(slots.empty && { empty: () => slots.empty?.() ?? [] }),
-					...(slots.tag && { tag: () => slots.tag?.() ?? [] }),
+					...(slots.tag && { tag: slots.tag }),
 					...(slots.loading && { loading: () => slots.loading?.() ?? [] }),
-					...(slots.label && {
-						label: ({ label, value }: { label: string; value: string | number | boolean | object }) =>
-							slots.label?.({ label, value }) ?? [],
-					}),
+					...(slots.label && { label: slots.label }),
 				}}
 			</ElSelectV2>
 		));

@@ -2,6 +2,7 @@ import { computed, defineComponent, onMounted, reactive, shallowRef, toRef, useM
 import { ElSelect, selectEmits, selectProps, useGlobalSize } from "element-plus";
 import { addCssUnit, definePropType, isEqual, makeSlots, useEmits, useExpose, useProps, useRender, withDefineType } from "../../../utils";
 import FaSelectOption from "./selectOption";
+import type { SelectInstance } from "element-plus";
 import type { PagedInput } from "../../table";
 import type { ElSelectorModelValue, ElSelectorOutput, ElSelectorValue } from "./select.type";
 
@@ -125,11 +126,11 @@ export interface FaSelectSlots extends Record<string, unknown> {
 	/** 无选项时的列表 */
 	empty: never;
 	/** select 组件自定义标签内容 */
-	tag: never;
+	tag: { data: SelectInstance["states"]["selected"]; deleteTag: SelectInstance["deleteTag"]; selectDisabled: boolean };
 	/** Select 组件自定义加载内容 */
 	loading: never;
 	/** select 组件自定义标签内容 */
-	label: { label: string; value: string | number | boolean | object };
+	label: { label: string; value: string | number | boolean | object; index?: number };
 }
 
 export default defineComponent({
@@ -404,7 +405,7 @@ export default defineComponent({
 			}
 		});
 
-		const elSelectProps = useProps(props, selectProps, ["modelValue", "popperClass", "loading", "props"]);
+		const elSelectProps = useProps(props, selectProps, ["modelValue", "popperClass", "loading", "props", "options"]);
 		const elSelectEmits = useEmits(selectEmits, emit, ["update:modelValue", "change", "visible-change"]);
 		const elPopperClass = computed(() => [
 			"fa-select-dropdown",
@@ -435,12 +436,9 @@ export default defineComponent({
 					...(slots.footer && { footer: () => slots.footer?.() ?? [] }),
 					...(slots.prefix && { prefix: () => slots.prefix?.() ?? [] }),
 					...(slots.empty && { empty: () => slots.empty?.() ?? [] }),
-					...(slots.tag && { tag: () => slots.tag?.() ?? [] }),
+					...(slots.tag && { tag: slots.tag }),
 					...(slots.loading && { loading: () => slots.loading?.() ?? [] }),
-					...(slots.label && {
-						label: ({ label, value }: { label: string; value: string | number | boolean | object }) =>
-							slots.label?.({ label, value }) ?? [],
-					}),
+					...(slots.label && { label: slots.label }),
 				}}
 			</ElSelect>
 		));

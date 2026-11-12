@@ -65,7 +65,9 @@ export interface FaImageSlots extends Record<string, unknown> {
 		setActiveItem: (index: number) => void;
 	};
 	/** 图片预览加载失败内容 */
-	"viewer-error": { activeIndex: number; src: string };
+	viewerError: { activeIndex: number; src: string };
+	/** 图片预览加载时的占位内容 */
+	viewerPlaceholder: { activeIndex: number; src: string };
 }
 
 export default defineComponent({
@@ -96,7 +98,11 @@ export default defineComponent({
 					return `${props.src}@!thumb`;
 				}
 			}),
-			previewList: computed(() => (props.preview && props.src ? [props.base64 ? `data:image/png;base64,${props.src}` : props.src] : [])),
+			previewList: computed(() => {
+				if (!props.preview) return [];
+				if (props.previewSrcList.length > 0) return props.previewSrcList;
+				return props.src ? [props.base64 ? `data:image/png;base64,${props.src}` : props.src] : [];
+			}),
 		});
 
 		watch(
@@ -142,9 +148,8 @@ export default defineComponent({
 					...(slots.toolbar && {
 						toolbar: (scope: FaImageSlots["toolbar"]) => slots.toolbar?.(scope) ?? [],
 					}),
-					...(slots["viewer-error"] && {
-						"viewer-error": (scope: { activeIndex: number; src: string }) => slots["viewer-error"]?.(scope) ?? [],
-					}),
+					...(slots.viewerError && { "viewer-error": slots.viewerError }),
+					...(slots.viewerPlaceholder && { "viewer-placeholder": slots.viewerPlaceholder }),
 				}}
 			</ElImage>
 		));

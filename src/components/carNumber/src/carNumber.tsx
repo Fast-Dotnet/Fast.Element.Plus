@@ -2,9 +2,9 @@ import { Fragment, computed, defineComponent, inject, reactive, shallowRef, useM
 import { Back } from "@element-plus/icons-vue";
 import { ElButton, ElInput, ElMessage, ElPopover, formContextKey, formItemContextKey, inputProps } from "element-plus";
 import { RegExps } from "../../../constants";
-import { definePropType, useProps, useRender } from "../../../utils";
+import { definePropType, useExpose, useProps, useRender } from "../../../utils";
 import { CarNumberArea, CarNumberDigit, CarNumberLetter } from "./common";
-import type { PopoverInstance } from "element-plus";
+import type { InputInstance, PopoverInstance } from "element-plus";
 
 export default defineComponent({
 	name: "FaCarNumber",
@@ -34,9 +34,10 @@ export default defineComponent({
 		/** 改变 */
 		change: (value: string | null) => typeof value === "string" || value === null,
 	},
-	setup(props, { emit }) {
+	setup(props, { emit, expose }) {
 		const modelValue = useModel(props, "modelValue");
 
+		const inputRef = shallowRef<InputInstance | null>(null);
 		const popoverRef = shallowRef<PopoverInstance | null>(null);
 		// 获取 el-form 组件上下文
 		const formContext = inject(formContextKey, undefined);
@@ -127,6 +128,7 @@ export default defineComponent({
 					reference: () => (
 						<ElInput
 							{...elInputProps.value}
+							ref={inputRef}
 							class="fa-car-number__input"
 							vModel={modelValue.value}
 							readonly
@@ -179,5 +181,18 @@ export default defineComponent({
 				}}
 			</ElPopover>
 		));
+
+		return useExpose(expose, {
+			/** 聚焦车牌输入框 */
+			focus: computed(() => inputRef.value?.focus),
+			/** 取消输入框焦点 */
+			blur: computed(() => inputRef.value?.blur),
+			/** 选中输入框中的文本 */
+			select: computed(() => inputRef.value?.select),
+			/** 清空车牌号并更新模型 */
+			clear: handleClearClick,
+			/** 重新计算多行输入框的高度 */
+			resizeTextarea: computed(() => inputRef.value?.resizeTextarea),
+		});
 	},
 });

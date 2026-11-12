@@ -3,6 +3,7 @@ import { Search } from "@element-plus/icons-vue";
 import { ElButton, ElInput, ElOption, ElPagination, ElSelect, selectEmits, selectProps, useGlobalSize } from "element-plus";
 import { addCssUnit, definePropType, isEqual, makeSlots, useEmits, useExpose, useProps, useRender, withDefineType } from "../../../utils";
 import { FaSelectOption } from "../../select";
+import type { SelectInstance } from "element-plus";
 import type { ComponentObjectPropsOptions } from "vue";
 import type { ElSelectorModelValue, ElSelectorOutput, ElSelectorValue } from "../../select";
 import type { SelectComponentProps } from "../../select/src/select";
@@ -105,11 +106,11 @@ export interface FaSelectPageSlots extends Record<string, unknown> {
 	/** 无选项时的列表 */
 	empty: never;
 	/** select 组件自定义标签内容 */
-	tag: never;
+	tag: { data: SelectInstance["states"]["selected"]; deleteTag: SelectInstance["deleteTag"]; selectDisabled: boolean };
 	/** Select 组件自定义加载内容 */
 	loading: never;
 	/** select 组件自定义标签内容 */
-	label: { label: string; value: string | number | boolean | object };
+	label: { label: string; value: string | number | boolean | object; index?: number };
 }
 
 export default defineComponent({
@@ -462,22 +463,19 @@ export default defineComponent({
 					),
 					...(slots.prefix && { prefix: () => slots.prefix?.() ?? [] }),
 					...(slots.empty && { empty: () => slots.empty?.() ?? [] }),
-					...(slots.tag && { tag: () => slots.tag?.() ?? [] }),
+					...(slots.tag && { tag: slots.tag }),
 					...(slots.loading && { loading: () => slots.loading?.() ?? [] }),
 					...(props.multiple
 						? {
-								label: ({ label: _label, value }: { label: string; value: string | number | boolean | object }) => {
+								label: ({ label, value, index }: FaSelectPageSlots["label"]) => {
 									const selectedData = state.selectedList.find((f) => f.value === value);
 									if (slots.label) {
-										return slots.label({ label: selectedData?.label ?? _label, value: selectedData?.value ?? value });
+										return slots.label({ label: selectedData?.label ?? label, value: selectedData?.value ?? value, index });
 									}
 									return selectedData ? [<span class="el-select__tags-text">{selectedData.label}</span>] : [];
 								},
 							}
-						: slots.label && {
-								label: ({ label, value }: { label: string; value: string | number | boolean | object }) =>
-									slots.label?.({ label, value }) ?? [],
-							}),
+						: slots.label && { label: slots.label }),
 				}}
 			</ElSelect>
 		));

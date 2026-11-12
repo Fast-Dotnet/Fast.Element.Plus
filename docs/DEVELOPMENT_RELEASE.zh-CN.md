@@ -9,7 +9,7 @@
 - 根目录是唯一 npm 发布单元，根 `dist/` 是唯一产物目录。
 - 组件样式构建为 `dist/index.css` 与内嵌源码的 Source Map。
 
-应用环境包括支持 ES2022 的现代浏览器、WebView、Vue `^3.5.11` 和 Element Plus `^2.14.5`。
+应用环境包括支持 ES2022 的现代浏览器、WebView、Vue `^3.5.11` 和 Element Plus `^2.14.8`。
 
 ## 安装与命令
 

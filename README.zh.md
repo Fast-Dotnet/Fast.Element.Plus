@@ -22,7 +22,7 @@
 
 - 支持 ES2022 的现代浏览器或 WebView。
 - Vue `^3.5.11`。
-- Element Plus `^2.14.5`。
+- Element Plus `^2.14.8`。
 - Element Plus Icons `^2.3.2`。
 - Fast.Element.Plus.Icons `^2.0.0`。
 
@@ -51,13 +51,13 @@ jsDelivr 入口为 `dist/index.global.min.js`。页面先加载 Vue、Element Pl
 	<head>
 		<meta charset="UTF-8" />
 		<title>Fast Element Plus</title>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus@2.14.5/dist/index.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus@2.14.8/dist/index.css" />
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fast-element-plus/dist/index.css" />
 	</head>
 	<body>
 		<div id="app"></div>
 		<script src="https://cdn.jsdelivr.net/npm/vue@3.5.11/dist/vue.global.prod.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/element-plus@2.14.5/dist/index.full.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/element-plus@2.14.8/dist/index.full.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@element-plus/icons-vue@2.3.2/dist/index.iife.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@fast-element-plus/icons-vue/dist/index.global.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/fast-element-plus/dist/index.global.min.js"></script>
@@ -80,7 +80,7 @@ jsDelivr 入口为 `dist/index.global.min.js`。页面先加载 Vue、Element Pl
 import { createApp } from "vue";
 import "element-plus/dist/index.css";
 import FastElementPlus from "fast-element-plus";
-import "fast-element-plus/style.css";
+import "fast-element-plus/index.css";
 import App from "./App.vue";
 
 createApp(App).use(FastElementPlus).mount("#app");
@@ -93,7 +93,7 @@ Fast.Element.Plus 使用 Element Plus CSS Variables，并兼容其官方 `html.d
 ```ts
 import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
-import "fast-element-plus/style.css";
+import "fast-element-plus/index.css";
 
 document.documentElement.classList.toggle("dark", isDark);
 ```
@@ -132,7 +132,7 @@ useOverlay.show();
 | 常量 | `FaMimeType`、`RegExps`                                                                                                                                                                                                                                                                                                                                                                  |
 | 工具 | `Decimal`、`install`、`version`                                                                                                                                                                                                                                                                                                                                                          |
 
-包根入口是唯一 JavaScript API 入口；`fast-element-plus/global` 提供 Vue 全局声明，`fast-element-plus/style.css` 提供组件样式。`dist/` 下的其他文件均为实现细节。
+包根入口是唯一 JavaScript API 入口；`fast-element-plus/global` 提供 Vue 全局声明，`fast-element-plus/index.css` 提供组件样式。从 2.0.27 升级时，将原来的 `fast-element-plus/style.css` 导入替换为新路径。`dist/` 下的其他文件均为实现细节。
 
 业务行、分页扩展字段、选择器与树节点附加数据、请求参数和动态配置在 SDK 无法预知应用模型时使用 `any`，已知模型可通过公开泛型约束；未经验证的运行时输入、错误对象和必须先收窄的值继续使用 `unknown`。`DefaultRow` 是 FaTable 默认公开行类型，可直接用于未预先定义字段的业务表格。
 

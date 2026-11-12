@@ -64,6 +64,12 @@ export const faUploadImagesEmits = {
 export interface FaUploadImagesSlots extends Record<string, unknown> {
 	/** 默认内容插槽 */
 	default: never;
+	/** 文件选择触发器 */
+	trigger: never;
+	/** 上传提示 */
+	tip: never;
+	/** 文件列表项 */
+	file: { file: UploadFile; index: number };
 }
 
 export default defineComponent({
@@ -118,6 +124,7 @@ export default defineComponent({
 		};
 
 		const handlePreview = (uploadFile: UploadFile) => {
+			props.onPreview(uploadFile);
 			state.previewIndex = fileList.value.findIndex((f) => f.url === uploadFile.url);
 			state.previewList = fileList.value.flatMap((item) => (item.url ? [item.url] : []));
 			state.preview = true;
@@ -168,41 +175,44 @@ export default defineComponent({
 					onChange={handleOnChange}
 				>
 					{{
+						...(slots.trigger && { trigger: slots.trigger }),
 						default: () =>
 							fileList.value.length < props.limit && slots.default ? (
 								slots.default()
-							) : (
+							) : slots.trigger ? null : (
 								<ElIcon>
 									<Plus />
 								</ElIcon>
 							),
-						tip: () => <div class="el-upload__tip">files with a size less than {maxSizeMB.value.toString()}MB</div>,
-						file: ({ file, index }: { file: UploadFile; index: number }) => (
-							<div>
-								<img class="el-upload-list__item-thumbnail" src={file.url} />
-								<span class="el-upload-list__item-actions">
-									<span class="el-upload-list__item-preview" onClick={() => handlePreview(file)} title="查看">
-										<ElIcon>
-											<ZoomIn />
-										</ElIcon>
+						tip: slots.tip ?? (() => <div class="el-upload__tip">files with a size less than {maxSizeMB.value.toString()}MB</div>),
+						file:
+							slots.file ??
+							(({ file, index }: { file: UploadFile; index: number }) => (
+								<div>
+									<img class="el-upload-list__item-thumbnail" src={file.url} />
+									<span class="el-upload-list__item-actions">
+										<span class="el-upload-list__item-preview" onClick={() => handlePreview(file)} title="查看">
+											<ElIcon>
+												<ZoomIn />
+											</ElIcon>
+										</span>
+										{!disabled.value && (
+											<Fragment>
+												<span class="el-upload-list__item-icon" onClick={handleEdit} title="编辑">
+													<ElIcon>
+														<Edit />
+													</ElIcon>
+												</span>
+												<span class="el-upload-list__item-icon" onClick={() => handleRemove(index)} title="删除">
+													<ElIcon>
+														<Delete />
+													</ElIcon>
+												</span>
+											</Fragment>
+										)}
 									</span>
-									{!disabled.value && (
-										<Fragment>
-											<span class="el-upload-list__item-icon" onClick={handleEdit} title="编辑">
-												<ElIcon>
-													<Edit />
-												</ElIcon>
-											</span>
-											<span class="el-upload-list__item-icon" onClick={() => handleRemove(index)} title="删除">
-												<ElIcon>
-													<Delete />
-												</ElIcon>
-											</span>
-										</Fragment>
-									)}
-								</span>
-							</div>
-						),
+								</div>
+							)),
 					}}
 				</ElUpload>
 				{state.preview && (

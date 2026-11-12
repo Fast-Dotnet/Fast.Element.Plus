@@ -4,6 +4,29 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases should follow [Semantic Versioning](https://semver.org/).
 
+## [2.0.28] - 2026-11-13
+
+### Added
+
+- Add the optional read-only `isOrderBy` field to `PagedInput`.
+- Support `FaImage` slot `viewerPlaceholder`, selection tag and label slot scopes, image upload slots, and underlying input instance methods on `FaCarNumber`.
+- Let `FaFormItem` display a string or number directly with `value`, and forward `created` from `FaSelectOption` to `ElOption`.
+
+### Fixed
+
+- Use explicit image preview sources and honor table empty text, the column `filterIcon` slot, and the column expansion slot scope.
+- Apply `FaTable` inline styles to its outer wrapper, render the append slot only when supplied, and forward custom headers and overflow-tooltip options in `FaTableColumn`.
+- Keep `FaFormItem` label tips visible when using a custom label slot.
+- Forward cached tree nodes and support native node loading in `FaTreeSelect`.
+- Invoke native upload preview callbacks from the image upload components' custom preview controls.
+
+### Changed
+
+- Rename the `FaImage` error slot from `viewer-error` to `viewerError`.
+- Improve detail form layout with taller lines, baseline alignment, and wrapping for long content.
+- Update the minimum Element Plus version to `2.14.8`.
+- Rename the stylesheet export from `fast-element-plus/style.css` to `fast-element-plus/index.css`. Update existing imports when upgrading.
+
 ## [2.0.27] - 2026-11-10
 
 ### Fixed
@@ -310,6 +333,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Scoped Table styles and added responsive IconSelector styling.
 - Improved dialogs, drawers, tables, forms, trees, selectors, car-number input, images, and uploads for dark mode, touch input, and narrow viewports.
 
+[2.0.28]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.27...v2.0.28
 [2.0.27]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.26...v2.0.27
 [2.0.26]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.25...v2.0.26
 [2.0.25]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.24...v2.0.25

@@ -61,11 +61,12 @@ export const faTreeSelectProps = {
 	 */
 	cacheData: {
 		type: definePropType<
-			{
-				value: string | number | boolean | object;
-				currentLabel: string | number;
-				isDisabled: boolean;
-			}[]
+			| {
+					value: string | number | boolean | object;
+					currentLabel: string | number;
+					isDisabled: boolean;
+			  }[]
+			| ElSelectorOutput[]
 		>(Array),
 		default: () => [],
 	},
@@ -192,7 +193,7 @@ export const faTreeSelectEmits = {
 /** FaTreeSelect 的插槽参数 */
 export interface FaTreeSelectSlots extends Record<string, unknown> {
 	/** 默认内容插槽 */
-	default: { node: TreeNode; data: ElSelectorOutput };
+	default: { node: TreeNode; data: ElSelectorOutput; store: TreeInstance["store"] };
 
 	/** 下拉列表顶部的内容 */
 	header: never;
@@ -203,11 +204,11 @@ export interface FaTreeSelectSlots extends Record<string, unknown> {
 	/** 无选项时的列表 */
 	empty: never;
 	/** select 组件自定义标签内容 */
-	tag: never;
+	tag: { data: SelectInstance["states"]["selected"]; deleteTag: SelectInstance["deleteTag"]; selectDisabled: boolean };
 	/** Select 组件自定义加载内容 */
 	loading: never;
 	/** select 组件自定义标签内容 */
-	label: { label: string; value: string | number | boolean | object };
+	label: { label: string; value: string | number | boolean | object; index?: number };
 }
 
 export default defineComponent({
@@ -349,17 +350,23 @@ export default defineComponent({
 		const flattenOptions = (data: ElSelectorOutput[]): ElSelectorOutput[] =>
 			data.flatMap((item) => [item, ...flattenOptions(item.children ?? [])]);
 
+		const nodeLazy = computed(() => !props.requestApi && typeof props.load === "function");
+
 		const handleChange = (value?: ElSelectorModelValue) => {
 			const selectorData = flattenOptions(state.selectorData);
+			const findOption = (key: ElSelectorValue) => {
+				const option = selectorData.find((item) => item.value !== undefined && isEqual(item.value, key));
+				if (option || !nodeLazy.value || (typeof key !== "number" && typeof key !== "string")) return option;
+				const node = treeSelectRef.value?.getNode(key);
+				return node ? handleData([node.data])[0] : undefined;
+			};
 			if (props.multiple) {
 				const valueList = Array.isArray(value) ? value : [];
 				if (valueList.length === 0) {
 					emit("change", null, null);
 					return;
 				}
-				const dataList = valueList
-					.map((item) => selectorData.find((option) => option.value !== undefined && isEqual(option.value, item)))
-					.filter((item) => item !== undefined);
+				const dataList = valueList.map(findOption).filter((item) => item !== undefined);
 				emit("change", dataList, value);
 				return;
 			}
@@ -368,7 +375,7 @@ export default defineComponent({
 				emit("change", null, null);
 				return;
 			}
-			const data = selectorData.find((item) => item.value !== undefined && isEqual(item.value, value));
+			const data = findOption(value);
 			emit("change", data ?? null, value);
 		};
 
@@ -541,28 +548,24 @@ export default defineComponent({
 				modelValue={state.value}
 				onUpdate:modelValue={handleModelValueUpdate}
 				onChange={handleChange}
-				lazy={false}
+				lazy={nodeLazy.value}
 				loading={state.loading}
 				data={state.selectorData}
+				cacheData={props.cacheData}
 				expandOnClickNode={props.checkOnClickNode ? false : props.expandOnClickNode}
 				filterNodeMethod={handleFilterNode as typeof props.filterNodeMethod}
 				onNodeClick={handleNodeClick}
 				onVisible-change={handleVisibleChange}
 			>
 				{{
-					...(slots.default && {
-						default: ({ node, data }: { node: TreeNode; data: ElSelectorOutput }) => slots.default?.({ node, data }) ?? [],
-					}),
+					...(slots.default && { default: slots.default }),
 					...(slots.header && { header: () => slots.header?.() ?? [] }),
 					...(slots.footer && { footer: () => slots.footer?.() ?? [] }),
 					...(slots.prefix && { prefix: () => slots.prefix?.() ?? [] }),
 					...(slots.empty && { empty: () => slots.empty?.() ?? [] }),
-					...(slots.tag && { tag: () => slots.tag?.() ?? [] }),
+					...(slots.tag && { tag: slots.tag }),
 					...(slots.loading && { loading: () => slots.loading?.() ?? [] }),
-					...(slots.label && {
-						label: ({ label, value }: { label: string; value: string | number | boolean | object }) =>
-							slots.label?.({ label, value }) ?? [],
-					}),
+					...(slots.label && { label: slots.label }),
 				}}
 			</ElTreeSelectRuntime>
 		));

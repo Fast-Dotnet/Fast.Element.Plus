@@ -74,6 +74,12 @@ export const faUploadImageEmits = {
 export interface FaUploadImageSlots extends Record<string, unknown> {
 	/** 默认内容插槽 */
 	default: never;
+	/** 文件选择触发器 */
+	trigger: never;
+	/** 上传提示 */
+	tip: never;
+	/** 文件列表项，开启 showFileList 时使用 */
+	file: { file: UploadFile; index: number };
 }
 
 export default defineComponent({
@@ -127,9 +133,11 @@ export default defineComponent({
 		};
 
 		const handlePreview = () => {
-			const fileUrl = fileList.value[0]?.url;
-			if (!fileUrl) return;
-			state.previewList = [fileUrl];
+			const file = fileList.value[0];
+			if (!file?.url) return;
+			// 文件已由 ElUpload 补齐 uid 和 status。
+			if (file.uid !== undefined && file.status !== undefined) props.onPreview({ ...file, uid: file.uid, status: file.status });
+			state.previewList = [file.url];
 			state.preview = true;
 		};
 
@@ -181,6 +189,8 @@ export default defineComponent({
 					onChange={handleOnChange}
 				>
 					{{
+						...(slots.trigger && { trigger: slots.trigger }),
+						...(slots.file && { file: slots.file }),
 						default: () =>
 							fileList.value.length > 0 ? (
 								<Fragment>
@@ -214,7 +224,7 @@ export default defineComponent({
 								</Fragment>
 							) : slots.default ? (
 								slots.default()
-							) : (
+							) : slots.trigger ? null : (
 								<Fragment>
 									<ElIcon class="el-icon--upload">
 										<UploadFilled />
@@ -229,7 +239,7 @@ export default defineComponent({
 									</div>
 								</Fragment>
 							),
-						tip: () => <div class="el-upload__tip">file with a size less than {maxSizeMB.value.toString()}MB</div>,
+						tip: slots.tip ?? (() => <div class="el-upload__tip">file with a size less than {maxSizeMB.value.toString()}MB</div>),
 					}}
 				</ElUpload>
 				{state.preview && (

@@ -43,7 +43,7 @@ export type FaTableColumnSlots = Record<string, unknown> & {
 	/** 自定义 filter 图标 */
 	filterIcon: FaTableDefaultSlotsResult & { filterOpened: boolean };
 	/** 展开列的自定义内容 */
-	expand: FaTableDefaultSlotsResult & { expanded: boolean };
+	expand: FaTableDefaultSlotsResult & { expanded: boolean; expandable: boolean };
 } & FaTableColumnDefaultSlots;
 
 export default defineComponent({
@@ -215,7 +215,9 @@ export default defineComponent({
 
 		/** 表头渲染 */
 		const headerRender = ({ column, $index }: { column: TableColumnCtx<DefaultRow>; $index: number }) => {
-			if (props.headerRender) {
+			if (slots.header) {
+				return slots.header({ column: columnCtx.value, $index, ...getTableDefaultSlots(tableState) });
+			} else if (props.headerRender) {
 				return autoWidthHeaderRender(props.headerRender({ column, $index, ...getTableDefaultSlots(tableState) }));
 			} else if (props.headerSlot) {
 				return autoWidthHeaderRender(slots[props.headerSlot]?.({ column, $index, ...getTableDefaultSlots(tableState) }) ?? []);
@@ -525,7 +527,7 @@ export default defineComponent({
 							sortable={props.sortable ? "custom" : false}
 							sortOrders={props.sortOrders}
 							resizable={props.resizable && !props.autoWidth}
-							showOverflowTooltip={(props.showOverflowTooltip ?? true) && !props.autoWidth && props.type === "default"}
+							showOverflowTooltip={!props.autoWidth && props.type === "default" && (props.showOverflowTooltip ?? true)}
 						>
 							{{
 								header: ({ column, $index }: { column: TableColumnCtx<DefaultRow>; $index: number }) =>
@@ -540,6 +542,14 @@ export default defineComponent({
 											slots
 										)
 									),
+								...(slots.filterIcon && {
+									"filter-icon": (scope: { filterOpened: boolean }) =>
+										slots.filterIcon?.({ ...scope, ...getTableDefaultSlots(tableState) }),
+								}),
+								...(slots.expand && {
+									expand: (scope: { expanded: boolean; expandable: boolean }) =>
+										slots.expand?.({ ...scope, ...getTableDefaultSlots(tableState) }),
+								}),
 							}}
 						</ElTableColumn>
 					) : props.type === "image" ? (
@@ -584,6 +594,14 @@ export default defineComponent({
 										<ElImage class="fa-image fa-table__image" lazy src={notImage} fit="cover" />
 									);
 								},
+								...(slots.filterIcon && {
+									"filter-icon": (scope: { filterOpened: boolean }) =>
+										slots.filterIcon?.({ ...scope, ...getTableDefaultSlots(tableState) }),
+								}),
+								...(slots.expand && {
+									expand: (scope: { expanded: boolean; expandable: boolean }) =>
+										slots.expand?.({ ...scope, ...getTableDefaultSlots(tableState) }),
+								}),
 							}}
 						</ElTableColumn>
 					) : (
@@ -596,20 +614,22 @@ export default defineComponent({
 							sortable={props.sortable ? "custom" : false}
 							sortOrders={props.sortOrders}
 							resizable={props.resizable && !props.autoWidth}
-							showOverflowTooltip={(props.showOverflowTooltip ?? true) && !props.autoWidth && props.type === "default"}
+							showOverflowTooltip={!props.autoWidth && props.type === "default" && (props.showOverflowTooltip ?? true)}
 						>
 							{{
-								header: ({ column, $index }: { column: TableColumnCtx<DefaultRow>; $index: number }) =>
-									slots.header
-										? slots.header({ column: columnCtx.value, $index, ...getTableDefaultSlots(tableState) })
-										: headerRender({ column, $index }),
+								header: headerRender,
 								default: ({ row, column, $index }: { row: DefaultRow; column: TableColumnCtx<DefaultRow>; $index: number }) =>
 									slots.default
 										? slots.default({ row, column: columnCtx.value, $index, ...getTableDefaultSlots(tableState) })
 										: defaultRender({ row, column, $index }),
-								filterIcon: ({ filterOpened }: { filterOpened: boolean }) =>
-									slots.filterIcon?.({ filterOpened, ...getTableDefaultSlots(tableState) }),
-								expand: ({ expanded }: { expanded: boolean }) => slots.expand?.({ expanded, ...getTableDefaultSlots(tableState) }),
+								...(slots.filterIcon && {
+									"filter-icon": (scope: { filterOpened: boolean }) =>
+										slots.filterIcon?.({ ...scope, ...getTableDefaultSlots(tableState) }),
+								}),
+								...(slots.expand && {
+									expand: (scope: { expanded: boolean; expandable: boolean }) =>
+										slots.expand?.({ ...scope, ...getTableDefaultSlots(tableState) }),
+								}),
 							}}
 						</ElTableColumn>
 					)

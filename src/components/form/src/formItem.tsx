@@ -28,6 +28,8 @@ export const faFormItemProps = {
 	},
 	/** 独占一行。如果设置 span 则无效 */
 	row: Boolean,
+	/** 展示值，为 `null` 或 `undefined` 时使用默认插槽 */
+	value: [String, Number],
 };
 
 /** FaFormItem 的插槽参数 */
@@ -78,12 +80,12 @@ export default defineComponent({
 				<FormItemWrapper {...getResponsive()}>
 					<ElFormItem ref={formItemRef} {...elFormItemProps.value}>
 						{{
-							default: () => slots.default?.() ?? [],
+							default: () => props.value ?? slots.default?.() ?? [],
 							...(slots.label && !props.tips && { label: ({ label }: { label: string }) => slots.label?.({ label }) ?? [] }),
 							...(slots.label &&
 								props.tips && {
 									label: ({ label }: { label: string }) => [
-										<FaFormItemTip>
+										<FaFormItemTip tips={props.tips}>
 											{{
 												label: () => slots.label?.({ label }) ?? [],
 											}}
