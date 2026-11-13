@@ -4,6 +4,14 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases should follow [Semantic Versioning](https://semver.org/).
 
+## [2.0.30] - 2026-11-13
+
+### Fixed
+
+- Render `FaTableColumn` links as native buttons with the existing text styling. Tab reaches the button, Enter and Space activate it, and the focus outline is drawn inside the button to avoid vertical clipping by the cell.
+- Use consistent spacing between adjacent buttons on both sides of the `FaTable` toolbar.
+- Apply the date-range search width through the Element Plus date editor variable and cap the control at the available width. The small-size content width is now 180px.
+
 ## [2.0.29] - 2026-11-13
 
 ### Fixed
@@ -339,6 +347,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Scoped Table styles and added responsive IconSelector styling.
 - Improved dialogs, drawers, tables, forms, trees, selectors, car-number input, images, and uploads for dark mode, touch input, and narrow viewports.
 
+[2.0.30]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.29...v2.0.30
 [2.0.29]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.28...v2.0.29
 [2.0.28]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.27...v2.0.28
 [2.0.27]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.26...v2.0.27

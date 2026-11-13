@@ -1,6 +1,6 @@
 import { Fragment, computed, defineComponent, h, inject, resolveComponent } from "vue";
 import { CopyDocument } from "@element-plus/icons-vue";
-import { ElIcon, ElImage, ElMessage, ElTableColumn, ElTag, ElText, dayjs, useGlobalSize } from "element-plus";
+import { ElIcon, ElImage, ElMessage, ElTableColumn, ElTag, dayjs, useGlobalSize } from "element-plus";
 import { tableColumnProps } from "../../../internal/props";
 import { copy as copyToClipboard, definePropType, formatChineseRelativeTime, makeSlots, useProps, useRender } from "../../../utils";
 import FaImage from "../../image";
@@ -443,8 +443,9 @@ export default defineComponent({
 				<Fragment>
 					{copyRender(renderValue)}
 					{renderValue && (
-						<ElText
-							class={"el-link is-hover-underline fa-table__link-column__text"}
+						<button
+							type="button"
+							class="el-link is-hover-underline fa-table__link-column__text"
 							onClick={() => {
 								// 数据删除拦截点击
 								if (props.dataDeleteField && row[props.dataDeleteField] === true) return;
@@ -460,7 +461,7 @@ export default defineComponent({
 							}}
 						>
 							{renderValue}
-						</ElText>
+						</button>
 					)}
 				</Fragment>,
 			]);

@@ -126,6 +126,10 @@
 	flex-wrap: wrap;
 	align-items: center;
 	min-width: 0;
+
+	> .el-button + .el-button {
+		margin-left: 0;
+	}
 }
 
 .fa-table__main-header-left {
@@ -134,14 +138,13 @@
 
 .fa-table__main-header-right {
 	column-gap: var(--fa-table-tool-gap);
-
-	> .el-button + .el-button {
-		margin-left: 0;
-	}
 }
 
-.fa-table__main-header-right__data-search {
-	width: var(--fa-table-date-search-width);
+.fa-table__main-header-right__data-search.el-date-editor {
+	--el-date-editor-daterange-width: var(--fa-table-date-search-width);
+
+	flex: 0 0 auto;
+	max-width: 100%;
 	padding: 0 5px;
 
 	.el-range-input {
@@ -324,7 +327,18 @@
 
 .fa-table__link-column__text {
 	display: inline;
+	padding: 0;
+	border: 0;
+	background: none;
+	font: inherit;
 	font-weight: bold;
+	text-align: inherit;
+
+	&:focus-visible {
+		outline: 2px solid var(--el-color-primary);
+		// 表格单元格会裁剪溢出内容，焦点轮廓沿按钮内侧绘制。
+		outline-offset: -2px;
+	}
 }
 
 :where(.fa-table__cell.fa-table__operation-column > .cell) .el-dropdown {
@@ -387,7 +401,7 @@
 	--fa-table-expand-padding: 8px 12px;
 	--fa-table-image-size: 22px;
 	--fa-table-tool-gap: 6px;
-	--fa-table-date-search-width: 160px;
+	--fa-table-date-search-width: 180px;
 	--fa-table-keyword-min-width: 100px;
 	--fa-table-keyword-max-width: 274px;
 	--fa-table-keyword-measure-padding: 0 30px 0 27px;
@@ -574,12 +588,6 @@
 		flex: 1 1 150px;
 		width: auto;
 		max-width: none;
-	}
-
-	.fa-table__main-header-right__data-search {
-		flex: 1 1 190px;
-		width: auto;
-		min-width: 0;
 	}
 
 	.fa-table__main-footer {
