@@ -1,7 +1,8 @@
 /**
  * v-copy
- * 复制某个值至剪贴板
- * 接收参数：string类型/Ref<string>类型/Reactive<string>类型
+ * 点击目标元素，将当前绑定值复制到剪贴板
+ * 绑定值为字符串或数字
+ * 空字符串、`0` 和 `NaN` 会跳过复制。
  */
 import { ElMessage } from "element-plus";
 import { copy as copyToClipboard, withInstallDirective } from "../../utils";

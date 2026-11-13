@@ -1,7 +1,8 @@
 /**
  * v-iconCopy
  * 左侧插入复制图标，复制某个值至剪贴板
- * 接收参数：string类型/Ref<string>类型/Reactive<string>类型
+ * 绑定值为字符串、数字、`null` 或 `undefined`
+ * 图标随绑定值变化而显示或隐藏，点击时复制当前值。
  */
 import { h, render } from "vue";
 import { CopyDocument } from "@element-plus/icons-vue";
@@ -9,66 +10,60 @@ import { ElIcon, ElMessage } from "element-plus";
 import { copy as copyToClipboard, withInstallDirective } from "../../utils";
 import type { Directive, DirectiveBinding } from "vue";
 
-interface IconCopyElement extends HTMLElement {
-	copyData: string | number;
-	__iconElement__?: Node;
-}
+type CopyValue = string | number | null | undefined;
 
-const IconCopyDirective: Directive = {
-	mounted(el: IconCopyElement, binding: DirectiveBinding<string | number>) {
-		el.copyData = binding.value;
+const copyIcons = new WeakMap<HTMLElement, { container: HTMLDivElement; value: string | number }>();
 
-		if (!el.copyData) return;
+const removeIcon = (el: HTMLElement): void => {
+	const icon = copyIcons.get(el);
+	if (!icon) return;
 
-		const handleCopyClick = (): void => {
-			copyToClipboard(String(el.copyData)).then(
-				() => {
-					ElMessage({
-						type: "success",
-						message: "复制成功",
-					});
-				},
-				() => {
-					ElMessage({
-						type: "error",
-						message: "复制失败",
-					});
-				}
-			);
-		};
-
-		// 创建 ELIcon 组件
-		const iconEl = h(
-			ElIcon,
-			{
-				class: "fa__copy-icon",
-				title: "复制",
-				onClick: handleCopyClick,
-			},
-			{
-				default: () => h(CopyDocument),
-			}
-		);
-
-		const tempDiv = document.createElement("div");
-		render(iconEl, tempDiv);
-
-		const iconElement = tempDiv.firstChild;
-		const parentElement = el.parentElement;
-		if (iconElement === null || parentElement === null) return;
-		el.__iconElement__ = iconElement;
-		parentElement.insertBefore(iconElement, el);
-	},
-	updated(el: IconCopyElement, binding: DirectiveBinding<string | number>) {
-		el.copyData = binding.value;
-	},
-	beforeUnmount(el: IconCopyElement) {
-		if (el.__iconElement__ && el.parentElement) {
-			el.parentElement.removeChild(el.__iconElement__);
-		}
-	},
+	// 图标 DOM 已移到目标元素旁，Vue 仍通过原容器卸载图标。
+	render(null, icon.container);
+	copyIcons.delete(el);
 };
 
-/** 在目标元素前渲染复制图标的 Vue 指令。 */
+const syncIcon = (el: HTMLElement, { value }: DirectiveBinding<CopyValue>): void => {
+	if (value == null || value === "") {
+		removeIcon(el);
+		return;
+	}
+
+	const existingIcon = copyIcons.get(el);
+	if (existingIcon) {
+		existingIcon.value = value;
+		return;
+	}
+
+	const parent = el.parentElement;
+	if (!parent) return;
+
+	const icon = { container: document.createElement("div"), value };
+	const handleCopyClick = (): void => {
+		copyToClipboard(String(icon.value)).then(
+			() => {
+				ElMessage({ type: "success", message: "复制成功" });
+			},
+			() => {
+				ElMessage({ type: "error", message: "复制失败" });
+			}
+		);
+	};
+
+	render(h(ElIcon, { class: "fa__copy-icon", title: "复制", onClick: handleCopyClick }, { default: () => h(CopyDocument) }), icon.container);
+	const iconElement = icon.container.firstChild;
+	if (iconElement === null) return;
+
+	parent.insertBefore(iconElement, el);
+	copyIcons.set(el, icon);
+};
+
+const IconCopyDirective: Directive<HTMLElement, CopyValue> = {
+	mounted: syncIcon,
+	updated: syncIcon,
+	beforeUnmount: removeIcon,
+};
+
+/** 在目标元素前显示复制图标。绑定值为 null、undefined 或空字符串时移除图标。 */
 export const vIconCopy = withInstallDirective(IconCopyDirective, "iconCopy");
 export default vIconCopy;
