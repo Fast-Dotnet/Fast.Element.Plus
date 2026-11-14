@@ -67,3 +67,44 @@
 		background-color: var(--el-fill-color-lighter);
 	}
 }
+
+.fa-upload-progress {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+	border-radius: inherit;
+	background-color: var(--el-overlay-color-lighter);
+	color: var(--el-color-white);
+	font-size: var(--el-font-size-base);
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+	cursor: progress;
+}
+
+.fa-upload-progress__ring {
+	box-sizing: border-box;
+	width: 24px;
+	height: 24px;
+	border: 2px solid color-mix(in srgb, currentColor 30%, transparent);
+	border-top-color: currentColor;
+	border-right-color: currentColor;
+	border-radius: 50%;
+	animation: fa-upload-progress-spin 960ms linear infinite;
+}
+
+@keyframes fa-upload-progress-spin {
+	to {
+		transform: rotate(1turn);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.fa-upload-progress__ring {
+		animation: none;
+	}
+}

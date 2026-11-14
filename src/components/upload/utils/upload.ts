@@ -1,11 +1,20 @@
 import { ElMessage } from "element-plus";
 import { FaMimeType } from "../../../constants";
+
 type UploadData = Record<string, string | Blob | [string | Blob, string] | string[]>;
 
 interface UploadRequestConfig {
 	method?: string;
 	headers?: HeadersInit;
 	withCredentials?: boolean;
+	onUploadProgress?: (event: {
+		/** 已上传的字节数 */
+		loaded: number;
+		/** 总字节数，无法获取时可以省略 */
+		total?: number;
+		/** 归一化进度，取值 0 到 1 */
+		progress?: number;
+	}) => void;
 }
 
 /** 将 Element Plus 上传附加数据写入 FormData。 */
@@ -80,18 +89,25 @@ export const uploadUtil = {
 		formData.append("fileName", fileName);
 		if (params) appendUploadData(formData, params);
 		try {
-			const response = await fetch(url, {
-				headers: request?.headers,
-				method: request?.method ?? "POST",
-				credentials: request?.withCredentials ? "include" : "same-origin",
-				body: formData,
+			return await new Promise((resolve, reject) => {
+				const xhr = new XMLHttpRequest();
+				xhr.open(request?.method ?? "POST", url);
+				xhr.withCredentials = request?.withCredentials ?? false;
+				for (const [key, value] of new Headers(request?.headers)) {
+					xhr.setRequestHeader(key, value);
+				}
+				xhr.upload.onprogress = (event) => request?.onUploadProgress?.(event);
+				xhr.onload = () => {
+					if (xhr.status >= 200 && xhr.status < 300) {
+						resolve(xhr.responseText);
+					} else {
+						reject(new Error(`文件上传失败，HTTP 状态码：${xhr.status.toString()}。`));
+					}
+				};
+				xhr.onerror = () => reject(new Error("文件上传失败，网络连接异常。"));
+				xhr.onabort = () => reject(new Error("文件上传已取消。"));
+				xhr.send(formData);
 			});
-			if (!response.ok) {
-				console.error("[Fast:uploadUtil]", `文件上传失败，HTTP 状态码：${response.status.toString()}。`);
-				ElMessage.error("文件上传失败！");
-				throw new Error("文件上传失败！");
-			}
-			return await response.text();
 		} catch (error) {
 			console.error("[Fast:uploadUtil]", "文件上传失败。", error);
 			ElMessage.error("文件上传失败！");
@@ -108,10 +124,31 @@ export const uploadUtil = {
 	 * @remarks 接口未提供或调用失败时，返回的 Promise 被拒绝。
 	 */
 	async uploadFileByApi(
-		api: ((formData: FormData) => Promise<string>) | null | undefined,
+		api:
+			| ((
+					formData: FormData,
+					onUploadProgress?: (event: {
+						/** 已上传的字节数 */
+						loaded: number;
+						/** 总字节数，无法获取时可以省略 */
+						total?: number;
+						/** 归一化进度，取值 0 到 1 */
+						progress?: number;
+					}) => void
+			  ) => Promise<string>)
+			| null
+			| undefined,
 		file: File,
 		fileName: string,
-		params?: UploadData
+		params?: UploadData,
+		onUploadProgress?: (event: {
+			/** 已上传的字节数 */
+			loaded: number;
+			/** 总字节数，无法获取时可以省略 */
+			total?: number;
+			/** 归一化进度，取值 0 到 1 */
+			progress?: number;
+		}) => void
 	): Promise<string> {
 		if (!api) {
 			console.error("[Fast:uploadUtil]", "文件上传接口为空。");
@@ -123,7 +160,7 @@ export const uploadUtil = {
 		formData.append("fileName", fileName);
 		if (params) appendUploadData(formData, params);
 		try {
-			return await api(formData);
+			return await api(formData, onUploadProgress);
 		} catch (error) {
 			console.error("[Fast:uploadUtil]", "文件上传失败。", error);
 			ElMessage.error("文件上传失败！");

@@ -1,4 +1,4 @@
-import { computed, inject, onMounted, ref, useModel, watch } from "vue";
+import { computed, inject, onMounted, onUnmounted, reactive, ref, useModel, watch } from "vue";
 import { ElMessage, ElNotification, formContextKey, formItemContextKey, genFileId, uploadProps } from "element-plus";
 import { Decimal } from "decimal.js";
 import { uploadUtil } from "../utils/upload";
@@ -12,16 +12,17 @@ import type {
 	UploadRequestOptions,
 	UploadUserFile,
 } from "element-plus";
-import type { ComputedRef, Ref, WritableComputedRef } from "vue";
+import type { ComputedRef, Ref } from "vue";
 
 interface UploadComposable {
-	fileList: WritableComputedRef<UploadUserFile[]>;
+	fileList: Ref<UploadUserFile[]>;
 	loading: Ref<boolean>;
 	formContext: FormContext | undefined;
 	formItemContext: FormItemContext | undefined;
 	maxSizeMB: ComputedRef<Decimal>;
 	handleValue: () => void;
-	handleHttpRequest: (options: UploadRequestOptions) => Promise<void>;
+	getUploadProgress: (file: UploadUserFile) => number | undefined;
+	handleHttpRequest: (options: UploadRequestOptions) => Promise<string>;
 	handleOnSuccess: (fileUrl: string, uploadFile: UploadFile, uploadFiles: UploadFiles) => void;
 	handleOnError: (error: Error, uploadFile: UploadFile, uploadFiles: UploadFiles) => void;
 	handleOnRemove: (uploadFile: UploadFile, uploadFiles: UploadFiles) => void;
@@ -37,30 +38,36 @@ interface UploadComposable {
  * @param fileTypeName - 文件类型名称。
  * @param props - 上传组件的 Props。
  * @param emit - 上传组件的事件触发器。
- * @param options - 文件大小和类型校验配置。
+ * @param data - 上传接口、文件大小限制和图片进度配置。
  * @returns 文件列表、加载状态和上传操作方法。
  */
 export const useUpload = <T extends string | string[]>(
 	componentName: string,
 	fileTypeName: string,
 	props: Partial<UploadProps> & {
+		fileList: UploadUserFile[];
 		modelValue?: T | null;
 	},
 	emit: ((event: "update:fileList", value: UploadUserFile[]) => void) & ((event: "update:modelValue", value: T | null) => void),
 	data?: {
 		maxSize?: string | number;
-		uploadApi?: (formData: FormData) => Promise<string>;
+		uploadApi?: (
+			formData: FormData,
+			onUploadProgress?: (event: {
+				/** 已上传的字节数 */
+				loaded: number;
+				/** 总字节数，无法获取时可以省略 */
+				total?: number;
+				/** 归一化进度，取值 0 到 1 */
+				progress?: number;
+			}) => void
+		) => Promise<string>;
 		uploadUrl?: string;
 	}
 ): UploadComposable => {
-	const fileListModel = useModel(props, "fileList");
-	const fileList = computed<UploadUserFile[]>({
-		get: () => fileListModel.value ?? [],
-		set: (value) => {
-			fileListModel.value = value;
-		},
-	});
+	const fileList = useModel(props, "fileList");
 
+	const uploadProgress = reactive(new Map<number, number>());
 	const loading = ref(false);
 	let activeUploadCount = 0;
 
@@ -80,11 +87,18 @@ export const useUpload = <T extends string | string[]>(
 		}
 	});
 
+	onUnmounted(() => {
+		uploadProgress.clear();
+	});
+
+	const getUploadedUrls = (files: UploadUserFile[]): string[] =>
+		files.flatMap(({ url, status }) => (url && (!status || status === "success") ? [url] : []));
+
 	const handleValue = (files: UploadUserFile[] = fileList.value): void => {
 		let value: T | null;
 		if (files.length > 0) {
 			if (props.multiple === true) {
-				value = files.flatMap((item) => (item.url ? [item.url] : [])) as T;
+				value = getUploadedUrls(files) as T;
 			} else {
 				const fileUrl = files[0]?.url;
 				if (!fileUrl) return;
@@ -96,37 +110,61 @@ export const useUpload = <T extends string | string[]>(
 		emit("update:modelValue", value);
 	};
 
-	const handleHttpRequest = async (options: UploadRequestOptions): Promise<void> => {
-		const propsData = options.data;
+	const getUploadProgress = (file: UploadUserFile): number | undefined => {
+		if (file.uid === undefined) return;
+		const percent = uploadProgress.get(file.uid);
+		if (percent !== undefined) {
+			return percent;
+		} else if (file.status === "uploading") {
+			return file.percentage ?? 0;
+		}
+	};
+
+	const handleHttpRequest = async (options: UploadRequestOptions): Promise<string> => {
 		if (!data?.uploadApi && !data?.uploadUrl) {
 			const error = new Error(`上传${fileTypeName}接口 uploadApi 或地址 uploadUrl 不能为空。`);
 			ElMessage.error(`上传${fileTypeName}Api或地址不能为空`);
 			console.error(`[Fast:${componentName}]`, error.message);
 			throw error;
 		}
+
 		activeUploadCount++;
 		loading.value = true;
+		const uid = options.file.uid;
+		uploadProgress.set(uid, 0);
+		const onUploadProgress = (event: { loaded: number; total?: number; progress?: number }): void => {
+			if (!uploadProgress.has(uid)) return;
+			const { loaded, total, progress } = event;
+			const ratio = total !== undefined && total > 0 ? loaded / total : progress;
+			if (ratio !== undefined && !Number.isFinite(ratio)) return;
+			const percent = ratio === undefined ? (uploadProgress.get(uid) ?? 0) : Math.min(100, Math.max(0, ratio * 100));
+			uploadProgress.set(uid, Math.round(percent));
+			const progressEvent =
+				event instanceof ProgressEvent
+					? event
+					: new ProgressEvent("progress", { loaded, total, lengthComputable: total !== undefined && total > 0 });
+			options.onProgress(Object.assign(progressEvent, { percent }));
+		};
 		try {
-			let fileUrl: string;
 			if (data.uploadApi) {
-				fileUrl = await uploadUtil.uploadFileByApi(data.uploadApi, options.file, options.filename, propsData);
-			} else {
-				const headers =
-					options.headers instanceof Headers
-						? options.headers
-						: new Headers(
-								Object.entries(options.headers).flatMap(([key, value]) =>
-									value === null || value === undefined ? [] : [[key, String(value)] as [string, string]]
-								)
-							);
-				fileUrl = await uploadUtil.uploadFile(data.uploadUrl ?? options.action, options.file, options.filename, propsData, {
-					headers,
-					method: options.method,
-					withCredentials: options.withCredentials,
-				});
+				return await uploadUtil.uploadFileByApi(data.uploadApi, options.file, options.filename, options.data, onUploadProgress);
 			}
-			options.onSuccess(fileUrl);
+			const headers =
+				options.headers instanceof Headers
+					? options.headers
+					: new Headers(
+							Object.entries(options.headers).flatMap(([key, value]) =>
+								value === null || value === undefined ? [] : [[key, String(value)] as [string, string]]
+							)
+						);
+			return await uploadUtil.uploadFile(data.uploadUrl ?? options.action, options.file, options.filename, options.data, {
+				headers,
+				method: options.method,
+				withCredentials: options.withCredentials,
+				onUploadProgress,
+			});
 		} finally {
+			uploadProgress.delete(uid);
 			activeUploadCount = Math.max(activeUploadCount - 1, 0);
 			loading.value = activeUploadCount > 0;
 		}
@@ -154,6 +192,7 @@ export const useUpload = <T extends string | string[]>(
 	};
 
 	const handleOnRemove = (uploadFile: UploadFile, uploadFiles: UploadFiles): void => {
+		uploadProgress.delete(uploadFile.uid);
 		handleValue(uploadFiles);
 		props.onRemove?.(uploadFile, uploadFiles);
 	};
@@ -200,6 +239,9 @@ export const useUpload = <T extends string | string[]>(
 		(newValue) => {
 			if (newValue) {
 				if (Array.isArray(newValue)) {
+					const uploadedUrls = getUploadedUrls(fileList.value);
+					// 组件回写已完成的 URL 时，保留文件顺序和仍在上传的卡片。
+					if (newValue.length === uploadedUrls.length && newValue.every((url, index) => url === uploadedUrls[index])) return;
 					fileList.value = newValue.map((m) => {
 						const find = fileList.value.find((f) => f.url === m);
 						const urlWithoutParams = m.split(/[?#]/u)[0] ?? "";
@@ -242,6 +284,7 @@ export const useUpload = <T extends string | string[]>(
 		formItemContext,
 		maxSizeMB,
 		handleValue,
+		getUploadProgress,
 		handleHttpRequest,
 		handleOnSuccess,
 		handleOnError,

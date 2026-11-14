@@ -37,6 +37,8 @@ import FastElementPlus, {
 	type FaTreeSelectEmits,
 	type FaTreeSelectInstance,
 	type FaTreeSelectProps,
+	type FaUploadImageProps,
+	type FaUploadImagesProps,
 	type FaUploadSlots,
 	type PagedInput,
 	type PagedResult,
@@ -47,6 +49,7 @@ import FastElementPlus, {
 	version,
 } from "fast-element-plus";
 import "fast-element-plus/global";
+import type { UploadProps } from "element-plus";
 import type { App, Plugin } from "vue";
 
 const plugin: Plugin = FastElementPlus;
@@ -57,6 +60,19 @@ type IsAny<Value> = 0 extends 1 & Value ? true : false;
 type IsEqual<Left, Right> = (<Value>() => Value extends Left ? 1 : 2) extends <Value>() => Value extends Right ? 1 : 2 ? true : false;
 type AssertTrue<Value extends true> = Value;
 type InitParam = string | number | PagedInput;
+
+type AxiosLikeUpload = (
+	data: FormData,
+	onUploadProgress?: (event: { loaded: number; total?: number; progress?: number; bytes: number; lengthComputable: boolean }) => void
+) => Promise<string>;
+
+export type ImageUploadApiChecks = [
+	AssertTrue<((data: FormData) => Promise<string>) extends NonNullable<FaUploadImageProps["uploadApi"]> ? true : false>,
+	AssertTrue<AxiosLikeUpload extends NonNullable<FaUploadImageProps["uploadApi"]> ? true : false>,
+	AssertTrue<AxiosLikeUpload extends NonNullable<FaUploadImagesProps["uploadApi"]> ? true : false>,
+	AssertTrue<IsEqual<NonNullable<FaUploadImageProps["onProgress"]>, NonNullable<UploadProps["onProgress"]>>>,
+	AssertTrue<IsEqual<NonNullable<FaUploadImagesProps["onProgress"]>, NonNullable<UploadProps["onProgress"]>>>,
+];
 
 /** 匿名业务数据的默认类型应允许调用方直接使用，同时保留显式泛型能力。 */
 export type AnonymousBusinessDataChecks = [

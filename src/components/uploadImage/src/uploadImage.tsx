@@ -37,6 +37,11 @@ export const faUploadImageProps = {
 		type: Boolean,
 		default: false,
 	},
+	/** v-model:fileList 绑定值 */
+	fileList: {
+		type: definePropType<UploadUserFile[]>([Array]),
+		default: [],
+	},
 	/** v-model 绑定值 */
 	modelValue: definePropType<string | null>(String),
 	/** 大小限制，单位kb */
@@ -44,9 +49,21 @@ export const faUploadImageProps = {
 		type: [String, Number],
 		default: 2048,
 	},
-	/** 图片上传接口，优先级最高 */
+	/** 图片上传接口，可通过第二个参数上报进度，优先级高于上传地址 */
 	uploadApi: {
-		type: definePropType<(formData: FormData) => Promise<string>>(Function),
+		type: definePropType<
+			(
+				formData: FormData,
+				onUploadProgress?: (event: {
+					/** 已上传的字节数 */
+					loaded: number;
+					/** 总字节数，无法获取时可以省略 */
+					total?: number;
+					/** 归一化进度，取值 0 到 1 */
+					progress?: number;
+				}) => void
+			) => Promise<string>
+		>(Function),
 	},
 	/** 图片上传地址 */
 	uploadUrl: String,
@@ -93,6 +110,7 @@ export default defineComponent({
 			loading,
 			formContext,
 			maxSizeMB,
+			getUploadProgress,
 			handleHttpRequest,
 			handleOnSuccess,
 			handleOnError,
@@ -114,6 +132,7 @@ export default defineComponent({
 		});
 
 		const uploadRef = shallowRef<UploadInstance | null>(null);
+		const displayedFile = computed(() => fileList.value.at(-1));
 
 		const state = reactive({
 			uploadKey: `fa-upload-image__${randomString(8)}`,
@@ -133,7 +152,7 @@ export default defineComponent({
 		};
 
 		const handlePreview = () => {
-			const file = fileList.value[0];
+			const file = displayedFile.value;
 			if (!file?.url) return;
 			// 文件已由 ElUpload 补齐 uid 和 status。
 			if (file.uid !== undefined && file.status !== undefined) props.onPreview({ ...file, uid: file.uid, status: file.status });
@@ -142,7 +161,7 @@ export default defineComponent({
 		};
 
 		const handleRemove = () => {
-			const file = fileList.value[0];
+			const file = displayedFile.value;
 			if (file) uploadRef.value?.handleRemove(file as UploadFile);
 		};
 
@@ -176,10 +195,9 @@ export default defineComponent({
 						"--width": addCssUnit(props.width),
 						"--height": addCssUnit(props.height),
 					}}
-					vLoading={loading.value}
 					vModel:fileList={fileList.value}
 					multiple={false}
-					disabled={disabled.value}
+					disabled={disabled.value || loading.value}
 					httpRequest={httpRequest.value}
 					beforeUpload={handleBeforeUpload}
 					onExceed={handleOnExceed}
@@ -191,38 +209,50 @@ export default defineComponent({
 					{{
 						...(slots.trigger && { trigger: slots.trigger }),
 						...(slots.file && { file: slots.file }),
-						default: () =>
-							fileList.value.length > 0 ? (
-								<Fragment>
-									<img class="el-upload-list__item-thumbnail" src={fileList.value[0]?.url} />
-									<span
-										class="el-upload-list__item-actions"
-										onClick={withModifiers(() => {
-											return;
-										}, ["stop"])}
-									>
-										<span class="el-upload-list__item-icon" onClick={handlePreview} title="查看">
-											<ElIcon>
-												<ZoomIn />
-											</ElIcon>
-										</span>
-										{!disabled.value && (
-											<Fragment>
-												<span class="el-upload-list__item-icon" onClick={handleEdit} title="编辑">
+						default: () => {
+							if (displayedFile.value) {
+								const progress = getUploadProgress(displayedFile.value);
+								return (
+									<div class="fa-upload-image__preview">
+										<img class="el-upload-list__item-thumbnail" src={displayedFile.value?.url} />
+										{progress === undefined && (
+											<span
+												class="el-upload-list__item-actions"
+												onClick={withModifiers(() => {
+													return;
+												}, ["stop"])}
+											>
+												<span class="el-upload-list__item-icon" onClick={handlePreview} title="查看">
 													<ElIcon>
-														<Edit />
+														<ZoomIn />
 													</ElIcon>
 												</span>
-												<span class="el-upload-list__item-icon" onClick={handleRemove} title="删除">
-													<ElIcon>
-														<Delete />
-													</ElIcon>
-												</span>
-											</Fragment>
+												{!disabled.value && (
+													<Fragment>
+														<span class="el-upload-list__item-icon" onClick={handleEdit} title="编辑">
+															<ElIcon>
+																<Edit />
+															</ElIcon>
+														</span>
+														<span class="el-upload-list__item-icon" onClick={handleRemove} title="删除">
+															<ElIcon>
+																<Delete />
+															</ElIcon>
+														</span>
+													</Fragment>
+												)}
+											</span>
 										)}
-									</span>
-								</Fragment>
-							) : slots.default ? (
+										{progress !== undefined && (
+											<div class="fa-upload-progress">
+												<span class="fa-upload-progress__ring" />
+												<span>{progress}%</span>
+											</div>
+										)}
+									</div>
+								);
+							}
+							return slots.default ? (
 								slots.default()
 							) : slots.trigger ? null : (
 								<Fragment>
@@ -238,7 +268,8 @@ export default defineComponent({
 										<em>click to upload</em>
 									</div>
 								</Fragment>
-							),
+							);
+						},
 						tip: slots.tip ?? (() => <div class="el-upload__tip">file with a size less than {maxSizeMB.value.toString()}MB</div>),
 					}}
 				</ElUpload>

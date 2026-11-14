@@ -4,6 +4,19 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases should follow [Semantic Versioning](https://semver.org/).
 
+## [2.0.32] - 2026-11-15
+
+### Added
+
+- Show a spinning ring and per-file percentage over thumbnails in `FaUploadImage` and `FaUploadImages`. Progress starts at 0% and the overlay closes when the request settles, including when no progress is reported.
+- Let image `uploadApi` handlers report progress through an optional second argument. Forward progress from both `uploadApi` and `uploadUrl` to Element Plus `onProgress(event, file, files)`.
+
+### Fixed
+
+- Convert fractional progress such as 0.38 to 38%. Keep pending thumbnails visible when another upload completes and put only successfully uploaded URLs in the multi-file model.
+- Return the uploaded URL from the request Promise so Element Plus runs success and error callbacks once.
+- Use `v-model:fileList` directly and prevent new file selection in `FaUpload` and `FaUploadImage` while their built-in requests are pending.
+
 ## [2.0.31] - 2026-11-13
 
 ### Fixed
@@ -353,6 +366,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Scoped Table styles and added responsive IconSelector styling.
 - Improved dialogs, drawers, tables, forms, trees, selectors, car-number input, images, and uploads for dark mode, touch input, and narrow viewports.
 
+[2.0.32]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.31...v2.0.32
 [2.0.31]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.30...v2.0.31
 [2.0.30]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.29...v2.0.30
 [2.0.29]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.28...v2.0.29

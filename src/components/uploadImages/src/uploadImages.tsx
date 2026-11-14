@@ -37,6 +37,11 @@ export const faUploadImagesProps = {
 		type: Number,
 		default: 9,
 	},
+	/** v-model:fileList 绑定值 */
+	fileList: {
+		type: definePropType<UploadUserFile[]>([Array]),
+		default: [],
+	},
 	/** v-model 绑定值 */
 	modelValue: definePropType<string[] | null>([Array]),
 	/** 大小限制，单位kb */
@@ -44,9 +49,21 @@ export const faUploadImagesProps = {
 		type: [String, Number],
 		default: 2048,
 	},
-	/** 图片上传接口，优先级最高 */
+	/** 图片上传接口，可通过第二个参数上报进度，优先级高于上传地址 */
 	uploadApi: {
-		type: definePropType<(formData: FormData) => Promise<string>>(Function),
+		type: definePropType<
+			(
+				formData: FormData,
+				onUploadProgress?: (event: {
+					/** 已上传的字节数 */
+					loaded: number;
+					/** 总字节数，无法获取时可以省略 */
+					total?: number;
+					/** 归一化进度，取值 0 到 1 */
+					progress?: number;
+				}) => void
+			) => Promise<string>
+		>(Function),
 	},
 	/** 图片上传地址 */
 	uploadUrl: String,
@@ -83,6 +100,7 @@ export default defineComponent({
 			loading,
 			formContext,
 			maxSizeMB,
+			getUploadProgress,
 			handleHttpRequest,
 			handleOnSuccess,
 			handleOnError,
@@ -162,10 +180,9 @@ export default defineComponent({
 					{...elUploadProps.value}
 					ref={uploadRef}
 					class={["fa-upload-images", state.uploadKey, { "fa-upload-images__hidden-upload": fileList.value.length >= props.limit }]}
-					vLoading={loading.value}
 					vModel:fileList={fileList.value}
 					multiple={true}
-					disabled={disabled.value}
+					disabled={disabled.value || loading.value}
 					httpRequest={httpRequest.value}
 					beforeUpload={handleBeforeUpload}
 					onExceed={handleOnExceed}
@@ -185,34 +202,49 @@ export default defineComponent({
 								</ElIcon>
 							),
 						tip: slots.tip ?? (() => <div class="el-upload__tip">files with a size less than {maxSizeMB.value.toString()}MB</div>),
-						file:
-							slots.file ??
-							(({ file, index }: { file: UploadFile; index: number }) => (
-								<div>
-									<img class="el-upload-list__item-thumbnail" src={file.url} />
-									<span class="el-upload-list__item-actions">
-										<span class="el-upload-list__item-preview" onClick={() => handlePreview(file)} title="查看">
-											<ElIcon>
-												<ZoomIn />
-											</ElIcon>
-										</span>
-										{!disabled.value && (
-											<Fragment>
-												<span class="el-upload-list__item-icon" onClick={handleEdit} title="编辑">
-													<ElIcon>
-														<Edit />
-													</ElIcon>
+						file: ({ file, index }: { file: UploadFile; index: number }) => {
+							const progress = getUploadProgress(file);
+							return (
+								<Fragment>
+									{slots.file ? (
+										slots.file({ file, index })
+									) : (
+										<div>
+											<img class="el-upload-list__item-thumbnail" src={file.url} />
+											{progress === undefined && (
+												<span class="el-upload-list__item-actions">
+													<span class="el-upload-list__item-preview" onClick={() => handlePreview(file)} title="查看">
+														<ElIcon>
+															<ZoomIn />
+														</ElIcon>
+													</span>
+													{!disabled.value && (
+														<Fragment>
+															<span class="el-upload-list__item-icon" onClick={handleEdit} title="编辑">
+																<ElIcon>
+																	<Edit />
+																</ElIcon>
+															</span>
+															<span class="el-upload-list__item-icon" onClick={() => handleRemove(index)} title="删除">
+																<ElIcon>
+																	<Delete />
+																</ElIcon>
+															</span>
+														</Fragment>
+													)}
 												</span>
-												<span class="el-upload-list__item-icon" onClick={() => handleRemove(index)} title="删除">
-													<ElIcon>
-														<Delete />
-													</ElIcon>
-												</span>
-											</Fragment>
-										)}
-									</span>
-								</div>
-							)),
+											)}
+										</div>
+									)}
+									{progress !== undefined && (
+										<div class="fa-upload-progress">
+											<span class="fa-upload-progress__ring" />
+											<span>{progress}%</span>
+										</div>
+									)}
+								</Fragment>
+							);
+						},
 					}}
 				</ElUpload>
 				{state.preview && (

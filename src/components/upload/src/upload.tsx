@@ -19,6 +19,11 @@ export const faUploadProps = {
 		type: Number,
 		default: 1,
 	},
+	/** v-model:fileList 绑定值 */
+	fileList: {
+		type: definePropType<UploadUserFile[]>([Array]),
+		default: [],
+	},
 	/** v-model 绑定值 */
 	modelValue: definePropType<string | string[] | null>([String, Array]),
 	/** 大小限制，单位kb */
@@ -117,7 +122,7 @@ export default defineComponent({
 				class={["fa-upload", { "fa-upload__trigger": !!slots.trigger }]}
 				vLoading={loading.value}
 				vModel:fileList={fileList.value}
-				disabled={disabled.value}
+				disabled={disabled.value || loading.value}
 				httpRequest={httpRequest.value}
 				beforeUpload={handleBeforeUpload}
 				onExceed={handleOnExceed}
