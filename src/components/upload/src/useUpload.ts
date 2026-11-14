@@ -20,7 +20,7 @@ interface UploadComposable {
 	formContext: FormContext | undefined;
 	formItemContext: FormItemContext | undefined;
 	maxSizeMB: ComputedRef<Decimal>;
-	handleValue: () => void;
+	handleValue: (files?: UploadUserFile[]) => void;
 	getUploadProgress: (file: UploadUserFile) => number | undefined;
 	handleHttpRequest: (options: UploadRequestOptions) => Promise<string>;
 	handleOnSuccess: (fileUrl: string, uploadFile: UploadFile, uploadFiles: UploadFiles) => void;
