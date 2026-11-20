@@ -799,6 +799,7 @@ export default defineComponent({
 												popperClass={`fa-table__main-header-right__data-search__popper fa-table__main-header-right__data-search__popper-${globalSize.value}`}
 												disabled={state.loading}
 												type="daterange"
+												rangeSeparator="至"
 												vModel={state.searchParam.searchTimeList}
 												defaultTime={createOneMonthRangeFromToday(props.futureSearchTime)}
 												shortcuts={createDateRangeShortcuts(props.futureSearchTime)}

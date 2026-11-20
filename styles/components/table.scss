@@ -4,7 +4,7 @@
 	--fa-table-expand-padding: 12px 16px;
 	--fa-table-image-size: 30px;
 	--fa-table-tool-gap: 12px;
-	--fa-table-date-search-width: 190px;
+	--fa-table-date-search-width: 240px;
 	--fa-table-keyword-min-width: 120px;
 	--fa-table-keyword-max-width: 344px;
 	--fa-table-keyword-measure-padding: 0 36px 0 33px;
@@ -145,14 +145,23 @@
 
 	flex: 0 0 auto;
 	max-width: 100%;
-	padding: 0 5px;
+	padding: 0 8px;
+
+	.el-range__icon {
+		flex-shrink: 0;
+		margin-right: 6px;
+	}
 
 	.el-range-input {
-		width: 45%;
+		flex: 1;
+		width: 0;
+		min-width: 0;
 	}
 
 	.el-range-separator {
-		padding: 0;
+		flex: 0 0 auto;
+		padding: 0 8px;
+		white-space: nowrap;
 	}
 
 	.el-range__close-icon {
@@ -401,7 +410,7 @@
 	--fa-table-expand-padding: 8px 12px;
 	--fa-table-image-size: 22px;
 	--fa-table-tool-gap: 6px;
-	--fa-table-date-search-width: 180px;
+	--fa-table-date-search-width: 220px;
 	--fa-table-keyword-min-width: 100px;
 	--fa-table-keyword-max-width: 274px;
 	--fa-table-keyword-measure-padding: 0 30px 0 27px;

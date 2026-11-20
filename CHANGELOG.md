@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases should follow [Semantic Versioning](https://semver.org/).
 
+## [2.0.33] - 2026-11-20
+
+### Fixed
+
+- Give the `FaTable` date-range search control more space (240px by default and 220px at the small size). Separate the calendar icon and date inputs, and use `至` with spacing between the dates.
+
 ## [2.0.32] - 2026-11-15
 
 ### Added
