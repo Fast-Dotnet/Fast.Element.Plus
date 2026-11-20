@@ -372,6 +372,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Scoped Table styles and added responsive IconSelector styling.
 - Improved dialogs, drawers, tables, forms, trees, selectors, car-number input, images, and uploads for dark mode, touch input, and narrow viewports.
 
+[2.0.33]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.32...v2.0.33
 [2.0.32]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.31...v2.0.32
 [2.0.31]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.30...v2.0.31
 [2.0.30]: https://gitee.com/FastDotnet/fast.element.plus/compare/v2.0.29...v2.0.30
